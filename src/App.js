@@ -1,12 +1,8 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import Router from './pages/Router';
 
 function App() {
-  return (
-    <>
-      <div>홈페이지</div>
-    </>
-  );
+  return <Router />;
 }
 
 export default App;
