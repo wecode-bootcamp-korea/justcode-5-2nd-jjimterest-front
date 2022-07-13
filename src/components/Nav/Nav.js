@@ -5,7 +5,7 @@ import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 import Recent from '../Recent/Recent';
 import { useNavigate } from 'react-router-dom';
 
-function Nav({ setFeedOn }) {
+function Nav() {
   const navigate = useNavigate();
   const nav = useRef();
 
@@ -36,7 +36,7 @@ function Nav({ setFeedOn }) {
   };
   const gotohome = () => {
     navigate('/');
-    setFeedOn(false);
+    window.location.reload();
   };
   const gotopainpage = () => {
     navigate('/finpage');
@@ -71,6 +71,7 @@ function Nav({ setFeedOn }) {
           className={css.profileImg}
           src="https://images.unsplash.com/photo-1533749968753-1a9994823766?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
           onClick={gotoprofile}
+          alt="유저프로필이미지"
         />
       </div>
     </div>

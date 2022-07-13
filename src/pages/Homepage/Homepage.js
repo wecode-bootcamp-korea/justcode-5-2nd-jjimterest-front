@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Finfeedmodal from '../../components/Finfeedmodal/Finfeedmodal';
 import css from './Homepage.module.scss';
 import Pin from '../../components/Pin/Pin';
 import Nav from '../../components/Nav/Nav';
 
 function Homepage() {
+  const target = useRef();
   const [on, setOn] = useState(false);
   const [feedOn, setFeedOn] = useState(false);
+  const [element, setElement] = useState();
+  const [pinData, setPinData] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/data/pindata.json')
+      .then(res => res.json())
+      .then(data => {
+        setPinData(data);
+      });
+  }, []);
 
   const modalOn = () => {
     setOn(prev => !prev);
@@ -16,15 +27,34 @@ function Homepage() {
     setOn(prev => !prev);
   };
 
-  const feedOntoggle = () => {
+  const feedOntoggle = e => {
     setFeedOn(prev => !prev);
     window.scrollTo(0, 0);
+    setElement(e.target);
   };
+
+  const callback = (entries, observer) => {
+    entries.forEach(ob => {
+      if (ob.isIntersecting) {
+        console.log(observer);
+      }
+    });
+  };
+  const option = { threshold: 1.0 };
+
+  useEffect(() => {
+    let observer = new IntersectionObserver(callback, option);
+
+    observer.observe(target.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <>
-      <Nav setFeedOn={setFeedOn} />
-      {feedOn ? <Finfeedmodal setFeedOn={setFeedOn} /> : null}
+      <Nav />
+      {feedOn ? <Finfeedmodal setFeedOn={setFeedOn} element={element} /> : null}
       <div className={css.container}>
         {/* {<Pin />} */}
         <div className={css.wrapPin}>
@@ -219,6 +249,7 @@ function Homepage() {
             </div>
           ) : null}
         </div>
+        <div ref={target}>끝입니다</div>
       </div>
     </>
   );

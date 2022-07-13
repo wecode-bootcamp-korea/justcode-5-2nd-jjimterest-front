@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Finpage from './Finpage/Finpage';
 import Homepage from './Homepage/Homepage';
@@ -11,8 +10,8 @@ function Router() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/login" element={<Loginpage />} />
         <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Loginpage />} />
         <Route path="/finpage" element={<Finpage />} />
         <Route path="/mypage" element={<Mypage />} />
       </Routes>

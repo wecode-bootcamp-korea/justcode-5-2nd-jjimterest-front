@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import css from './Finfeedmodal.module.scss';
 import Commentmodal from '../Commentmodal/Commentmodal';
 
-const Finfeedmodal = ({ setFeedOn }) => {
+const Finfeedmodal = ({ setFeedOn, element }) => {
   const [on, setOn] = useState(false);
   const onToggle = () => {
     setOn(prev => !prev);
   };
   const closePin = () => {
     setFeedOn(false);
+    element.scrollIntoView(false);
   };
 
   return (
