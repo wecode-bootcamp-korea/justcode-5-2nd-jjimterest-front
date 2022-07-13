@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import css from './Createpinfeed.module.scss';
 
 function Createpinfeed({ index, deletepin }) {
+  const input = useRef();
+  const img = useRef();
+  const [on, setOn] = useState(false);
+
+  const view = input => {
+    setOn(true);
+    if (input.current.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = e => {
+        img.current.src = e.target.result;
+      };
+
+      reader.readAsDataURL(input.current.files[0]);
+    }
+  };
+
   return (
     <div className={css.pageOutLine}>
       <button className={css.delete} onClick={() => deletepin(index)}>
@@ -16,7 +33,24 @@ function Createpinfeed({ index, deletepin }) {
       </div>
       <div className={css.wrapContents}>
         <div className={css.upload}>
-          <p className={css.uploadText}>이미지를 업로드 하시오</p>
+          {on ? <img ref={img} className={css.previewImage} /> : null}
+          <input
+            className={css.uploadInput}
+            ref={input}
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={() => {
+              view(input);
+            }}
+          />
+          {on ? null : (
+            <p className={css.uploadText}>드래그하거나 클릭하여 업로드</p>
+          )}
+          {on ? null : (
+            <p className={css.uplodInfo}>
+              권장 사항: 20MB 이하 고화질 .jpg 파일
+            </p>
+          )}
         </div>
         <div className={css.info}>
           <input className={css.title} placeholder="제목 추가"></input>

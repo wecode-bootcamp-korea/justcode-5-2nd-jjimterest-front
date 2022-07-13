@@ -36,7 +36,11 @@ function Homepage() {
   const callback = (entries, observer) => {
     entries.forEach(ob => {
       if (ob.isIntersecting) {
-        console.log(observer);
+        console.log('로딩화면시작');
+        setPinData(prev => {
+          console.log('로딩화면종료');
+          return [...prev, 1, 1, 1];
+        });
       }
     });
   };
@@ -56,7 +60,9 @@ function Homepage() {
       <Nav />
       {feedOn ? <Finfeedmodal setFeedOn={setFeedOn} element={element} /> : null}
       <div className={css.container}>
-        {/* {<Pin />} */}
+        {pinData.map(pin => {
+          return <Pin />;
+        })}
         <div className={css.wrapPin}>
           <img
             onMouseEnter={modalOn}
@@ -73,7 +79,7 @@ function Homepage() {
             </div>
           ) : null}
         </div>
-        <div className={css.wrapPin}>
+        {/* <div className={css.wrapPin}>
           <img
             onMouseEnter={modalOn}
             onMouseLeave={modalOut}
@@ -248,7 +254,7 @@ function Homepage() {
               <button className={css.buttonStore}>저장</button>
             </div>
           ) : null}
-        </div>
+        </div> */}
         <div ref={target}>끝입니다</div>
       </div>
     </>

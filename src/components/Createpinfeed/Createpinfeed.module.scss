@@ -51,16 +51,39 @@
     display: flex;
     margin-top: 50px;
     .upload {
-      border: 1px solid black;
+      position: relative;
       width: 40%;
       height: 450px;
       margin-left: 40px;
       margin-right: 40px;
       display: flex;
       align-items: center;
-      .uploadText {
+      border: 1px solid black;
+      .previewImage {
         width: 100%;
-        text-align: center;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .uploadInput {
+        position: absolute;
+        cursor: pointer;
+        height: 100%;
+        opacity: 0;
+        width: 100%;
+        left: 0px;
+        top: 0px;
+        font-size: 0px;
+      }
+      .uploadText {
+        position: absolute;
+        left: 22%;
+        top: 50%;
+      }
+      .uplodInfo {
+        position: absolute;
+        left: 13%;
+        bottom: 10%;
       }
     }
     .info {
