@@ -1,71 +1,62 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import css from './Boardpage.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEquals, faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components';
+import {
+  faStar,
+  faSquareCheck,
+  faEllipsis,
+} from '@fortawesome/free-solid-svg-icons';
+import Dropdown from '../../components/Myprofiledropdown/Dropdown';
+import Created from '../../components/Myprofile/Created';
 
 function Boardpage() {
-  const creRef = useRef();
-  const [createDisplay, setCreateDisplay] = useState(false);
-  useEffect(() => {
-    document.addEventListener('mousedown', clickCreOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', clickCreOutside);
-    };
-  });
-  const clickCreOutside = event => {
-    if (createDisplay && !creRef.current.contains(event.target)) {
-      setCreateDisplay(false);
-    }
-  };
-
-  const Create = styled.div`
-    display: ${createDisplay ? 'block' : 'none'};
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    background-color: white;
-    min-width: 160px;
-    border-radius: 15px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-  `;
-  const onClickCreate = () => {
-    return createDisplay ? setCreateDisplay(false) : setCreateDisplay(true);
-  };
-
   return (
     <div className={css.container}>
       <div className={css.header}>
         <div>
-          <div>
-            <span>보드 이름</span>
-            <span>
-              <FontAwesomeIcon icon={faEllipsis} className={css.headerTool} />
-            </span>
-          </div>
-          <div>참여자 초대</div>
-        </div>
-      </div>
-      <div>UI툴</div>
-      <div>
-        <div className={css.boardUi}>
-          <div>핀 1개</div>
-          <div
-            className={`${css.iconWrapper} ${css.createBtn}`}
-            onClick={onClickCreate}
-          >
-            <FontAwesomeIcon icon={faEquals} className={css.icon} />
-            <Create ref={creRef}>
-              <p>옵션 보기</p>
-              <li>기본</li>
-              <li>간단히</li>
-            </Create>
+          <div className={css.headerContents}>
+            <span className={css.headerBdName}>보드 이름</span>
+            <Dropdown fonticon={2}>
+              <p>보드 옵션</p>
+              <li>보드 수정</li>
+              <li>병합</li>
+            </Dropdown>
           </div>
         </div>
       </div>
-      <div>핀 목록</div>
+      <div className={css.uiToolBox}>
+        <div>
+          <div className={css.iconBox}>
+            <FontAwesomeIcon icon={faStar} className={css.faStar} />
+          </div>
+          <p>아이디어 더 보기</p>
+        </div>
+        <div>
+          <div className={css.iconBox}>
+            <FontAwesomeIcon
+              icon={faSquareCheck}
+              className={css.faSquareCheck}
+            />
+          </div>
+          <p>정리하기</p>
+        </div>
+      </div>
+      <div className={css.uiNav}>
+        <div className={css.pinCnt}>핀 1개</div>
+        <Dropdown fonticon={1} location={10}>
+          <p>옵션 보기</p>
+          <li>기본</li>
+          <li>간단히</li>
+        </Dropdown>
+      </div>
+      <div className={css.pinList}>
+        <Created />
+      </div>
+      <div className={css.linkToPinW}>
+        <div className={css.linkToPin}>
+          이 보드를 위한 아이디어를 찾아 볼까요?
+        </div>
+      </div>
     </div>
   );
 }

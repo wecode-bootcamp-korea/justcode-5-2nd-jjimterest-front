@@ -4,14 +4,15 @@
   flex-direction: column;
   width: 100%;
 
-  div {
-    border: 1px solid black;
-  }
   .header {
     display: flex;
     justify-content: center;
     padding: 10px;
-    span {
+    .headerContents {
+      display: flex;
+      align-items: center;
+    }
+    .headerBdName {
       font-size: 36px;
     }
     .headerTool {
@@ -26,49 +27,68 @@
       }
     }
   }
-  .boardUi {
+  .uiToolBox {
+    margin-top: 10px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 48px;
-    padding: 0px 20px;
-    .iconWrapper {
-      width: 60px;
-      height: 60px;
+    div {
+      padding: 5px;
+    }
+    p {
+      margin: 4px 0px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .iconBox {
       display: flex;
       justify-content: center;
       align-items: center;
-      .icon {
-        width: 40px;
-        height: 40px;
-        margin: 0px 20px;
-        cursor: pointer;
+      width: 90px;
+      height: 90px;
+      background-color: #efefef;
+      border-radius: 15px;
+      cursor: pointer;
+      &:hover {
+        background-color: #e0e0e0;
+      }
+      .faStar {
+        width: 50px;
+        height: 50px;
+      }
+      .faSquareCheck {
+        width: 50px;
+        height: 50px;
       }
     }
   }
-  .createBtn {
-    position: relative;
-    p {
-      font-size: 12px;
-      margin: 10px;
-    }
-    li {
-      color: black;
-      padding: 12px;
+  .uiNav {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 40px;
+    .pinCnt {
+      font-size: 20px;
       font-weight: 700;
-      margin: 0;
-      text-decoration: none;
-      display: block;
-    }
-
-    li:hover {
-      background-color: #ddd;
-      border-radius: 15px;
     }
   }
-  .iconWrapper:hover {
-    border-radius: 50%;
-    background-color: #efefef;
+  .pinList {
+    margin-top: 10px;
+  }
+  .linkToPinW {
+    display: flex;
+    justify-content: center;
+    .linkToPin {
+      width: 50%;
+      font-size: 30px;
+      cursor: pointer;
+      text-align: center;
+      border-radius: 15px;
+      padding: 10px;
+      &:hover {
+        background-color: #efefef;
+      }
+    }
   }
 }
