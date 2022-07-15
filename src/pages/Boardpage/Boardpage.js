@@ -44,7 +44,7 @@ function Boardpage() {
             value={bdName}
           />
           <div>설명</div>
-          <input
+          <textarea
             className={css.descInput}
             placeholder="무엇에 관한 보드인가요?"
             onChange={inputHandlerD}
@@ -56,20 +56,6 @@ function Boardpage() {
             <br />이 작업은 취소할 수 없습니다!
           </div>
         </div>
-        {/* <div className={css.modalHeader}>보드 만들기</div>
-        <div className={css.modalInner}>
-          <div className={css.modalName}>이름</div>
-          <input
-            placeholder="예 : 가고 싶은 곳 또는 요리법"
-            onChange={inputHandler}
-            value={bdName}
-          />
-          <div className={css.buttonWrap}>
-            <Button disabled={bdName ? false : true} onClick={moveCreate}>
-              만들기
-            </Button>
-          </div>
-        </div> */}
       </Modal>
       <div className={css.header}>
         <div>
@@ -118,9 +104,8 @@ function Boardpage() {
       </div>
       <div className={css.bottonUi}>
         <Dropdown fonticon={0} botton={'123'}>
-          <p>옵션 보기</p>
-          <li>기본</li>
-          <li>간단히</li>
+          <p>만들기</p>
+          <li>핀</li>
         </Dropdown>
       </div>
     </div>

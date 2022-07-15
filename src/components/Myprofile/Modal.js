@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import css from './Modal.module.scss';
 
 function Modal({ className, visible, children, onClose }) {
@@ -11,7 +13,9 @@ function Modal({ className, visible, children, onClose }) {
         <ModalInner tabIndex="0" className="modal-inner">
           {children}
           {/* 맵돌리기 */}
-          <CloseButton onClick={onClose}>X</CloseButton>
+          <CloseButton onClick={onClose}>
+            <FontAwesomeIcon icon={faXmark} className={css.faXmark} />
+          </CloseButton>
         </ModalInner>
       </ModalWrapper>
     </>
@@ -65,8 +69,8 @@ const ModalInner = styled.div`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   background-color: #fff;
   border-radius: 10px;
-  width: 360px;
-  max-width: 480px;
+  width: 540px;
+  max-width: 680px;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;

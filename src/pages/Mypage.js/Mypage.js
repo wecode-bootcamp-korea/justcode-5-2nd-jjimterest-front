@@ -89,7 +89,7 @@ function Mypage() {
           </div>
         </div>
       </div>
-      {state ? <Stored idea={true} /> : <Created />}
+      {state ? <Stored idea={true} navOnOff={true} /> : <Created />}
     </div>
   );
 }

@@ -7,6 +7,7 @@ import Mypage from './Mypage.js/Mypage';
 import Setting from './Mypage.js/Setting';
 import Userpage from './Mypage.js/Userpage';
 import ScrollToTop from '../components/Scroll/Scroll';
+import SettingM from './Mypage.js/SettingM';
 
 function Router() {
   return (
@@ -20,7 +21,7 @@ function Router() {
         <Route path="/settings" element={<Setting />} />
         <Route path="/mynickname/:boardname" element={<Boardpage />} />
         <Route path="/:nickname" element={<Userpage />} />
-        <Route path="/settings/account-settings" element={<Setting />} />
+        <Route path="/settings/account-settings" element={<SettingM />} />
       </Routes>
     </BrowserRouter>
   );

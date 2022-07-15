@@ -5,7 +5,7 @@ import { faPlus, faEquals } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import Modal from './Modal';
 
-function Stored({ idea }) {
+function Stored({ idea, navOnOff }) {
   const arrRef = useRef();
   const creRef = useRef();
   const [arrangeDisplay, setArrangeDisplay] = useState(false);
@@ -25,6 +25,8 @@ function Stored({ idea }) {
   const closeCreateModal = () => {
     setCreateModal(false);
   };
+
+  //드랍다운 창
 
   const onClickArrange = () => {
     return arrangeDisplay ? setArrangeDisplay(false) : setArrangeDisplay(true);
@@ -121,30 +123,32 @@ function Stored({ idea }) {
           </div>
         </div>
       </Modal>
-      <div className={css.boardUi}>
-        <div
-          className={`${css.iconWrapper} ${css.arrangeBtn}`}
-          onClick={onClickArrange}
-        >
-          <FontAwesomeIcon icon={faEquals} className={css.icon} />
-          <Arrange ref={arrRef}>
-            <p>정렬기준</p>
-            <li>알파벳 순</li>
-            <li>마지막 저장일</li>
-          </Arrange>
+      {navOnOff && (
+        <div className={css.boardUi}>
+          <div
+            className={`${css.iconWrapper} ${css.arrangeBtn}`}
+            onClick={onClickArrange}
+          >
+            <FontAwesomeIcon icon={faEquals} className={css.icon} />
+            <Arrange ref={arrRef}>
+              <p>정렬기준</p>
+              <li>알파벳 순</li>
+              <li>마지막 저장일</li>
+            </Arrange>
+          </div>
+          <div
+            className={`${css.iconWrapper} ${css.createBtn}`}
+            onClick={onClickCreate}
+          >
+            <FontAwesomeIcon icon={faPlus} className={css.icon} />
+            <Create ref={creRef}>
+              <p>만들기</p>
+              <li>핀</li>
+              <li onClick={openCreateModal}>보드</li>
+            </Create>
+          </div>
         </div>
-        <div
-          className={`${css.iconWrapper} ${css.createBtn}`}
-          onClick={onClickCreate}
-        >
-          <FontAwesomeIcon icon={faPlus} className={css.icon} />
-          <Create ref={creRef}>
-            <p>만들기</p>
-            <li>핀</li>
-            <li onClick={openCreateModal}>보드</li>
-          </Create>
-        </div>
-      </div>
+      )}
       <div className={css.boardContainer}>
         <div className={css.allPinContainer}>
           <div className={css.allPinImg}>

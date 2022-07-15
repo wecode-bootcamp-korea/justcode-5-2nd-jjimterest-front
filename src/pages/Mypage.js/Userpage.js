@@ -3,11 +3,13 @@ import css from './Userpage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
+import { useParams } from 'react-router-dom';
 function Userpage() {
   const [state, setState] = useState(true);
   const [followModal, setFollowModal] = useState(false);
+  const params = useParams();
+  const { nickname } = params;
 
   const openFollowModal = () => {
     setFollowModal(true);
@@ -48,6 +50,18 @@ function Userpage() {
       background-color: #efefef;
     }`}
   `;
+  const FollowBtn = styled.button`
+    padding: 12px 16px;
+    background-color: rgb(230, 9, 26);
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    &:hover {
+      opacity: 0.8;
+    }
+  `;
 
   return (
     <div className={css.container}>
@@ -70,9 +84,7 @@ function Userpage() {
             팔로잉 1명
           </div>
           <div className={css.profileBtn}>
-            {/* 로그인한 아이디와 들어간 프로필 아이디 비교 로직 추가 */}
-
-            <button>팔로우</button>
+            <FollowBtn>팔로우</FollowBtn>
           </div>
         </div>
       </div>
