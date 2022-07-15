@@ -3,7 +3,61 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
+  .modalHeader {
+    font-size: 36px;
+    margin-top: -25px;
+    margin-bottom: 30px;
+  }
+  .modalInner {
+    display: flex;
+    width: 95%;
+    flex-direction: column;
+    div {
+      margin: 10px 0px;
+    }
 
+    .modalName {
+      font-size: 12px;
+      margin: 15px 0;
+    }
+    .faPlus {
+      width: 40px;
+      height: 40px;
+      padding: 30px;
+      background-color: #efefef;
+      border-radius: 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+    .nameInput {
+      height: 40px;
+      border-radius: 15px;
+      border: #efefef solid 2px;
+      font-size: 18px;
+      &:hover {
+        border: #969696 solid 2px;
+      }
+    }
+    .descInput {
+      height: 100px;
+      border-radius: 15px;
+      border: #efefef solid 2px;
+      font-size: 18px;
+      &:hover {
+        border: #969696 solid 2px;
+      }
+    }
+    .delName {
+      font-size: 28px;
+      cursor: pointer;
+    }
+    .delContent {
+      color: #969696;
+    }
+  }
   .header {
     display: flex;
     justify-content: center;
@@ -90,5 +144,11 @@
         background-color: #efefef;
       }
     }
+  }
+  .bottonUi {
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }

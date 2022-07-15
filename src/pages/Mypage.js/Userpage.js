@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import css from './Mypage.module.scss';
+import css from './Userpage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
-function Mypage() {
+function Userpage() {
   const [state, setState] = useState(true);
   const [followModal, setFollowModal] = useState(false);
 
@@ -71,9 +71,8 @@ function Mypage() {
           </div>
           <div className={css.profileBtn}>
             {/* 로그인한 아이디와 들어간 프로필 아이디 비교 로직 추가 */}
-            <Link to={`/settings`}>
-              <button>프로필 수정</button>
-            </Link>
+
+            <button>팔로우</button>
           </div>
         </div>
       </div>
@@ -89,9 +88,9 @@ function Mypage() {
           </div>
         </div>
       </div>
-      {state ? <Stored idea={true} /> : <Created />}
+      {state ? <Stored /> : <Created />}
     </div>
   );
 }
 
-export default Mypage;
+export default Userpage;
