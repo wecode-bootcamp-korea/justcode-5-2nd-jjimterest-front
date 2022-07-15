@@ -1,0 +1,42 @@
+.nav {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 60px;
+  background-color: grey;
+  z-index: 1;
+  position: fixed;
+
+  .wrapBtn {
+    height: 100%;
+    .homeBtn {
+      width: 70px;
+      height: 100%;
+    }
+    .addBtn {
+      height: 100%;
+      width: 70px;
+    }
+  }
+  .wrapSearchBar {
+    width: 60%;
+    z-index: 1;
+
+    .search {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+  }
+  .message {
+    width: 50px;
+    height: 100%;
+  }
+  .profileImg {
+    width: 60px;
+    height: 100%;
+    border-radius: 60%;
+    cursor: pointer;
+  }
+}

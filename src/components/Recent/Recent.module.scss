@@ -1,0 +1,17 @@
+.wrapRecent {
+  display: flex;
+  border: 1px solid black;
+  height: 30px;
+  .recentSearch {
+    border: 1px solid black;
+    height: 100%;
+  }
+  .deleteBtn {
+    height: 100%;
+  }
+}
+.text {
+  width: 100%;
+  border: 1px solid black;
+  height: 30px;
+}
