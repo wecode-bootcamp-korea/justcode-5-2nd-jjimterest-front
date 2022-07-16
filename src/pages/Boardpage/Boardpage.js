@@ -9,11 +9,23 @@ import {
 import Dropdown from '../../components/Myprofiledropdown/Dropdown';
 import Created from '../../components/Myprofile/Created';
 import Modal from '../../components/Myprofile/Modal';
+import { useParams, Link } from 'react-router-dom';
 
 function Boardpage() {
+  const params = useParams();
+  const { boardname } = params;
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
   const [desc, setDesc] = useState('');
+
+  const [showBoard, setShowBoard] = useState(false);
+
+  const showSimple = () => {
+    setShowBoard(true);
+  };
+  const closeSimple = () => {
+    setShowBoard(false);
+  };
 
   const openCreateModal = () => {
     setCreateModal(true);
@@ -60,7 +72,7 @@ function Boardpage() {
       <div className={css.header}>
         <div>
           <div className={css.headerContents}>
-            <span className={css.headerBdName}>보드 이름</span>
+            <span className={css.headerBdName}>{boardname}</span>
             <Dropdown fonticon={2}>
               <p>보드 옵션</p>
               <li onClick={openCreateModal}>보드 수정</li>
@@ -77,12 +89,14 @@ function Boardpage() {
           <p>아이디어 더 보기</p>
         </div>
         <div>
-          <div className={css.iconBox}>
-            <FontAwesomeIcon
-              icon={faSquareCheck}
-              className={css.faSquareCheck}
-            />
-          </div>
+          <Link to={`/mynickname/:boardname/_tools`} className={css.linkLay}>
+            <div className={css.iconBox}>
+              <FontAwesomeIcon
+                icon={faSquareCheck}
+                className={css.faSquareCheck}
+              />
+            </div>
+          </Link>
           <p>정리하기</p>
         </div>
       </div>
@@ -90,22 +104,27 @@ function Boardpage() {
         <div className={css.pinCnt}>핀 1개</div>
         <Dropdown fonticon={1} location={10}>
           <p>옵션 보기</p>
-          <li>기본</li>
-          <li>간단히</li>
+          <li onClick={showSimple}>기본</li>
+          <li onClick={closeSimple}>간단히</li>
         </Dropdown>
       </div>
       <div className={css.pinList}>
-        <Created />
+        <Created showBoard={showBoard} />
       </div>
       <div className={css.linkToPinW}>
         <div className={css.linkToPin}>
-          이 보드를 위한 아이디어를 찾아 볼까요?
+          <Link to={`/`} className={css.linkLay}>
+            이 보드를 위한 아이디어를 찾아 볼까요?
+            <div></div>
+          </Link>
         </div>
       </div>
       <div className={css.bottonUi}>
         <Dropdown fonticon={0} botton={'123'}>
           <p>만들기</p>
-          <li>핀</li>
+          <Link to={`/finpage`} className={css.linkLay}>
+            <li>핀</li>
+          </Link>
         </Dropdown>
       </div>
     </div>

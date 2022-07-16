@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEquals } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import Modal from './Modal';
+import { Link } from 'react-router-dom';
 
 function Stored({ idea, navOnOff }) {
   const arrRef = useRef();
@@ -12,10 +13,6 @@ function Stored({ idea, navOnOff }) {
   const [createDisplay, setCreateDisplay] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
-
-  const moveCreate = () => {
-    window.location.href = `/mynickname/:boardname`;
-  };
 
   //modal 동작 함수
 
@@ -117,9 +114,9 @@ function Stored({ idea, navOnOff }) {
             value={bdName}
           />
           <div className={css.buttonWrap}>
-            <Button disabled={bdName ? false : true} onClick={moveCreate}>
-              만들기
-            </Button>
+            <Link to={`/mynickname/${bdName}`}>
+              <Button disabled={bdName ? false : true}>만들기</Button>
+            </Link>
           </div>
         </div>
       </Modal>
