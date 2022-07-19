@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Boardpage from './Boardpage/Boardpage';
 import Finpage from './Finpage/Finpage';
 import Homepage from './Homepage/Homepage';
-import Loginpage from './Login/Login';
+import Loginpage from './Login/Loginpage';
 import Mypage from './Mypage.js/Mypage';
 import Setting from './Mypage.js/Setting';
 import ScrollToTop from '../components/Scroll/Scroll';
@@ -12,6 +12,7 @@ function Router() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
+        {/* <Route path="/" element={<Homepage />} /> */}
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Loginpage />} />
         <Route path="/finpage" element={<Finpage />} />
