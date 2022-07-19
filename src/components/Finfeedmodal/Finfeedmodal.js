@@ -1,8 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import css from './Finfeedmodal.module.scss';
 import Commentmodal from '../Commentmodal/Commentmodal';
+import BASE_URL from '../../config';
 
-const Finfeedmodal = ({ setFeedOn, element }) => {
+const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
+  const [pinData, setPinData] = useState({});
+  console.log(pinId);
+  useEffect(() => {
+    fetch(`${BASE_URL}/pins/${pinId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setPinData(data);
+      });
+  }, []);
+
   const [on, setOn] = useState(false);
   const onToggle = () => {
     setOn(prev => !prev);
@@ -20,7 +38,7 @@ const Finfeedmodal = ({ setFeedOn, element }) => {
       <div className={css.container}>
         <img
           className={css.feedImg}
-          src="https://i.pinimg.com/564x/8d/90/b2/8d90b2c4b0dcc424af6fab161a4fec46.jpg"
+          src="https://i.pinimg.com/474x/92/80/1e/92801e77f628a8536276d943967d7fd5.jpg"
           alt="핀이미지"
         />
         <div className={css.messenger}>
@@ -35,7 +53,7 @@ const Finfeedmodal = ({ setFeedOn, element }) => {
             <div className={css.userContents}>
               <img
                 className={css.userImg}
-                src="https://i.pinimg.com/564x/9f/c2/5d/9fc25dc174efc6f2d3d8bb0cc28ed3fe.jpg"
+                src="https://i.pinimg.com/474x/a6/66/b2/a666b2f0822587f08168bd9726c51d69.jpg"
                 alt="유저사진"
               />
               <div className={css.userText}>

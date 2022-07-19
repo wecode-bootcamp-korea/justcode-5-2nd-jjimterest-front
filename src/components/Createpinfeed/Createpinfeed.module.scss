@@ -16,7 +16,7 @@
     width: 90%;
     height: 40px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     border: 1px solid black;
     margin-top: 50px;
     margin-left: 40px;
@@ -37,6 +37,7 @@
       height: 100%;
       .selectBtn {
         height: 100%;
+        position: relative;
       }
 
       .storeBtn {

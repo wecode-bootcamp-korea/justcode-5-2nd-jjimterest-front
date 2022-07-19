@@ -1,8 +1,9 @@
 .container {
   width: 90%;
   border: 1px solid black;
-  .comment {
+  .commentList {
     display: flex;
+    flex-direction: column;
     width: 100%;
     .userImg {
       width: 10%;
@@ -17,8 +18,6 @@
       .userText {
         display: flex;
         align-items: center;
-      }
-      .commentInfo {
       }
     }
   }
