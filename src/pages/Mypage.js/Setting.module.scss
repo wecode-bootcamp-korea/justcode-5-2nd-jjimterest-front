@@ -1,0 +1,16 @@
+.container {
+  .innerContainer {
+    div {
+      border: 1px solid black;
+    }
+    display: flex;
+    margin-top: 140px;
+    width: 100%;
+  }
+  .sideBar {
+    width: 30%;
+  }
+  .mainContents {
+    width: 40%;
+  }
+}
