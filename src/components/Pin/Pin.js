@@ -1,37 +1,47 @@
 import React, { useState } from 'react';
 import css from './Pin.module.scss';
+import BASE_URL from '../../config';
 
-function Pin() {
+function Pin({ feedOntoggle, data, pinId }) {
   const [on, setOn] = useState(false);
-  const [feedOn, setFeedOn] = useState(false);
+  const [onStore, setOnStore] = useState(true);
 
   const modalOn = () => {
     setOn(prev => !prev);
   };
-
   const modalOut = () => {
     setOn(prev => !prev);
   };
-
-  const feedOntoggle = () => {
-    setFeedOn(prev => !prev);
-    window.scrollTo(0, 0);
+  const btnClick = () => {
+    setOnStore(false);
+    fetch(`${BASE_URL}/pins/${data.pin_id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+      },
+    });
   };
-
   return (
-    <div className={css.wrapPin}>
+    <div className={css.wrapPin} onMouseEnter={modalOn} onMouseLeave={modalOut}>
       <img
-        onMouseEnter={modalOn}
-        onMouseLeave={modalOut}
-        onClick={feedOntoggle}
         className={css.pinImg}
         alt="핀이미지"
-        src="https://images.unsplash.com/photo-1559494007-9f5847c49d94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60"
+        src={data.image}
+        onClick={e => {
+          pinId(data.pin_id);
+          feedOntoggle(e);
+        }}
       />
+      {on ? (
+        <button className={css.buttonStore} onClick={btnClick}>
+          {onStore ? '저장' : '저장됨'}
+        </button>
+      ) : null}
       {on ? (
         <div className={css.pinModal}>
           <button className={css.buttonProfile}>프로필</button>
-          <button className={css.buttonStore}>저장</button>
         </div>
       ) : null}
     </div>

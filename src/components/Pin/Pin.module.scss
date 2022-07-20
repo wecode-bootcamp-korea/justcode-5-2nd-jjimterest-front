@@ -6,6 +6,20 @@
     border-radius: 10%;
     cursor: pointer;
   }
+  .buttonStore {
+    position: absolute;
+    top: 6%;
+    right: 5%;
+    border: none;
+    font-size: medium;
+    color: white;
+    background-color: red;
+    padding: 10px 15px 10px 15px;
+    border-radius: 30%;
+    pointer-events: auto;
+    z-index: 1;
+    cursor: pointer;
+  }
   .pinModal {
     position: absolute;
     border-radius: 10%;
@@ -26,16 +40,17 @@
       border: none;
     }
 
-    .buttonStore {
-      position: absolute;
-      top: 6%;
-      right: 5%;
-      border: none;
-      font-size: medium;
-      color: white;
-      background-color: red;
-      padding: 10px 15px 10px 15px;
-      border-radius: 30%;
-    }
+    // .buttonStore {
+    //   position: absolute;
+    //   top: 6%;
+    //   right: 5%;
+    //   border: none;
+    //   font-size: medium;
+    //   color: white;
+    //   background-color: red;
+    //   padding: 10px 15px 10px 15px;
+    //   border-radius: 30%;
+    //   pointer-events: auto;
+    // }
   }
 }
