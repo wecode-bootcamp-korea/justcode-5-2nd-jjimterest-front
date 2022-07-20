@@ -18,13 +18,30 @@
   .header {
     display: flex;
     justify-content: center;
+    width: 100%;
     padding: 10px;
     .headerContents {
+      width: 100vw;
       display: flex;
-      align-items: center;
+      justify-content: space-between;
     }
     .headerBdName {
       font-size: 36px;
+    }
+    .headerRight {
+      width: 50px;
+    }
+    .faArrowLeftBox {
+      padding: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      .faArrowLeft {
+        width: 40px;
+        height: 40px;
+      }
+      &:hover {
+        background-color: #e0e0e0;
+      }
     }
   }
 
@@ -53,14 +70,15 @@
   }
   .footer {
     left: 50%;
+    width: 100px;
     transform: translate(-50%, -50%);
     position: fixed;
     bottom: 0px;
     cursor: pointer;
     .faTrash {
       padding: 20px;
-      background-color: white;
-      box-shadow: 1px 1px 1px 1px #efefef;
+      background-color: #efefef;
+      box-shadow: 1px 1px 1px 1px #e0e0e0;
       border-radius: 70%;
       &:hover {
         background-color: #e0e0e0;

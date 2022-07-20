@@ -5,8 +5,13 @@ import { faPlus, faEquals } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import Modal from './Modal';
 import { Link } from 'react-router-dom';
+import Boardcard from './Boardcard';
 
-function Stored({ idea, navOnOff }) {
+function Stored({ idea, navOnOff, myDate }) {
+  const [bdList, setBoardList] = useState(myDate);
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+
   const arrRef = useRef();
   const creRef = useRef();
   const [arrangeDisplay, setArrangeDisplay] = useState(false);
@@ -14,7 +19,38 @@ function Stored({ idea, navOnOff }) {
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
 
-  //modal 동작 함수
+  const createBoard = () => {
+    fetch(`http://localhost:10010/board`, {
+      headers: {
+        // Authorization: localStorage.getItem('access_token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        title: bdName,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log('보드만들기 완료' + res);
+      });
+  };
+  //가나다 순 정렬
+  const abcSortHandle = () => {
+    let stringArray = [...bdList];
+    stringArray = stringArray.sort((x, y) => x.title.localeCompare(y.title));
+    setBoardList(stringArray);
+  };
+  // 마지막 저장일 기준 정렬
+
+  const lastDaySortHandle = () => {
+    let intArray = [...bdList];
+    intArray = intArray.sort((a, b) => b.id - a.id);
+    setBoardList(intArray);
+  };
+  useEffect(() => {}, [bdList]);
+
+  // modal 동작 함수
 
   const openCreateModal = () => {
     setCreateModal(true);
@@ -115,7 +151,9 @@ function Stored({ idea, navOnOff }) {
           />
           <div className={css.buttonWrap}>
             <Link to={`/mynickname/${bdName}`}>
-              <Button disabled={bdName ? false : true}>만들기</Button>
+              <Button disabled={bdName ? false : true} onClick={createBoard}>
+                만들기
+              </Button>
             </Link>
           </div>
         </div>
@@ -129,8 +167,8 @@ function Stored({ idea, navOnOff }) {
             <FontAwesomeIcon icon={faEquals} className={css.icon} />
             <Arrange ref={arrRef}>
               <p>정렬기준</p>
-              <li>알파벳 순</li>
-              <li>마지막 저장일</li>
+              <li onClick={abcSortHandle}>알파벳 순</li>
+              <li onClick={lastDaySortHandle}>마지막 저장일</li>
             </Arrange>
           </div>
           <div
@@ -140,28 +178,24 @@ function Stored({ idea, navOnOff }) {
             <FontAwesomeIcon icon={faPlus} className={css.icon} />
             <Create ref={creRef}>
               <p>만들기</p>
-              <li>핀</li>
+              <Link to={`/finpage`} className={css.linkLay}>
+                <li>핀</li>
+              </Link>
               <li onClick={openCreateModal}>보드</li>
             </Create>
           </div>
         </div>
       )}
       <div className={css.boardContainer}>
-        <div className={css.allPinContainer}>
-          <div className={css.allPinImg}>
-            <div className={css.firstImg}>
-              <img
-                alt="핀이미지"
-                src="https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-              />
-            </div>
-          </div>
-          <div className={css.allPinContents}>
-            <div className={css.boardName}>모든 핀</div>
-            <div className={css.pinCnt}>핀 3개</div>
-          </div>
-        </div>
-        {/* 보드뿌려주기 */}
+        <Boardcard boardName={'모든 핀'} pinCnt={0} />
+        {bdList &&
+          bdList.map((data, index) => (
+            <Boardcard
+              boardName={data.title}
+              pinCnt={data.pins.length}
+              key={index}
+            />
+          ))}
       </div>
       {idea && (
         <>

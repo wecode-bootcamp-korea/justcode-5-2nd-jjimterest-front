@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import css from './Setting.module.scss';
 import styled from 'styled-components';
 import Modal from '../../components/Myprofile/Modal';
 import Profilefooter from '../../components/Profilefooter/Profilefooter';
+import { BASE_URL } from '../../config';
 
 function Setting() {
   const [switchBtn, setSwitchBtn] = useState(false);
@@ -11,6 +12,35 @@ function Setting() {
   const [web, setWeb] = useState('');
   const [nickName, setNickName] = useState('');
   const [createModal, setCreateModal] = useState(false);
+  const imgInput = useRef();
+  const [fileImage, setFileImage] = useState('');
+  const [setting, SetSetting] = useState();
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+
+  useEffect(() => {
+    fetch(`http://localhost:10010/edit-profile`, {
+      method: 'GET',
+      headers: {
+        // Authorization: localStorage.getItem('access_token'),
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(res => {
+        SetSetting(res);
+      });
+  }, []);
+  console.log(setting);
+
+  const saveFileImage = event => {
+    setFileImage(URL.createObjectURL(event.target.files[0]));
+  };
+  const onImgInputBtnClick = event => {
+    event.preventDefault();
+    imgInput.current.click();
+    setCreateModal(false);
+  };
 
   const openCreateModal = () => {
     setCreateModal(true);
@@ -68,9 +98,19 @@ function Setting() {
   `;
   return (
     <div className={css.container}>
+      <input
+        className={css.imgInput}
+        name="imggeUpload"
+        type="file"
+        accept="image/*"
+        onChange={saveFileImage}
+        ref={imgInput}
+      />
       <Modal visible={createModal} onClose={closeCreateModal}>
         <div className={css.modalHeader}>사진 변경</div>
-        <div className={css.modalBtn}>사진 선택</div>
+        <div className={css.modalBtn} onClick={onImgInputBtnClick}>
+          사진 선택
+        </div>
       </Modal>
       <div className={css.innerContainer}>
         <div className={css.sideBar}>
@@ -92,10 +132,14 @@ function Setting() {
             <div>사진</div>
             <div className={css.imgBox}>
               <div className={css.imgWrapper}>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/KakaoTalk_Photo_2022-07-12-14-22-49.jpeg`}
-                  className={css.mePhoto}
-                ></img>
+                {fileImage ? (
+                  <img alt="sample" src={fileImage} className={css.mePhoto} />
+                ) : (
+                  <img
+                    src={`${process.env.PUBLIC_URL}/images/KakaoTalk_Photo_2022-07-12-14-22-49.jpeg`}
+                    className={css.mePhoto}
+                  ></img>
+                )}
               </div>
               <div className={css.imgBtn} onClick={openCreateModal}>
                 변경

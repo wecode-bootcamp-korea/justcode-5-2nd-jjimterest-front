@@ -43,7 +43,7 @@ function Boardpage() {
   return (
     <div className={css.container}>
       <Modal visible={createModal} onClose={closeCreateModal}>
-        <div className={css.modalHeader}>보드 만들기</div>
+        <div className={css.modalHeader}>보드 수정하기</div>
         <div className={css.modalInner}>
           <div>보드 커버</div>
           <div className={css.faPlusBox}>
@@ -83,13 +83,15 @@ function Boardpage() {
       </div>
       <div className={css.uiToolBox}>
         <div>
-          <div className={css.iconBox}>
-            <FontAwesomeIcon icon={faStar} className={css.faStar} />
-          </div>
+          <Link to={`/`} className={css.linkLay}>
+            <div className={css.iconBox}>
+              <FontAwesomeIcon icon={faStar} className={css.faStar} />
+            </div>
+          </Link>
           <p>아이디어 더 보기</p>
         </div>
         <div>
-          <Link to={`/mynickname/:boardname/_tools`} className={css.linkLay}>
+          <Link to={`/mynickname/${boardname}/_tools`} className={css.linkLay}>
             <div className={css.iconBox}>
               <FontAwesomeIcon
                 icon={faSquareCheck}

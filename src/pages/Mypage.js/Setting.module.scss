@@ -1,5 +1,8 @@
 .container {
   position: relative;
+  .imgInput {
+    display: none;
+  }
   .modalHeader {
     font-size: 36px;
     margin-top: -25px;

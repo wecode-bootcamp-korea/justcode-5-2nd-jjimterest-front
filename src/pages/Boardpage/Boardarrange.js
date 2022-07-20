@@ -2,8 +2,8 @@ import React from 'react';
 import css from './Boardarrange.module.scss';
 import Created from '../../components/Myprofile/Created';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from 'react-router-dom';
+import { faTrash, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { Link, useParams } from 'react-router-dom';
 
 function Boardarrange() {
   const params = useParams();
@@ -14,7 +14,16 @@ function Boardarrange() {
       <div className={css.header}>
         <div>
           <div className={css.headerContents}>
-            <span className={css.headerBdName}>선택 및 재정렬</span>
+            <Link to={`/mynickname/${boardname}`} className={css.linkLay}>
+              <div className={css.faArrowLeftBox}>
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  className={css.faArrowLeft}
+                />
+              </div>
+            </Link>
+            <div className={css.headerBdName}>선택 및 재정렬</div>
+            <div className={css.headerRight}></div>
           </div>
         </div>
       </div>

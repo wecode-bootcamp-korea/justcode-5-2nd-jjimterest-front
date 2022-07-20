@@ -1,15 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import css from './Userpage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
 import Modal from '../../components/Myprofile/Modal';
 import { useParams } from 'react-router-dom';
+import { BASE_URL } from '../../config';
 function Userpage() {
   const [state, setState] = useState(true);
   const [followModal, setFollowModal] = useState(false);
   const params = useParams();
   const { nickname } = params;
+  const [userDate, setUserData] = useState();
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+  useEffect(() => {
+    fetch(`http://localhost:10010/profile/${nickname}`, {
+      method: 'GET',
+      headers: {
+        // Authorization: localStorage.getItem('access_token'),
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(res => {
+        setUserData(res);
+      });
+  }, [nickname]);
 
   const openFollowModal = () => {
     setFollowModal(true);
