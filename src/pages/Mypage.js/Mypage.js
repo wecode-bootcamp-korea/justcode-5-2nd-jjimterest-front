@@ -5,7 +5,7 @@ import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
-import { BASE_URL } from '../../config';
+import BASE_URL from '../../config';
 
 function Mypage() {
   const [state, setState] = useState(true);
