@@ -1,6 +1,5 @@
 .pageOutLine {
   position: relative;
-  border: 1px solid black;
   width: 850px;
   height: 660px;
   background-color: white;
@@ -8,58 +7,52 @@
   margin-bottom: 20px;
   border-radius: 3%;
   .delete {
+    border: none;
+    width: 30px;
+    height: 25px;
     position: absolute;
     right: 20px;
     top: 10px;
+    border-radius: 10px;
   }
   .nav {
     width: 90%;
     height: 40px;
     display: flex;
     justify-content: flex-end;
-    border: 1px solid black;
     margin-top: 50px;
     margin-left: 40px;
-    .addBtn {
-      font-size: 30px;
-      font-weight: bolder;
-      text-align: center;
-      align-items: center;
-      line-height: 25px;
-      margin-left: 20px;
-      border: 1px solid black;
-      background-color: rgba(223, 220, 220, 0.693);
-      border-radius: 100%;
-      width: 40px;
-      height: 40px;
-    }
+
     .wrapBoardBtn {
       height: 100%;
       .selectBtn {
         height: 100%;
         position: relative;
+        border: none;
+        border-radius: 10px;
       }
-
       .storeBtn {
         height: 100%;
         background-color: red;
         color: white;
         width: 60px;
+        border: none;
+        border-radius: 10px;
       }
     }
   }
   .wrapContents {
     display: flex;
-    margin-top: 50px;
+    margin-top: 20px;
     .upload {
       position: relative;
       width: 40%;
-      height: 450px;
+      height: 500px;
       margin-left: 40px;
       margin-right: 40px;
       display: flex;
       align-items: center;
-      border: 1px solid black;
+      border: 5px double rgba(128, 128, 128, 0.341);
       .previewImage {
         width: 100%;
         height: 100%;
@@ -89,36 +82,67 @@
     }
     .info {
       width: 45%;
-      border: 1px solid black;
       .title {
+        font-size: 30px;
         width: 100%;
         height: 50px;
+        border: none;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        padding-bottom: 10px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
       }
       .userInfo {
         width: 100;
         display: flex;
+        align-items: center;
         .userImg {
-          border: 1px solid black;
+          display: flex;
+          align-items: center;
+          border-radius: 100%;
           width: 50px;
           height: 50px;
+          margin-right: 10px;
         }
         .userName {
           display: flex;
-          align-items: center;
           font-size: 20px;
         }
       }
       .pinInfo {
+        font-size: 15px;
+        margin-top: 20px;
+        border: none;
         width: 100%;
         height: 50px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
       }
       .pinAltBtn {
+        margin-top: 20px;
         width: 130px;
         height: 40px;
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 16px;
       }
       .pinAltInput {
+        border: none;
         width: 100%;
         height: 50px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import BASE_URL from '../../config';
 function Pin({ feedOntoggle, data, pinId }) {
   const [on, setOn] = useState(false);
   const [onStore, setOnStore] = useState(true);
+  const token = localStorage.getItem('token');
 
   const modalOn = () => {
     setOn(prev => !prev);
@@ -28,9 +29,9 @@ function Pin({ feedOntoggle, data, pinId }) {
       <img
         className={css.pinImg}
         alt="핀이미지"
-        src={data.image}
+        src={BASE_URL + '/' + data.image}
         onClick={e => {
-          pinId(data.pin_id);
+          pinId([data.pin_id, data.image]);
           feedOntoggle(e);
         }}
       />

@@ -11,7 +11,7 @@ function Homepage() {
   const [element, setElement] = useState();
   const [pinData, setPinData] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pinId, setPinId] = useState();
+  const [pinId, setPinId] = useState(0);
 
   const feedOntoggle = e => {
     setFeedOn(prev => !prev);
@@ -33,6 +33,7 @@ function Homepage() {
           })
             .then(res => res.json())
             .then(data => {
+              console.log('초기정보입니다.', data);
               setPinData(data);
             });
           setPageNumber(prev => prev + 1);

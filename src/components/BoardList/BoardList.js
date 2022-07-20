@@ -5,14 +5,14 @@ function BoardList({ data }) {
   return (
     <div className={css.boardListModal}>
       아예이요우
-      {/* {data.map(data => {
+      {data.boards.map(data => {
         return (
           <>
             <img src={data.url} />
             <div>{data.img}</div>
           </>
         );
-      })} */}
+      })}
     </div>
   );
 }

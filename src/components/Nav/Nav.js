@@ -1,11 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 import Recent from '../Recent/Recent';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from '../../config';
 
 function Nav() {
+  const [profileImg, setProfileImg] = useState();
+  const search = useRef();
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/edit-profile`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setProfileImg(data[0].profile_image);
+        localStorage.setItem('myimg', data[0].profile_image);
+      });
+  }, []);
+
   const navigate = useNavigate();
   const nav = useRef();
 
@@ -22,17 +40,21 @@ function Nav() {
   const scrollY = () => {
     setScroll(window.scrollY);
     if (scroll > 15) {
-      nav.current.style.backgroundColor = 'black';
+      nav.current.style.backgroundColor = 'white';
     } else {
       nav.current.style.backgroundColor = 'white';
     }
   };
-
   const onToggle = () => {
     setOn(true);
+    search.current.focus();
   };
   const offToggle = () => {
-    setOn(false);
+    setTimeout(() => {
+      if (document.activeElement !== search.current) {
+        return setOn(false);
+      }
+    }, 120);
   };
   const gotohome = () => {
     navigate('/');
@@ -58,18 +80,19 @@ function Nav() {
       </div>
       <div className={css.wrapSearchBar}>
         <input
+          ref={search}
           className={css.search}
           placeholder="검색"
           onFocus={onToggle}
           onBlur={offToggle}
         />
-        {on ? <Recent /> : null}
+        {on ? <Recent onToggle={onToggle} /> : null}
       </div>
       <div className={css.emoji}>
-        <FontAwesomeIcon icon={faCommentDots} className={css.message} />
+        <button className={css.message}>message</button>
         <img
           className={css.profileImg}
-          src="https://images.unsplash.com/photo-1533749968753-1a9994823766?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+          src={profileImg !== undefined && profileImg}
           onClick={gotoprofile}
           alt="유저프로필이미지"
         />

@@ -4,15 +4,16 @@ import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
 
 function Createpinfeed({ index, deletepin }) {
-  const [boadData, setBoardData] = useState({});
+  const [boadData, setBoardData] = useState();
   const [altBtnOn, setAltBtnOn] = useState(true);
   const [altOn, setAltOn] = useState(false);
+  const [imgUpload] = useState(new FormData());
   const input = useRef();
   const img = useRef();
   const [on, setOn] = useState(false);
   const reader = new FileReader();
-  const imgUpload = new FormData();
   const [onBoradList, setOnBoradList] = useState(false);
+  const myImg = localStorage.getItem('myimg');
 
   useEffect(() => {
     fetch(`${BASE_URL}/pin-make`, {
@@ -26,6 +27,7 @@ function Createpinfeed({ index, deletepin }) {
       .then(res => res.json())
       .then(data => {
         setBoardData(data);
+        console.log('핀만들기 데이터', data);
       });
   }, []);
 
@@ -44,7 +46,6 @@ function Createpinfeed({ index, deletepin }) {
     fetch(`${BASE_URL}/pin-make`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=something',
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
       },
@@ -78,7 +79,9 @@ function Createpinfeed({ index, deletepin }) {
       </div>
       <div className={css.wrapContents}>
         <div className={css.upload}>
-          {on ? <img ref={img} className={css.previewImage} /> : null}
+          {on ? (
+            <img ref={img} className={css.previewImage} alt="이미지" />
+          ) : null}
           <input
             className={css.uploadInput}
             ref={input}
@@ -98,14 +101,16 @@ function Createpinfeed({ index, deletepin }) {
           )}
         </div>
         <div className={css.info}>
-          <input className={css.title} placeholder="제목 추가"></input>
+          <input className={css.title} placeholder="제목 추가" />
           <div className={css.userInfo}>
-            <img className={css.userImg}>{boadData.img}</img>
-            <p className={css.userName}>{boadData.name}</p>
+            <img className={css.userImg} alt="이미지" src={myImg} />
+            <p className={css.userName}>
+              {boadData !== undefined && boadData[0].name}
+            </p>
           </div>
           <input
             className={css.pinInfo}
-            placeholder="핀에 대해 설명해 주세요"
+            placeholder="사람들에게 회원님의 핀에 대해 설명해 보세요"
           />
           {altBtnOn ? (
             <button
@@ -118,11 +123,12 @@ function Createpinfeed({ index, deletepin }) {
               alt 텍스트 추가
             </button>
           ) : null}
-          {altOn ? <input /> : null}
-          <input
-            className={css.pinAltInput}
-            placeholder="핀에 무엇이 표시되는지 설명합니다."
-          ></input>
+          {altOn ? (
+            <input
+              className={css.pinAltInput}
+              placeholder="핀에 무엇이 표시되는지 설명합니다."
+            />
+          ) : null}
         </div>
       </div>
     </div>
