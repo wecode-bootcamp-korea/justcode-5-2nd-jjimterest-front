@@ -2,9 +2,16 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
+import { BASE_URL } from './../../config';
 
-function SignUpModal() {
+function SignUpModal({
+  isSignUpModalOpened,
+  controlSignUpModal,
+  isPageScrolledDown,
+  changeBodyScroll,
+}) {
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
   const [isFormVisibility, setIsFormVisibility] = useState(false);
@@ -18,19 +25,20 @@ function SignUpModal() {
     setPwValue(e.target.value);
   };
 
-  const navigaet = useNavigate();
+  const navigate = useNavigate();
 
   const regexId =
-    /^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$/i;
-  const regexPw = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#?!@$%^&*-]).{8}/;
+    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  const regexPw =
+    /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
 
   const goToList = () => {
-    navigaet('/'); //관심리스트 뽑는 곳
+    navigate('/'); //관심리스트 뽑는 곳
   };
 
   const signUpLogic = () => {
     if (regexId.test(emailValue) && regexPw.test(pwValue)) {
-      fetch(`${process.env.REACT_APP_BASE_URL}/users/signup`, {
+      fetch(`http://localhost:10010/users/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         mode: 'cors',
@@ -72,12 +80,21 @@ function SignUpModal() {
   };
 
   return (
-    <LoginWrapper>
-      <LoginForm>
-        <HeadingWrapper>
-          <Heading1>JJimterest 에 오신 것을</Heading1>
-          <Heading2>환영합니다</Heading2>
-        </HeadingWrapper>
+    <Modal
+      isSignUpModalOpened={isSignUpModalOpened}
+      isPageScrolledDown={isPageScrolledDown}
+    >
+      <AiOutlineClose
+        size="20"
+        isPageScrolledDown={isPageScrolledDown}
+        onClick={() => {
+          controlSignUpModal();
+          changeBodyScroll();
+        }}
+      />
+      <JJimterestLogo alt="찜터레스트 로고" src="/images/JJimterestLogo.jpg" />
+      <Welcome>JJimterest에 오신 것을 환영합니다</Welcome>
+      <Form>
         <IdContainer>
           <IdInput
             type="text"
@@ -97,7 +114,7 @@ function SignUpModal() {
         <AlertFormContainer
           style={{ visibility: isFormVisibility ? 'visible' : 'hidden' }}
         >
-          <div>이메일 형식은 아이디와</div>
+          <div>올바른 이메일 형식이 아닙니다.</div>
         </AlertFormContainer>
         <AlertEmailContainer
           style={{ visibility: isEmailVisibility ? 'visible' : 'hidden' }}
@@ -116,39 +133,36 @@ function SignUpModal() {
             </KakaoLogin>
           </SocialLoginWrapper>
         </Buttons>
-      </LoginForm>
+      </Form>
       <ServiceInfo>
         계속 진행하면 Pinterest 서비스 약관에 동의하고 개인정보 보호정책을
         읽었음을 인정하는 것으로 간주됩니다.
       </ServiceInfo>
-    </LoginWrapper>
+    </Modal>
   );
 }
 
-const LoginWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  position: relative;
-  width: fit-content;
-  height: 450px;
-  margin: 0 auto;
-  margin-top: -65px;
-  padding-top: 150px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+const Modal = styled.div`
+  display: ${props => (props.isSignUpModalOpened ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 30px 50px 0;
+  width: 500px;
+  background-color: white;
+  border-radius: 20px;
+  transform: ${props =>
+    props.isPageScrolledDown
+      ? 'translate(30%, 450px)'
+      : 'translate(-50%, -50%)'};
+  z-index: 1000;
 `;
 
-const LoginForm = styled.form`
-  border-radius: 20px;
-  background-color: white;
+const Form = styled.form`
   display: flex;
   flex-direction: column;
-  align-itmes: center;
-  width: 400px;
-  padding: 20px 10px 24px;
 `;
 
 const IdContainer = styled.div`
@@ -219,20 +233,16 @@ const SocialLoginWrapper = styled.div`
   }
 `;
 
-const HeadingWrapper = styled.div`
-  margin-top: -20px;
+const JJimterestLogo = styled.img`
+  width: 50px;
+  height: 50px;
+  margin-top: 5px;
 `;
 
-const Heading1 = styled.h2`
-  font-size: 30px;
-  white-space: nowrap;
-`;
-
-const Heading2 = styled.h2`
-  font-size: 30px;
-  white-space: nowrap;
-  display: flex;
-  justify-content: center;
+const Welcome = styled.span`
+  margin: 20px 0;
+  font-size: 40px;
+  text-align: center;
 `;
 
 const DefaultLogin = styled.div``;
