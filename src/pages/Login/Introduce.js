@@ -7,7 +7,7 @@ const LoginIntroduce = () => {
 
   useEffect(() => {
     const changeOrderNumber = () => {
-      if (order === Text.length - 1) {
+      if (order === TEXTS.length - 1) {
         clearTimeout(changeOrderNumber);
         setOrder(0);
         return;

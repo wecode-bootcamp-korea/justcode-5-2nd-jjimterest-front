@@ -15,7 +15,6 @@ function Router() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        {/* <Route path="/" element={<Homepage />} /> */}
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Loginpage />} />
         <Route path="/finpage" element={<Finpage />} />
