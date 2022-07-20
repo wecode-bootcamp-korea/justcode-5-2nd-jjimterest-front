@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import css from './Mypage.module.scss';
+import css from './Userpage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
+import { useParams } from 'react-router-dom';
 import { BASE_URL } from '../../config';
-
-function Mypage() {
+function Userpage() {
   const [state, setState] = useState(true);
   const [followModal, setFollowModal] = useState(false);
-  const [followerModal, setFollowerModal] = useState(false);
-  //데이터 패치
-
-  const [myDate, setMyData] = useState();
+  const params = useParams();
+  const { nickname } = params;
+  const [userDate, setUserData] = useState();
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
   useEffect(() => {
-    fetch(`http://${BASE_URL}:10010/profile/James`, {
+    fetch(`http://localhost:10010/profile/${nickname}`, {
       method: 'GET',
       headers: {
         // Authorization: localStorage.getItem('access_token'),
@@ -26,23 +24,15 @@ function Mypage() {
     })
       .then(res => res.json())
       .then(res => {
-        setMyData(res);
-        console.log(myDate);
+        setUserData(res);
       });
-  }, []);
-  console.log(myDate);
+  }, [nickname]);
 
   const openFollowModal = () => {
     setFollowModal(true);
   };
   const closeFollowModal = () => {
     setFollowModal(false);
-  };
-  const openFollowerModal = () => {
-    setFollowerModal(true);
-  };
-  const closeFollowerModal = () => {
-    setFollowerModal(false);
   };
 
   const goToCreated = () => {
@@ -77,12 +67,21 @@ function Mypage() {
       background-color: #efefef;
     }`}
   `;
+  const FollowBtn = styled.button`
+    padding: 12px 16px;
+    background-color: rgb(230, 9, 26);
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    &:hover {
+      opacity: 0.8;
+    }
+  `;
 
   return (
     <div className={css.container}>
-      <Modal visible={followerModal} onClose={closeFollowerModal}>
-        <div className={css.modalHeader}>팔로워</div>
-      </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
         <div className={css.modalHeader}>팔로잉</div>
       </Modal>
@@ -90,28 +89,19 @@ function Mypage() {
         <div className={css.profileContents}>
           <div className={css.imgWrapper}>
             <img
-              src={`${myDate && myDate.profile_image}`}
+              src={`${process.env.PUBLIC_URL}/images/KakaoTalk_Photo_2022-07-12-14-22-49.jpeg`}
               className={css.mePhoto}
-              alt="이미지 없음"
             ></img>
           </div>
           <div className={css.nameWrapper}>
-            <div className={css.userName}>{myDate && myDate.name}</div>
-            <div className={css.userId}>{myDate && myDate.nickname}</div>
+            <div className={css.userName}>정상현</div>
+            <div className={css.userId}>@jkn17083</div>
           </div>
-          <div className={css.followBox}>
-            <div className={css.follow} onClick={openFollowerModal}>
-              팔로워 {myDate && myDate.follower.length}명
-            </div>
-            <div className={css.follow} onClick={openFollowModal}>
-              팔로잉 {myDate && myDate.following.length}명
-            </div>
+          <div className={css.follow} onClick={openFollowModal}>
+            팔로잉 1명
           </div>
           <div className={css.profileBtn}>
-            {/* 로그인한 아이디와 들어간 프로필 아이디 비교 로직 추가 */}
-            <Link to={`/settings`}>
-              <button>프로필 수정</button>
-            </Link>
+            <FollowBtn>팔로우</FollowBtn>
           </div>
         </div>
       </div>
@@ -127,13 +117,9 @@ function Mypage() {
           </div>
         </div>
       </div>
-      {state ? (
-        <Stored idea={true} navOnOff={true} myDate={myDate && myDate.boards} />
-      ) : (
-        <Created myDate={myDate && myDate.my_pins} showBoard={false} />
-      )}
+      {state ? <Stored /> : <Created />}
     </div>
   );
 }
 
-export default Mypage;
+export default Userpage;
