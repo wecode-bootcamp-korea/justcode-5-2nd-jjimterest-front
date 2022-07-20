@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import css from './Dropdown.module.scss';
 
-function Dropdown({ children, fonticon, location }) {
+function Dropdown({ children, fonticon, location, botton }) {
   let iconlist = [faPlus, faEquals, faEllipsis];
   const creRef = useRef();
   const [createDisplay, setCreateDisplay] = useState(false);
@@ -30,7 +30,7 @@ function Dropdown({ children, fonticon, location }) {
   const Create = styled.div`
     display: ${createDisplay ? 'block' : 'none'};
     position: absolute;
-    top: 60px;
+    top: ${botton ? '-120px' : '60px'};
     right: ${location}px;
     background-color: white;
     min-width: 160px;

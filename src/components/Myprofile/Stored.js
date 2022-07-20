@@ -4,8 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEquals } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import Modal from './Modal';
+import { Link } from 'react-router-dom';
+import Boardcard from './Boardcard';
 
-function Stored() {
+function Stored({ idea, navOnOff, myDate }) {
+  const [bdList, setBoardList] = useState(myDate);
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+
   const arrRef = useRef();
   const creRef = useRef();
   const [arrangeDisplay, setArrangeDisplay] = useState(false);
@@ -13,11 +19,38 @@ function Stored() {
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
 
-  const moveCreate = () => {
-    window.location.href = `/mypage/:boardname`;
+  const createBoard = () => {
+    fetch(`http://localhost:10010/board`, {
+      headers: {
+        // Authorization: localStorage.getItem('access_token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        title: bdName,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log('보드만들기 완료' + res);
+      });
   };
+  //가나다 순 정렬
+  const abcSortHandle = () => {
+    let stringArray = [...bdList];
+    stringArray = stringArray.sort((x, y) => x.title.localeCompare(y.title));
+    setBoardList(stringArray);
+  };
+  // 마지막 저장일 기준 정렬
 
-  //modal 동작 함수
+  const lastDaySortHandle = () => {
+    let intArray = [...bdList];
+    intArray = intArray.sort((a, b) => b.id - a.id);
+    setBoardList(intArray);
+  };
+  useEffect(() => {}, [bdList]);
+
+  // modal 동작 함수
 
   const openCreateModal = () => {
     setCreateModal(true);
@@ -25,6 +58,9 @@ function Stored() {
   const closeCreateModal = () => {
     setCreateModal(false);
   };
+
+  //드랍다운 창
+
   const onClickArrange = () => {
     return arrangeDisplay ? setArrangeDisplay(false) : setArrangeDisplay(true);
   };
@@ -114,105 +150,109 @@ function Stored() {
             value={bdName}
           />
           <div className={css.buttonWrap}>
-            <Button disabled={bdName ? false : true} onClick={moveCreate}>
-              만들기
-            </Button>
+            <Link to={`/mynickname/${bdName}`}>
+              <Button disabled={bdName ? false : true} onClick={createBoard}>
+                만들기
+              </Button>
+            </Link>
           </div>
         </div>
       </Modal>
-      <div className={css.boardUi}>
-        <div
-          className={`${css.iconWrapper} ${css.arrangeBtn}`}
-          onClick={onClickArrange}
-        >
-          <FontAwesomeIcon icon={faEquals} className={css.icon} />
-          <Arrange ref={arrRef}>
-            <p>정렬기준</p>
-            <li>알파벳 순</li>
-            <li>마지막 저장일</li>
-          </Arrange>
+      {navOnOff && (
+        <div className={css.boardUi}>
+          <div
+            className={`${css.iconWrapper} ${css.arrangeBtn}`}
+            onClick={onClickArrange}
+          >
+            <FontAwesomeIcon icon={faEquals} className={css.icon} />
+            <Arrange ref={arrRef}>
+              <p>정렬기준</p>
+              <li onClick={abcSortHandle}>알파벳 순</li>
+              <li onClick={lastDaySortHandle}>마지막 저장일</li>
+            </Arrange>
+          </div>
+          <div
+            className={`${css.iconWrapper} ${css.createBtn}`}
+            onClick={onClickCreate}
+          >
+            <FontAwesomeIcon icon={faPlus} className={css.icon} />
+            <Create ref={creRef}>
+              <p>만들기</p>
+              <Link to={`/finpage`} className={css.linkLay}>
+                <li>핀</li>
+              </Link>
+              <li onClick={openCreateModal}>보드</li>
+            </Create>
+          </div>
         </div>
-        <div
-          className={`${css.iconWrapper} ${css.createBtn}`}
-          onClick={onClickCreate}
-        >
-          <FontAwesomeIcon icon={faPlus} className={css.icon} />
-          <Create ref={creRef}>
-            <p>만들기</p>
-            <li>핀</li>
-            <li onClick={openCreateModal}>보드</li>
-          </Create>
-        </div>
-      </div>
+      )}
       <div className={css.boardContainer}>
-        <div className={css.allPinContainer}>
-          <div className={css.allPinImg}>
-            <div className={css.firstImg}>
-              <img
-                alt="핀이미지"
-                src="https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-              />
+        <Boardcard boardName={'모든 핀'} pinCnt={0} />
+        {bdList &&
+          bdList.map((data, index) => (
+            <Boardcard
+              boardName={data.title}
+              pinCnt={data.pins.length}
+              key={index}
+            />
+          ))}
+      </div>
+      {idea && (
+        <>
+          <div className={css.arrangeNav}>
+            <div className={css.one}>정리되지 않은 아이디어</div>
+            <div className={css.twoBtn}>
+              <div className={css.two}>정리하기</div>
             </div>
           </div>
-          <div className={css.allPinContents}>
-            <div className={css.boardName}>모든 핀</div>
-            <div className={css.pinCnt}>핀 3개</div>
+          <div className={css.pinContainer}>
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1600277259675-0edbcb3182d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1532796107-d570a19405ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://i.pinimg.com/474x/5d/80/dc/5d80dc96b01e9caddd299338a4fa2d75.jpg"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1533749968753-1a9994823766?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1559494007-9f5847c49d94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1420593248178-d88870618ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+            />
+
+            <img
+              alt="핀이미지"
+              src="https://images.unsplash.com/photo-1625887803552-9a80d55f37fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+            />
           </div>
-        </div>
-        {/* 보드뿌려주기 */}
-      </div>
-      <div className={css.arrangeNav}>
-        <div className={css.one}>정리되지 않은 아이디어</div>
-        <div className={css.twoBtn}>
-          <div className={css.two}>정리하기</div>
-        </div>
-      </div>
-      <div className={css.pinContainer}>
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1600277259675-0edbcb3182d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1532796107-d570a19405ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://i.pinimg.com/474x/5d/80/dc/5d80dc96b01e9caddd299338a4fa2d75.jpg"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1533749968753-1a9994823766?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1559494007-9f5847c49d94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1420593248178-d88870618ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-        />
-
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1625887803552-9a80d55f37fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-        />
-      </div>
+        </>
+      )}
     </div>
   );
 }

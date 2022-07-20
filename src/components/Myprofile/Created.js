@@ -1,15 +1,21 @@
 import React from 'react';
 import css from './Created.module.scss';
-function Created() {
+function Created({ showBoard, myDate }) {
   return (
     <div className={css.boardContainer}>
       {/* 맵뿌리기 */}
-      <div className={css.imgcontainer}>
-        <img
-          alt="핀이미지"
-          src="https://images.unsplash.com/photo-1625887803552-9a80d55f37fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-        />
-      </div>
+      {showBoard
+        ? myDate.map((data, index) => {
+            <div className={css.imgcontainer}>
+              <img alt="핀이미지" src={`${data.image}`} />
+              <div>만든이사진 만든이이름</div>
+            </div>;
+          })
+        : myDate.map((data, index) => {
+            <div className={css.imgcontainer}>
+              <img alt="핀이미지" src="https://i.imgur.com/GushnG1.jpg" />
+            </div>;
+          })}
     </div>
   );
 }
