@@ -2,47 +2,60 @@
   display: flex;
   justify-content: center;
   padding-top: 75px;
+
   .back {
     width: 40px;
     height: 40px;
     border: none;
     border-radius: 50%;
-    position: relative;
-    top: 20px;
     cursor: pointer;
   }
   .container {
     width: 80%;
     height: 762px;
     border-radius: 5%;
-    border: 1px solid black;
     display: flex;
+    box-shadow: 1px 1px 10px grey;
 
-    .feedImg {
+    .imgWraper {
       width: 50%;
-      height: 100%;
-      border: 1px solid black;
-      border-radius: 5%;
+
+      .feedImg {
+        width: 100%;
+        height: 100%;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+      }
     }
     .messenger {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 50%;
       height: 100%;
-      border: 1px solid black;
-      border-radius: 5%;
       .toolbar {
+        margin-top: 30px;
         display: flex;
         justify-content: flex-end;
         width: 90%;
         height: 7%;
-        border: 1px solid black;
+
         .boardBtn {
-          width: 20%;
+          width: 191px;
+          height: 40px;
+          position: relative;
+          border: none;
+          border-radius: 10px;
+          font-size: 15px;
         }
         .storeBtn {
-          width: 20%;
+          background-color: red;
+          color: white;
+          width: 60px;
+          height: 40px;
+          border: none;
+          border-radius: 10px;
         }
       }
       .userName {
@@ -51,33 +64,38 @@
         border: 1px solid black;
       }
       .pinTitle {
+        margin-top: 20px;
         width: 90%;
         height: 5%;
-        border: 1px solid black;
       }
       .pinAlt {
+        margin-top: 5px;
         width: 90%;
         height: 2.5%;
-        border: 1px solid black;
       }
       .wrapUserContents {
+        margin-top: 10px;
         display: flex;
         justify-content: flex-end;
         justify-content: space-between;
         width: 90%;
-        height: 5%;
-        border: 1px solid black;
+        height: 8%;
 
         .userContents {
           display: flex;
+          align-items: center;
           width: 90%;
           height: 100%;
           .userImg {
-            width: 10%;
+            width: 25%;
             height: 100%;
-            border: 1px solid black;
             border-radius: 100%;
           }
+        }
+        .followBtn {
+          width: 60px;
+          border: none;
+          border-radius: 10px;
         }
       }
       .wrapComment {
@@ -87,6 +105,28 @@
         .comment {
         }
         .plusBtn {
+        }
+      }
+      .commentInputContainer {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        bottom: 10%;
+        left: 5%;
+        display: flex;
+        width: 100%;
+        height: 10%;
+        .myImg {
+          width: 15%;
+          height: 80%;
+          border-radius: 100%;
+          margin-right: 5px;
+        }
+        .commentInput {
+          border: 1px solid grey;
+          border-radius: 50px;
+          width: 75%;
+          height: 80%;
         }
       }
     }
