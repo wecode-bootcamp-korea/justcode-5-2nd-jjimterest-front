@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AiOutlineClose } from 'react-icons/ai';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+// import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
+// import queryString from 'query-string';
 
 const LoginContainer = ({
   isLoginModalOpened,
@@ -12,6 +13,7 @@ const LoginContainer = ({
   changeBodyScroll,
 }) => {
   const navigate = useNavigate();
+  // const isLoggedIn = localStorage.getItem('token') !== null;
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
 
@@ -44,20 +46,25 @@ const LoginContainer = ({
         if (result.token) {
           localStorage.setItem('login-token', result.token);
           alert('로그인이 완료되었습니다');
-          navigate('/Homepage');
+          navigate('/');
         } else {
           alert('아이디혹은 비밀번호가 잘못되었습니다');
         }
       });
   };
 
+  // useEffect(() => {
+  //   if (isLoggedIn) navigate('/');
+  // }, [isLoggedIn, navigate]);
+
   return (
     <Modal
       isLoginModalOpened={isLoginModalOpened}
       isPageScrolledDown={isPageScrolledDown}
     >
-      <AiOutlineClose
-        size="20"
+      <CloseButton
+        src="/images/closebutton.png"
+        alt="closebutton"
         isPageScrolledDown={isPageScrolledDown}
         onClick={() => {
           controlLoginModal();
@@ -119,6 +126,19 @@ const Modal = styled.div`
       ? 'translate(30%, 450px)'
       : 'translate(-50%, -50%)'};
   z-index: 1000;
+`;
+
+const CloseButton = styled.img`
+  display: ${props => (props.isPageScrolledDown ? 'none' : 'inline')};
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(204, 204, 204);
+  }
 `;
 
 const JJimterestLogo = styled.img`

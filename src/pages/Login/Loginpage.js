@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 import Introduce from './Introduce';
 import ImagesContainer from './ImgaesContainer';
+import queryString from 'query-string';
 
 const LoginPage = () => {
   const [isLoginModalOpened, setIsLoginModalOpened] = useState(false);
@@ -14,6 +16,31 @@ const LoginPage = () => {
   const [imageMockData, setImageMockData] = useState([]);
   const pageHeaderRef = useRef();
   const pageFooterRef = useRef();
+  const navigate = useNavigate();
+
+  const userInfo = queryString.parse(useLocation().search);
+
+  const { email, nickname, profileImage, token, userId } = userInfo;
+  const isSocialLoggedIn = useLocation().search.includes('token');
+
+  useEffect(() => {
+    if (isSocialLoggedIn) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('nickname', nickname);
+      localStorage.setItem('profileImage', profileImage);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+      navigate('/');
+    }
+  }, [
+    email,
+    nickname,
+    profileImage,
+    token,
+    userId,
+    isSocialLoggedIn,
+    navigate,
+  ]);
 
   useEffect(() => {
     fetch('/data/LoginImages.json')
