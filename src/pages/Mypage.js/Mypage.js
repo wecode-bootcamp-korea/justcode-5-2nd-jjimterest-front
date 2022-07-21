@@ -7,22 +7,22 @@ import { Link, useLocation } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
 import BASE_URL from '../../config';
 import FollowContainer from '../../components/FollowContainer/FollowContainer';
+import Nav from '../../components/Nav/Nav';
 
-function Mypage({ myName }) {
+function Mypage() {
   const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
   //데이터 패치
   const [myDate, setMyData] = useState();
   const location = useLocation();
-  const { search, profileName } = location;
-  console.log(profileName);
+  const data = location.state.pName;
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
-        await fetch(`${BASE_URL}profile/상현`, {
+        await fetch(`${BASE_URL}profile/${data[0].name}`, {
           method: 'GET',
           headers: {
             // Authorization: `Bearer ${localStorage.getItem('login-token')}`,
@@ -36,7 +36,6 @@ function Mypage({ myName }) {
     };
     fetchData();
   }, []);
-  console.log(myName);
 
   const openFollowModal = () => {
     setFollowModal(true);
@@ -86,6 +85,7 @@ function Mypage({ myName }) {
 
   return (
     <div className={css.container}>
+      <Nav />
       <Modal visible={followerModal} onClose={closeFollowerModal}>
         <div className={css.modalHeader}>팔로워</div>
         {myDate &&

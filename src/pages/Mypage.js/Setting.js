@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Modal from '../../components/Myprofile/Modal';
 import Profilefooter from '../../components/Profilefooter/Profilefooter';
 import BASE_URL from '../../config';
+import Nav from '../../components/Nav/Nav';
 
 function Setting() {
   const [switchBtn, setSwitchBtn] = useState(false);
@@ -132,6 +133,7 @@ function Setting() {
   `;
   return (
     <div className={css.container}>
+      <Nav />
       <input
         className={css.imgInput}
         name="imggeUpload"

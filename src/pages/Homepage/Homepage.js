@@ -24,12 +24,12 @@ function Homepage() {
     const callback = (entries, observer) => {
       entries.forEach(ob => {
         if (ob.isIntersecting) {
-          fetch(`${BASE_URL}/pins?pagenumber=${pageNumber}`, {
+          fetch(`${BASE_URL}pins?pagenumber=${pageNumber}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
               Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M',
             },
           })
             .then(res => res.json())
