@@ -4,10 +4,9 @@ import Commentmodal from '../Commentmodal/Commentmodal';
 import BASE_URL from '../../config';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
-  const [pinData, setPinData] = useState({});
-  console.log(pinId);
+  const [pinData, setPinData] = useState();
   useEffect(() => {
-    fetch(`${BASE_URL}/pins/${pinId}`, {
+    fetch(`${BASE_URL}/pins/${pinId[0]}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -17,9 +16,10 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data, '댓글데이터');
         setPinData(data);
       });
-  }, []);
+  }, [pinId]);
 
   const [on, setOn] = useState(false);
   const onToggle = () => {
@@ -28,6 +28,13 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const closePin = () => {
     setFeedOn(false);
     element.scrollIntoView(false);
+  };
+  const UI = () => {
+    if (pinData && pinData[0].comments) {
+      return pinData[0].comments.filter(data => data.parent_id === null).length;
+    } else {
+      return 0;
+    }
   };
 
   return (
@@ -38,7 +45,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       <div className={css.container}>
         <img
           className={css.feedImg}
-          src="https://i.pinimg.com/474x/92/80/1e/92801e77f628a8536276d943967d7fd5.jpg"
+          src={BASE_URL + '/' + pinId[1]}
           alt="핀이미지"
         />
         <div className={css.messenger}>
@@ -46,8 +53,10 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
             <button className={css.boardBtn}>보드</button>
             <button className={css.storeBtn}>저장</button>
           </div>
-          <div className={css.userName}>업로드한 사람 : username</div>
-          <div className={css.pinTitle}>타이틀</div>
+          {/* <div className={css.userName}>업로드한 사람 : username</div> */}
+          <div className={css.pinTitle}>
+            {pinData !== undefined && pinData[0].title}
+          </div>
           <div className={css.pinAlt}>Alt</div>
           <div className={css.wrapUserContents}>
             <div className={css.userContents}>
@@ -57,19 +66,23 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 alt="유저사진"
               />
               <div className={css.userText}>
-                <p className={css.userId}>userId</p>
-                <p className={css.follow}>followcount</p>
+                <p className={css.userId}>
+                  {pinData !== undefined && pinData[0].nickname}
+                </p>
+                <p className={css.follow}>
+                  {pinData !== undefined && pinData[0].count}
+                </p>
               </div>
             </div>
             <button className={css.followBtn}>팔로우</button>
           </div>
           <div className={css.wrapComment}>
-            <div className={css.comment}>댓글 ?개</div>
+            <div className={css.comment}>{`댓글 ${UI()} 개`}</div>
             <button className={css.plusBtn} onClick={onToggle}>
               더보기
             </button>
           </div>
-          {on ? <Commentmodal /> : null}
+          {on ? <Commentmodal pinData={pinData[0].comments} /> : null}
         </div>
       </div>
     </div>

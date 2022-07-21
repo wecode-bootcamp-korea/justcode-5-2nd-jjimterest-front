@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import NestedComments from '../NestedComments/NestedComments';
 import css from './Comment';
 
-function Comment() {
+function Comment({ data }) {
   const [on, setOn] = useState(false);
-
+  console.log('댓글', data);
   const NestedCommentsOn = () => {
     setOn(true);
   };
   return (
     <div>
-      <div>유저 이미지</div>
+      <img src={data.profile_image} alt="이미지" />
       <div>
         <div>
-          <div>아이디</div>
-          <div>유저댓글</div>
+          <div>{data.user_id}</div>
+          <div>{data.content}</div>
         </div>
         <div>
-          <div>시간</div>
+          <div>{data.created_at}</div>
           <button onClick={NestedCommentsOn}>대댓글버튼</button>
           {on ? <NestedComments /> : null}
-          <div>조아요</div>
+          <div>{data.like_count}</div>
           <div>삭제</div>
         </div>
       </div>

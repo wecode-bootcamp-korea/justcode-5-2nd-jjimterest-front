@@ -1,7 +1,37 @@
 .boardListModal {
   position: absolute;
-  left: -10px;
-  bottom: -20px;
-  border: 1px solid black;
-  width: 200%;
+  left: 0;
+  top: 88%;
+  background-color: buttonface;
+  width: 100%;
+  z-index: 1;
+  border-radius: 0px 0px 15px 15px;
+  padding: 10px;
+  .wrapBoardInfo {
+    display: flex;
+    width: 100%;
+    margin-bottom: 5px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    .boardListImg {
+      width: 35px;
+      height: 35px;
+      border-radius: 15px;
+      margin-right: 10px;
+      pointer-events: none;
+    }
+    .wrapTitle {
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+
+      .boradTitle {
+        font-size: 15px;
+        pointer-events: none;
+      }
+    }
+  }
 }
