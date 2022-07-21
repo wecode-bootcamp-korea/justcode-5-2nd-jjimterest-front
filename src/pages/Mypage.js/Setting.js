@@ -13,6 +13,8 @@ function Setting() {
   const [userName, setUserName] = useState();
   const [desc, setDesc] = useState();
   const [nickName, setNickName] = useState();
+  const [imgUpload] = useState(new FormData());
+  const reader = new FileReader();
 
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
@@ -35,19 +37,29 @@ function Setting() {
     fetchData();
   }, []);
 
-  const editProfileBtn = () => {
+  const view = imgInput => {
+    if (imgInput.current.files[0]) {
+      reader.readAsDataURL(imgInput.current.files[0]);
+
+      reader.onload = e => {
+        imgInput.current.src = e.target.result;
+      };
+      imgUpload.append('image', URL.createObjectURL(imgInput.current.files[0]));
+    }
+  };
+
+  const profileEdit = () => {
+    imgUpload.append('name', userName);
+    imgUpload.append('nickname', nickName);
+    imgUpload.append('intro', desc);
+
     fetch(`${BASE_URL}edit-profile`, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
         // Authorization: localStorage.getItem('login-token'),
         Authorization: `Bearer ${token}`,
       },
       method: 'PUT',
-      body: new URLSearchParams({
-        name: userName,
-        intro: desc,
-        nickname: nickName,
-      }),
+      body: imgUpload,
     }).then(res => {
       if (res.ok) {
         alert('수정완료!');
@@ -59,6 +71,7 @@ function Setting() {
 
   const saveFileImage = event => {
     setFileImage(URL.createObjectURL(event.target.files[0]));
+    view(imgInput);
   };
   const onImgInputBtnClick = event => {
     event.preventDefault();
@@ -189,7 +202,7 @@ function Setting() {
           </div>
         </div>
       </div>
-      <Profilefooter btn={editProfileBtn}></Profilefooter>
+      <Profilefooter btn={profileEdit}></Profilefooter>
     </div>
   );
 }

@@ -15,17 +15,18 @@ function Mypage({ myName }) {
   //데이터 패치
   const [myDate, setMyData] = useState();
   const location = useLocation();
-  const { search } = location;
-  // const token =
-  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+  const { search, profileName } = location;
+  console.log(profileName);
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
         await fetch(`${BASE_URL}profile/상현`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-            // Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${localStorage.getItem('login-token')}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
@@ -111,7 +112,12 @@ function Mypage({ myName }) {
         <div className={css.profileContents}>
           <div className={css.imgWrapper}>
             <img
-              src={`${myDate && myDate.profile_image}`}
+              src={`${
+                myDate &&
+                (myDate.profile_image[0] === 'h'
+                  ? myDate.profile_image
+                  : `${BASE_URL}` + myDate.profile_image)
+              }`}
               className={css.mePhoto}
               alt="이미지 없음"
             ></img>

@@ -116,7 +116,12 @@ function Userpage() {
         <div className={css.profileContents}>
           <div className={css.imgWrapper}>
             <img
-              src={`${userDate && userDate.profile_image}`}
+              src={`${
+                userDate &&
+                (userDate.profile_image[0] === 'h'
+                  ? userDate.profile_image
+                  : `${BASE_URL}` + userDate.profile_image)
+              }`}
               className={css.mePhoto}
             ></img>
           </div>

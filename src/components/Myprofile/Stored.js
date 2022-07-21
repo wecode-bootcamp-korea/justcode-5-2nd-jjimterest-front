@@ -7,6 +7,7 @@ import Modal from './Modal';
 import { Link } from 'react-router-dom';
 import Boardcard from './Boardcard';
 import BASE_URL from '../../config';
+import Allboardcard from './Allboardcard';
 
 function Stored({
   idea,
@@ -19,7 +20,7 @@ function Stored({
 }) {
   const [bdList, setBoardList] = useState(myDate);
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
   const arrRef = useRef();
   const creRef = useRef();
@@ -162,7 +163,17 @@ function Stored({
             value={bdName}
           />
           <div className={css.buttonWrap}>
-            <Link to={`/mypage/${bdName}`}>
+            <Link
+              to={`/mypage/${bdName}`}
+              state={{
+                boardData: [
+                  {
+                    id: bdList[bdList.length - 1].id + 100,
+                    pins: [{ image: '' }],
+                  },
+                ],
+              }}
+            >
               <Button onClick={createBoard} disabled={bdName ? false : true}>
                 만들기
               </Button>
@@ -199,12 +210,13 @@ function Stored({
         </div>
       )}
       <div className={css.boardContainer}>
-        <Boardcard
-          boardData={bdList && bdList}
+        <Allboardcard
+          nickname={nickname}
           firstImg={allPins[0].image}
           boardName={'모든 핀'}
           pinCnt={allPins && allPins.length}
           linkNav={linkNav}
+          allPin={allPins && allPins}
         />
         {bdList &&
           bdList.map((data, index) => (

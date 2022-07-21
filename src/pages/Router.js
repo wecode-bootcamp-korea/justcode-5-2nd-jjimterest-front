@@ -10,8 +10,7 @@ import ScrollToTop from '../components/Scroll/Scroll';
 import SettingM from './Mypage.js/SettingM';
 import Boardarrange from './Boardpage/Boardarrange';
 import Userboard from './Boardpage/Userboard';
-import { useState, useEffect } from 'react';
-import BASE_URL from '../config';
+import Allboardpage from './Boardpage/Allboardpage';
 
 function Router() {
   return (
@@ -28,6 +27,7 @@ function Router() {
         <Route path="/settings/account-settings" element={<SettingM />} />
         <Route path="/mypage/:boardname/_tools" element={<Boardarrange />} />
         <Route path="/:nickname/:boardname/" element={<Userboard />} />
+        <Route path="/:nickname/모든핀" element={<Allboardpage />} />
       </Routes>
     </BrowserRouter>
   );

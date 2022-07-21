@@ -6,6 +6,7 @@ import BASE_URL from '../../config';
 
 function Nav() {
   const [profileImg, setProfileImg] = useState();
+  const [profileName, setProfileName] = useState();
   const search = useRef();
   // useEffect(() => {
   //   fetch(`${BASE_URL}/profile/${user}`, {
@@ -37,6 +38,7 @@ function Nav() {
       .then(data => {
         console.log('네브 패치 데이터 ', data);
         setProfileImg(data[0].profile_image);
+        setProfileName(data[0].name);
         localStorage.setItem('myimg', data[0].profile_image);
       });
   }, []);
@@ -80,9 +82,8 @@ function Nav() {
   const gotopainpage = () => {
     navigate('/finpage');
   };
-
   const gotoprofile = () => {
-    navigate('/mypage');
+    profileName && navigate('/mypage', { profileName: `${profileName}` });
   };
 
   return (

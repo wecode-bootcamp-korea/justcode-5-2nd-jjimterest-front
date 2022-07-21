@@ -19,9 +19,9 @@ function Boardpage() {
   const [bdName, setBdName] = useState('');
   const [desc, setDesc] = useState('');
   const [showBoard, setShowBoard] = useState(false);
+
   const location = useLocation();
   const data = location.state.boardData;
-  console.log(data.id);
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
@@ -155,7 +155,9 @@ function Boardpage() {
         </div>
       </div>
       <div className={css.uiNav}>
-        <div className={css.pinCnt}>핀 {data && data.pins.length}개</div>
+        <div className={css.pinCnt}>
+          핀 {data.length === 1 ? 0 : data.pins.length}개
+        </div>
         <Dropdown fonticon={1} location={10}>
           <p>옵션 보기</p>
           <li onClick={showSimple}>기본</li>
