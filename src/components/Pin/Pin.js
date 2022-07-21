@@ -10,9 +10,11 @@ function Pin({ feedOntoggle, data, pinId }) {
   const modalOn = () => {
     setOn(prev => !prev);
   };
+
   const modalOut = () => {
     setOn(prev => !prev);
   };
+
   const btnClick = () => {
     setOnStore(false);
     fetch(`${BASE_URL}/pins/${data.pin_id}`, {

@@ -18,6 +18,7 @@ function Homepage() {
     window.scrollTo(0, 0);
     setElement(e.target);
   };
+  console.log(pinData);
 
   useEffect(() => {
     const callback = (entries, observer) => {
@@ -33,11 +34,11 @@ function Homepage() {
           })
             .then(res => res.json())
             .then(data => {
+              setPageNumber(prev => prev + 1);
               setPinData(prev => {
                 return prev.concat(data);
               });
             });
-          setPageNumber(prev => prev + 1);
         }
       });
     };
@@ -58,10 +59,10 @@ function Homepage() {
         <Finfeedmodal setFeedOn={setFeedOn} pinId={pinId} element={element} />
       ) : null}
       <div className={css.container}>
-        {pinData.map((data, idx) => {
+        {pinData.map(data => {
           return (
             <Pin
-              key={idx}
+              key={data.pin_id}
               feedOntoggle={feedOntoggle}
               pinId={setPinId}
               data={data}

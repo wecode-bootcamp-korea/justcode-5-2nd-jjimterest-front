@@ -65,14 +65,6 @@ function Createpinfeed({ index, deletepin }) {
     imgUpload.append('boardId', pinInfo.board_id);
     imgUpload.append('category', pinInfo.category);
 
-    // const userId = req.userId;
-    // const title = req.body.title;
-    // const intro = req.body.intro;
-    // const alt = req.body.alt;
-    // const category = req.body.category;
-    // const image = req.file.filename;
-    // const boardId = req.body.boardId;
-
     fetch(`${BASE_URL}/pin-make`, {
       method: 'POST',
       headers: {
@@ -83,14 +75,19 @@ function Createpinfeed({ index, deletepin }) {
     })
       .then(res => res.json())
       .then(data => {
-        // setPinInfo({
-        //   title: null,
-        //   intro: null,
-        //   alt: null,
-        //   category: null,
-        //   board_id: 2,
-        // });
-        alert(data);
+        imgUpload.delete('title');
+        imgUpload.delete('alt');
+        imgUpload.delete('intro');
+        imgUpload.delete('boardId');
+        imgUpload.delete('category');
+        alert(data.message);
+        setPinInfo({
+          title: '',
+          intro: '',
+          alt: '',
+          category: '',
+          board_id: 2,
+        });
       });
   };
   return (
@@ -155,6 +152,7 @@ function Createpinfeed({ index, deletepin }) {
             className={css.title}
             placeholder="제목 추가"
             onChange={handleInput}
+            value={pinInfo.title}
           />
           <div className={css.userInfo}>
             <img className={css.userImg} alt="이미지" src={myImg} />
@@ -168,6 +166,7 @@ function Createpinfeed({ index, deletepin }) {
             className={css.pinInfo}
             placeholder="사람들에게 회원님의 핀에 대해 설명해 보세요"
             onChange={handleInput}
+            value={pinInfo.intro}
           />
           {altBtnOn ? (
             <button
@@ -186,6 +185,7 @@ function Createpinfeed({ index, deletepin }) {
               className={css.pinAltInput}
               placeholder="핀에 무엇이 표시되는지 설명합니다."
               onChange={handleInput}
+              value={pinInfo.alt}
             />
           ) : null}
           <input
@@ -194,6 +194,7 @@ function Createpinfeed({ index, deletepin }) {
             placeholder="카테고리를 입력해주세요"
             className={css.category}
             onChange={handleInput}
+            value={pinInfo.category}
           />
         </div>
       </div>
