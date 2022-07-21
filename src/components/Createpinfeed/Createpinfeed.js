@@ -4,6 +4,7 @@ import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
 
 function Createpinfeed({ index, deletepin }) {
+  const btn = useRef();
   const [boadData, setBoardData] = useState();
   const [altBtnOn, setAltBtnOn] = useState(true);
   const [altOn, setAltOn] = useState(false);
@@ -14,6 +15,21 @@ function Createpinfeed({ index, deletepin }) {
   const reader = new FileReader();
   const [onBoradList, setOnBoradList] = useState(false);
   const myImg = localStorage.getItem('myimg');
+  const [boardtitle, setBoardTitle] = useState();
+  const [pinInfo, setPinInfo] = useState({
+    title: null,
+    intro: null,
+    alt: null,
+    category: null,
+    board_id: 2,
+  });
+
+  const handleInput = e => {
+    const { value, name } = e.target;
+    setPinInfo(prev => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   useEffect(() => {
     fetch(`${BASE_URL}/pin-make`, {
@@ -43,6 +59,20 @@ function Createpinfeed({ index, deletepin }) {
     }
   };
   const pinMake = () => {
+    imgUpload.append('title', pinInfo.title);
+    imgUpload.append('alt', pinInfo.alt);
+    imgUpload.append('intro', pinInfo.intro);
+    imgUpload.append('boardId', pinInfo.board_id);
+    imgUpload.append('category', pinInfo.category);
+
+    // const userId = req.userId;
+    // const title = req.body.title;
+    // const intro = req.body.intro;
+    // const alt = req.body.alt;
+    // const category = req.body.category;
+    // const image = req.file.filename;
+    // const boardId = req.body.boardId;
+
     fetch(`${BASE_URL}/pin-make`, {
       method: 'POST',
       headers: {
@@ -53,24 +83,43 @@ function Createpinfeed({ index, deletepin }) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // setPinInfo({
+        //   title: null,
+        //   intro: null,
+        //   alt: null,
+        //   category: null,
+        //   board_id: 2,
+        // });
+        alert(data);
       });
   };
   return (
-    <div className={css.pageOutLine}>
+    <div
+      className={css.pageOutLine}
+      onClick={e => {
+        if (e.target === btn.current) {
+          return;
+        } else {
+          setOnBoradList(false);
+        }
+      }}
+    >
       <button className={css.delete} onClick={() => deletepin(index)}>
         X
       </button>
       <div className={css.nav}>
         <div className={css.wrapBoardBtn}>
           <button
+            ref={btn}
             className={css.selectBtn}
             onClick={() => {
               setOnBoradList(prev => !prev);
             }}
           >
-            {onBoradList ? 'boardname' : '보드를선택하세요'}
-            {onBoradList ? <BoardList /> : null}
+            {boardtitle ? boardtitle : '보드를선택하세요'}
+            {onBoradList ? (
+              <BoardList data={boadData[0].boards} title={setBoardTitle} />
+            ) : null}
           </button>
           <button className={css.storeBtn} onClick={pinMake}>
             저장
@@ -101,7 +150,12 @@ function Createpinfeed({ index, deletepin }) {
           )}
         </div>
         <div className={css.info}>
-          <input className={css.title} placeholder="제목 추가" />
+          <input
+            name="title"
+            className={css.title}
+            placeholder="제목 추가"
+            onChange={handleInput}
+          />
           <div className={css.userInfo}>
             <img className={css.userImg} alt="이미지" src={myImg} />
             <p className={css.userName}>
@@ -109,8 +163,11 @@ function Createpinfeed({ index, deletepin }) {
             </p>
           </div>
           <input
+            name="intro"
+            type="text"
             className={css.pinInfo}
             placeholder="사람들에게 회원님의 핀에 대해 설명해 보세요"
+            onChange={handleInput}
           />
           {altBtnOn ? (
             <button
@@ -125,10 +182,19 @@ function Createpinfeed({ index, deletepin }) {
           ) : null}
           {altOn ? (
             <input
+              name="alt"
               className={css.pinAltInput}
               placeholder="핀에 무엇이 표시되는지 설명합니다."
+              onChange={handleInput}
             />
           ) : null}
+          <input
+            name="category"
+            type="text"
+            placeholder="카테고리를 입력해주세요"
+            className={css.category}
+            onChange={handleInput}
+          />
         </div>
       </div>
     </div>

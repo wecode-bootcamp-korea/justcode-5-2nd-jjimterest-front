@@ -28,18 +28,20 @@ function Homepage() {
             headers: {
               'Content-Type': 'application/json',
               Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
             },
           })
             .then(res => res.json())
             .then(data => {
-              console.log('초기정보입니다.', data);
-              setPinData(data);
+              setPinData(prev => {
+                return prev.concat(data);
+              });
             });
           setPageNumber(prev => prev + 1);
         }
       });
     };
+
     const option = { threshold: 1.0 };
     let observer = new IntersectionObserver(callback, option);
 
@@ -47,7 +49,7 @@ function Homepage() {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [pageNumber]);
 
   return (
     <>
@@ -56,10 +58,10 @@ function Homepage() {
         <Finfeedmodal setFeedOn={setFeedOn} pinId={pinId} element={element} />
       ) : null}
       <div className={css.container}>
-        {pinData.map(data => {
+        {pinData.map((data, idx) => {
           return (
             <Pin
-              key={data.pin_id}
+              key={idx}
               feedOntoggle={feedOntoggle}
               pinId={setPinId}
               data={data}

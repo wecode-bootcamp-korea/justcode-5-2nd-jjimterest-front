@@ -7,6 +7,22 @@ import BASE_URL from '../../config';
 function Nav() {
   const [profileImg, setProfileImg] = useState();
   const search = useRef();
+  // useEffect(() => {
+  //   fetch(`${BASE_URL}/profile/${user}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization:
+  //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log('네브 패치 데이터 ', data);
+  //       setProfileImg(data[0].profile_image);
+  //       localStorage.setItem('myimg', data[0].profile_image);
+  //     });
+  // }, []);
 
   useEffect(() => {
     fetch(`${BASE_URL}/edit-profile`, {
@@ -14,11 +30,12 @@ function Nav() {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
       },
     })
       .then(res => res.json())
       .then(data => {
+        console.log('네브 패치 데이터 ', data);
         setProfileImg(data[0].profile_image);
         localStorage.setItem('myimg', data[0].profile_image);
       });
