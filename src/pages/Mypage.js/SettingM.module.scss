@@ -15,7 +15,13 @@
       }
     }
   }
-
+  .correct {
+    padding-bottom: 150px;
+  }
+  .correctX {
+    padding-bottom: 150px;
+    color: red;
+  }
   .mainContents {
     width: 40%;
     div {
@@ -40,7 +46,6 @@
     }
     .rePasswordInput {
       height: 48px;
-      margin-bottom: 80px;
     }
   }
 }

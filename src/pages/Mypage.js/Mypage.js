@@ -5,32 +5,46 @@ import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
-import { BASE_URL } from '../../config';
+import BASE_URL from '../../config';
+import FollowContainer from '../../components/FollowContainer/FollowContainer';
 
 function Mypage() {
-  const [state, setState] = useState(true);
+  const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
   //데이터 패치
-
   const [myDate, setMyData] = useState();
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+  // useEffect(() => {
+  //   fetch(`http://${BASE_URL}:10010/profile/Mary`, {
+  //     method: 'GET',
+  //     headers: {
+  //       // Authorization: localStorage.getItem('access_token'),
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       setMyData(res);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    fetch(`http://${BASE_URL}:10010/profile/James`, {
-      method: 'GET',
-      headers: {
-        // Authorization: localStorage.getItem('access_token'),
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        setMyData(res);
-        console.log(myDate);
-      });
+    const fetchData = async () => {
+      const result = await (
+        await fetch(`http://${BASE_URL}:10010/profile/정상현`, {
+          method: 'GET',
+          headers: {
+            // Authorization: localStorage.getItem('access_token'),
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      ).json();
+      setMyData(result);
+    };
+    fetchData();
   }, []);
-  console.log(myDate);
 
   const openFollowModal = () => {
     setFollowModal(true);
@@ -82,9 +96,25 @@ function Mypage() {
     <div className={css.container}>
       <Modal visible={followerModal} onClose={closeFollowerModal}>
         <div className={css.modalHeader}>팔로워</div>
+        {myDate &&
+          myDate.follower.map((data, index) => (
+            <FollowContainer
+              boardName={data.profile_image}
+              userName={data.nickname}
+              key={index}
+            />
+          ))}
       </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
         <div className={css.modalHeader}>팔로잉</div>
+        {myDate &&
+          myDate.following.map((data, index) => (
+            <FollowContainer
+              boardName={data.profile_image}
+              userName={data.nickname}
+              key={index}
+            />
+          ))}
       </Modal>
       <div className={css.profileWrapper}>
         <div className={css.profileContents}>
@@ -128,7 +158,13 @@ function Mypage() {
         </div>
       </div>
       {state ? (
-        <Stored idea={true} navOnOff={true} myDate={myDate && myDate.boards} />
+        <Stored
+          idea={true}
+          navOnOff={true}
+          myDate={myDate && myDate.boards}
+          myPins={myDate && myDate.no_idea_pins}
+          allPins={myDate && myDate.all_pins}
+        />
       ) : (
         <Created myDate={myDate && myDate.my_pins} showBoard={false} />
       )}

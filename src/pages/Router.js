@@ -9,6 +9,7 @@ import Userpage from './Mypage.js/Userpage';
 import ScrollToTop from '../components/Scroll/Scroll';
 import SettingM from './Mypage.js/SettingM';
 import Boardarrange from './Boardpage/Boardarrange';
+import Userboard from './Boardpage/Userboard';
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function Router() {
           path="/mynickname/:boardname/_tools"
           element={<Boardarrange />}
         />
+        <Route path="/:nickname/:boardname/" element={<Userboard />} />
       </Routes>
     </BrowserRouter>
   );

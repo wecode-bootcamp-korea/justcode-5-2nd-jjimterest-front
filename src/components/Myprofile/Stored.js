@@ -6,8 +6,17 @@ import styled from 'styled-components';
 import Modal from './Modal';
 import { Link } from 'react-router-dom';
 import Boardcard from './Boardcard';
+import BASE_URL from '../../config';
 
-function Stored({ idea, navOnOff, myDate }) {
+function Stored({
+  idea,
+  navOnOff,
+  myDate,
+  myPins,
+  allPins,
+  linkNav,
+  nickname,
+}) {
   const [bdList, setBoardList] = useState(myDate);
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
@@ -18,10 +27,12 @@ function Stored({ idea, navOnOff, myDate }) {
   const [createDisplay, setCreateDisplay] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
+  const [noIdea, setNoIdea] = useState(true);
 
-  const createBoard = () => {
-    fetch(`http://localhost:10010/board`, {
+  const createBoard = async () => {
+    await fetch(`http://${BASE_URL}:10010/board`, {
       headers: {
+        'Content-Type': 'application/json',
         // Authorization: localStorage.getItem('access_token'),
         Authorization: `Bearer ${token}`,
       },
@@ -29,12 +40,13 @@ function Stored({ idea, navOnOff, myDate }) {
       body: JSON.stringify({
         title: bdName,
       }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        console.log('보드만들기 완료' + res);
-      });
+    }).then(res => {
+      if (res.ok) {
+        alert('보드 생성 완료!');
+      }
+    });
   };
+
   //가나다 순 정렬
   const abcSortHandle = () => {
     let stringArray = [...bdList];
@@ -151,7 +163,7 @@ function Stored({ idea, navOnOff, myDate }) {
           />
           <div className={css.buttonWrap}>
             <Link to={`/mynickname/${bdName}`}>
-              <Button disabled={bdName ? false : true} onClick={createBoard}>
+              <Button onClick={createBoard} disabled={bdName ? false : true}>
                 만들기
               </Button>
             </Link>
@@ -187,17 +199,23 @@ function Stored({ idea, navOnOff, myDate }) {
         </div>
       )}
       <div className={css.boardContainer}>
-        <Boardcard boardName={'모든 핀'} pinCnt={0} />
+        <Boardcard
+          boardName={'모든 핀'}
+          pinCnt={allPins && allPins.length}
+          linkNav={linkNav}
+        />
         {bdList &&
           bdList.map((data, index) => (
             <Boardcard
               boardName={data.title}
               pinCnt={data.pins.length}
+              linkNav={linkNav}
+              nickname={nickname}
               key={index}
             />
           ))}
       </div>
-      {idea && (
+      {idea && noIdea && (
         <>
           <div className={css.arrangeNav}>
             <div className={css.one}>정리되지 않은 아이디어</div>
@@ -206,50 +224,11 @@ function Stored({ idea, navOnOff, myDate }) {
             </div>
           </div>
           <div className={css.pinContainer}>
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1600277259675-0edbcb3182d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1532796107-d570a19405ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://i.pinimg.com/474x/5d/80/dc/5d80dc96b01e9caddd299338a4fa2d75.jpg"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1533749968753-1a9994823766?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1559494007-9f5847c49d94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8b2NlYW4lMjBiZWFjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1420593248178-d88870618ca0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-            />
-
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1625887803552-9a80d55f37fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-            />
+            {myPins.length
+              ? myPins.map(data => {
+                  return <img alt="핀 이미지" src={`${data.image}`} />;
+                })
+              : setNoIdea(false)}
           </div>
         </>
       )}

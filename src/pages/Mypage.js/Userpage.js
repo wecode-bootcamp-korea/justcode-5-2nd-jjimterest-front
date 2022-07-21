@@ -5,17 +5,19 @@ import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
 import Modal from '../../components/Myprofile/Modal';
 import { useParams } from 'react-router-dom';
-import { BASE_URL } from '../../config';
+import BASE_URL from '../../config';
+import FollowContainer from '../../components/FollowContainer/FollowContainer';
 function Userpage() {
-  const [state, setState] = useState(true);
+  const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
+  const [followerModal, setFollowerModal] = useState(false);
   const params = useParams();
   const { nickname } = params;
   const [userDate, setUserData] = useState();
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MzA3Mzg3fQ.qtsLD7uyFmd1qYoe7ly0fC7pKoivuXCBYYkvblGER_Y';
   useEffect(() => {
-    fetch(`http://localhost:10010/profile/${nickname}`, {
+    fetch(`http://${BASE_URL}:10010/profile/${nickname}`, {
       method: 'GET',
       headers: {
         // Authorization: localStorage.getItem('access_token'),
@@ -33,6 +35,12 @@ function Userpage() {
   };
   const closeFollowModal = () => {
     setFollowModal(false);
+  };
+  const openFollowerModal = () => {
+    setFollowerModal(true);
+  };
+  const closeFollowerModal = () => {
+    setFollowerModal(false);
   };
 
   const goToCreated = () => {
@@ -82,23 +90,47 @@ function Userpage() {
 
   return (
     <div className={css.container}>
+      <Modal visible={followerModal} onClose={closeFollowerModal}>
+        <div className={css.modalHeader}>팔로워</div>
+        {userDate &&
+          userDate.follower.map((data, index) => (
+            <FollowContainer
+              boardName={data.profile_image}
+              userName={data.nickname}
+              key={index}
+            />
+          ))}
+      </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
         <div className={css.modalHeader}>팔로잉</div>
+        {userDate &&
+          userDate.following.map((data, index) => (
+            <FollowContainer
+              boardName={data.profile_image}
+              userName={data.nickname}
+              key={index}
+            />
+          ))}
       </Modal>
       <div className={css.profileWrapper}>
         <div className={css.profileContents}>
           <div className={css.imgWrapper}>
             <img
-              src={`${process.env.PUBLIC_URL}/images/KakaoTalk_Photo_2022-07-12-14-22-49.jpeg`}
+              src={`${userDate && userDate.profile_image}`}
               className={css.mePhoto}
             ></img>
           </div>
           <div className={css.nameWrapper}>
-            <div className={css.userName}>정상현</div>
-            <div className={css.userId}>@jkn17083</div>
+            <div className={css.userName}>{userDate && userDate.name}</div>
+            <div className={css.userId}>{userDate && userDate.nickname}</div>
           </div>
-          <div className={css.follow} onClick={openFollowModal}>
-            팔로잉 1명
+          <div className={css.followBox}>
+            <div className={css.follow} onClick={openFollowerModal}>
+              팔로워 {userDate && userDate.follower.length}명
+            </div>
+            <div className={css.follow} onClick={openFollowModal}>
+              팔로잉 {userDate && userDate.following.length}명
+            </div>
           </div>
           <div className={css.profileBtn}>
             <FollowBtn>팔로우</FollowBtn>
@@ -117,7 +149,19 @@ function Userpage() {
           </div>
         </div>
       </div>
-      {state ? <Stored /> : <Created />}
+      {state ? (
+        <Stored
+          idea={false}
+          navOnOff={false}
+          myDate={userDate && userDate.boards}
+          myPins={userDate && userDate.no_idea_pins}
+          linkNav={true}
+          nickname={nickname}
+          allPins={userDate && userDate.all_pins}
+        />
+      ) : (
+        <Created myDate={userDate && userDate.my_pins} showBoard={false} />
+      )}
     </div>
   );
 }

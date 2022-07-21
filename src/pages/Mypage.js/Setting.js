@@ -3,35 +3,51 @@ import css from './Setting.module.scss';
 import styled from 'styled-components';
 import Modal from '../../components/Myprofile/Modal';
 import Profilefooter from '../../components/Profilefooter/Profilefooter';
-import { BASE_URL } from '../../config';
+import BASE_URL from '../../config';
 
 function Setting() {
   const [switchBtn, setSwitchBtn] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [desc, setDesc] = useState('');
-  const [web, setWeb] = useState('');
-  const [nickName, setNickName] = useState('');
   const [createModal, setCreateModal] = useState(false);
   const imgInput = useRef();
   const [fileImage, setFileImage] = useState('');
-  const [setting, SetSetting] = useState();
+  const [userName, setUserName] = useState();
+  const [desc, setDesc] = useState();
+  const [nickName, setNickName] = useState();
+
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
 
+  // useEffect( () => {
+  //    fetch(`http://${BASE_URL}:10010/edit-profile`, {
+  //     method: 'GET',
+  // headers: {
+  //   // Authorization: localStorage.getItem('access_token'),
+  //   Authorization: `Bearer ${token}`,
+  // },
+  //   })
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       SetSetting(res);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    fetch(`http://localhost:10010/edit-profile`, {
-      method: 'GET',
-      headers: {
-        // Authorization: localStorage.getItem('access_token'),
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        SetSetting(res);
-      });
+    const fetchData = async () => {
+      const result = await (
+        await fetch(`http://${BASE_URL}:10010/edit-profile`, {
+          method: 'GET',
+          headers: {
+            // Authorization: localStorage.getItem('access_token'),
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      ).json();
+      setUserName(`${result[0].name}`);
+      setNickName(`${result[0].nickname}`);
+      setFileImage(`${result[0].profile_image}`);
+    };
+    fetchData();
   }, []);
-  console.log(setting);
 
   const saveFileImage = event => {
     setFileImage(URL.createObjectURL(event.target.files[0]));
@@ -54,9 +70,6 @@ function Setting() {
   };
   const inputHandlerD = e => {
     setDesc(e.target.value);
-  };
-  const inputHandlerW = e => {
-    setWeb(e.target.value);
   };
   const inputHandlerN = e => {
     setNickName(e.target.value);
@@ -132,11 +145,11 @@ function Setting() {
             <div>사진</div>
             <div className={css.imgBox}>
               <div className={css.imgWrapper}>
-                {fileImage ? (
+                {fileImage === null ? (
                   <img alt="sample" src={fileImage} className={css.mePhoto} />
                 ) : (
                   <img
-                    src={`${process.env.PUBLIC_URL}/images/KakaoTalk_Photo_2022-07-12-14-22-49.jpeg`}
+                    src={`${process.env.PUBLIC_URL}/images/normal.png`}
                     className={css.mePhoto}
                   ></img>
                 )}
@@ -149,7 +162,7 @@ function Setting() {
             <input
               className={css.nameInput}
               onChange={inputHandlerU}
-              value={userName}
+              value={userName && userName}
             />
             <div>소개</div>
             <textarea
@@ -157,13 +170,6 @@ function Setting() {
               placeholder="회원님의 이야기를 들려주세요."
               onChange={inputHandlerD}
               value={desc}
-            />
-            <div>웹사이트</div>
-            <input
-              className={css.webInput}
-              placeholder="회원님의 사이트로 트래픽을 유도하는 링크를 추가하세요."
-              onChange={inputHandlerW}
-              value={web}
             />
             <div>사용자이름</div>
             <input
