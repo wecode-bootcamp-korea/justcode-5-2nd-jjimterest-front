@@ -20,7 +20,7 @@ function Userpage() {
     fetch(`${BASE_URL}profile/${nickname}`, {
       method: 'GET',
       headers: {
-        // Authorization: localStorage.getItem('access_token'),
+        // Authorization: localStorage.getItem('login-token'),
         Authorization: `Bearer ${token}`,
       },
     })

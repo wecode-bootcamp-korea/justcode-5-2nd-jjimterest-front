@@ -19,7 +19,7 @@ function SettingM() {
         await fetch(`${BASE_URL}account-settings`, {
           method: 'GET',
           headers: {
-            // Authorization: localStorage.getItem('access_token'),
+            // Authorization: localStorage.getItem('login-token'),
             Authorization: `Bearer ${token}`,
           },
         })
@@ -33,7 +33,7 @@ function SettingM() {
     fetch(`${BASE_URL}account-settings`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('access_token'),
+        // Authorization: localStorage.getItem('login-token'),
         Authorization: `Bearer ${token}`,
       },
       method: 'PUT',

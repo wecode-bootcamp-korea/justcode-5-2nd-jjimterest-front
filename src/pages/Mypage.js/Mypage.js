@@ -16,17 +16,16 @@ function Mypage({ myName }) {
   const [myDate, setMyData] = useState();
   const location = useLocation();
   const { search } = location;
-  console.log(myName);
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+  // const token =
+  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
         await fetch(`${BASE_URL}profile/상현`, {
           method: 'GET',
           headers: {
-            // Authorization: `Bearer ${localStorage.getItem('login_token')}`,
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem('login-token')}`,
+            // Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
@@ -36,6 +35,7 @@ function Mypage({ myName }) {
     };
     fetchData();
   }, []);
+  console.log(myName);
 
   const openFollowModal = () => {
     setFollowModal(true);

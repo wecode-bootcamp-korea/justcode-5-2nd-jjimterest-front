@@ -1,34 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import css from './Userboard.module.scss';
 import Created from '../../components/Myprofile/Created';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { Link, useParams } from 'react-router-dom';
-import BASE_URL from '../../config';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 function Userboard() {
   const params = useParams();
   const { nickname, boardname } = params;
-  const [userPins, setUserPins] = useState();
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await (
-        await fetch(`${BASE_URL}profile/${nickname}`, {
-          method: 'GET',
-          headers: {
-            // Authorization: localStorage.getItem('access_token'),
-            Authorization: `Bearer ${token}`,
-          },
-        })
-      ).json();
-      setUserPins(result);
-    };
-    fetchData();
-  }, []);
-
+  const location = useLocation();
+  const data = location.state.boardData;
   return (
     <div className={css.container}>
       <div className={css.header}>
@@ -48,9 +29,7 @@ function Userboard() {
         </div>
       </div>
       <div className={css.pinList}>
-        <Created
-          myDate={userPins.boards.filter(data => data.title === boardname)}
-        />
+        <Created showBoard={false} myDate={data && data.pins} />
       </div>
     </div>
   );

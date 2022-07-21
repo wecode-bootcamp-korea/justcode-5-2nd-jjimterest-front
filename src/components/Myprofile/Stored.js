@@ -33,7 +33,7 @@ function Stored({
     await fetch(`${BASE_URL}board`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('access_token'),
+        // Authorization: localStorage.getItem('login-token'),
         Authorization: `Bearer ${token}`,
       },
       method: 'POST',

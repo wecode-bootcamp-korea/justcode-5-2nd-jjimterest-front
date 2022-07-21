@@ -14,25 +14,6 @@ import { useState, useEffect } from 'react';
 import BASE_URL from '../config';
 
 function Router() {
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
-  const [myName, setMyName] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await (
-        await fetch(`http://${BASE_URL}:10010/edit-profile`, {
-          method: 'GET',
-          headers: {
-            // Authorization: localStorage.getItem('access_token'),
-            Authorization: `Bearer ${token}`,
-          },
-        })
-      ).json();
-      setMyName(`${result[0]}`);
-    };
-    fetchData();
-  }, [myName]);
-
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -40,10 +21,7 @@ function Router() {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Loginpage />} />
         <Route path="/finpage" element={<Finpage />} />
-        <Route
-          path="/mypage"
-          element={<Mypage myName={myName && myName.name} />}
-        />
+        <Route path="/mypage" element={<Mypage />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/mypage/:boardname" element={<Boardpage />} />
         <Route path="/:nickname" element={<Userpage />} />

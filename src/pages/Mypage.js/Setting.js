@@ -17,27 +17,13 @@ function Setting() {
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
-  // useEffect( () => {
-  //    fetch(`http://${BASE_URL}:10010/edit-profile`, {
-  //     method: 'GET',
-  // headers: {
-  //   // Authorization: localStorage.getItem('access_token'),
-  //   Authorization: `Bearer ${token}`,
-  // },
-  //   })
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       SetSetting(res);
-  //     });
-  // }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
         await fetch(`${BASE_URL}edit-profile`, {
           method: 'GET',
           headers: {
-            // Authorization: localStorage.getItem('access_token'),
+            // Authorization: localStorage.getItem('login-token'),
             Authorization: `Bearer ${token}`,
           },
         })
@@ -48,6 +34,28 @@ function Setting() {
     };
     fetchData();
   }, []);
+
+  const editProfileBtn = () => {
+    fetch(`${BASE_URL}edit-profile`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        // Authorization: localStorage.getItem('login-token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'PUT',
+      body: new URLSearchParams({
+        name: userName,
+        intro: desc,
+        nickname: nickName,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert('수정완료!');
+      } else {
+        alert('수정에 실패했습니다!');
+      }
+    });
+  };
 
   const saveFileImage = event => {
     setFileImage(URL.createObjectURL(event.target.files[0]));
@@ -145,14 +153,15 @@ function Setting() {
             <div>사진</div>
             <div className={css.imgBox}>
               <div className={css.imgWrapper}>
-                {fileImage === null ? (
-                  <img alt="sample" src={fileImage} className={css.mePhoto} />
-                ) : (
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/normal.png`}
-                    className={css.mePhoto}
-                  ></img>
-                )}
+                {fileImage &&
+                  (fileImage !== null ? (
+                    <img alt="sample" src={fileImage} className={css.mePhoto} />
+                  ) : (
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/normal.png`}
+                      className={css.mePhoto}
+                    ></img>
+                  ))}
               </div>
               <div className={css.imgBtn} onClick={openCreateModal}>
                 변경
@@ -180,7 +189,7 @@ function Setting() {
           </div>
         </div>
       </div>
-      <Profilefooter></Profilefooter>
+      <Profilefooter btn={editProfileBtn}></Profilefooter>
     </div>
   );
 }
