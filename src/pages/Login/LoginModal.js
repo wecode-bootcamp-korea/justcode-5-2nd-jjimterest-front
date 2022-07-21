@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
 
@@ -9,6 +11,46 @@ const LoginContainer = ({
   isPageScrolledDown,
   changeBodyScroll,
 }) => {
+  const navigate = useNavigate();
+  const [emailValue, setEmailValue] = useState('');
+  const [pwValue, setPwValue] = useState('');
+
+  const handleEmailInput = e => {
+    setEmailValue(e.target.value);
+  };
+
+  const handlePwInput = e => {
+    setPwValue(e.target.value);
+  };
+
+  const loginBtnHandle = event => {
+    event.preventDefault();
+    fetch(`http://localhost:10010/users/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: emailValue.email,
+        password: pwValue.password,
+      }),
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then(result => {
+        if (result.token) {
+          localStorage.setItem('login-token', result.token);
+          alert('로그인이 완료되었습니다');
+          navigate('/Homepage');
+        } else {
+          alert('아이디혹은 비밀번호가 잘못되었습니다');
+        }
+      });
+  };
+
   return (
     <Modal
       isLoginModalOpened={isLoginModalOpened}
@@ -22,13 +64,29 @@ const LoginContainer = ({
           changeBodyScroll();
         }}
       />
-      <JJimterestLogo alt="찜터레스트 로고" src="" />
+      <JJimterestLogo alt="찜터레스트 로고" src="/images/JJimterestLogo.jpg" />
       <Welcome>JJimterest에 오신 것을 환영합니다</Welcome>
       <Form>
-        <Input disabled={true} placeholder="이메일" />
-        <Input disabled={true} placeholder="비밀번호" />
+        <IdContainer>
+          <IdInput
+            type="text"
+            placeholder="이메일"
+            value={emailValue}
+            onChange={handleEmailInput}
+          />
+        </IdContainer>
+        <PwContainer>
+          <PwInput
+            type="password"
+            placeholder="비밀번호"
+            value={pwValue}
+            onChange={handlePwInput}
+          />
+        </PwContainer>
         <FindPassword>비밀번호를 잊으셨나요?</FindPassword>
-        <LoginButton disabled>로그인</LoginButton>
+        <LoginButton type="button" onClick={loginBtnHandle}>
+          로그인
+        </LoginButton>
         <OrText>또는</OrText>
         <LoginLink href={KAKAO_AUTH_URL}>
           <KakaoLogin type="button">KaKao로 계속하기</KakaoLogin>
@@ -66,6 +124,7 @@ const Modal = styled.div`
 const JJimterestLogo = styled.img`
   width: 50px;
   height: 50px;
+  margin-top: 5px;
 `;
 
 const Welcome = styled.span`
@@ -79,23 +138,35 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-const Input = styled.input`
-  width: 250px;
-  margin-bottom: 10px;
-  padding: 5px 0;
-  border: 1px solid rgb(226, 226, 226);
-  border-radius: 10px;
-  font-size: 20px;
-  outline: none;
+const IdContainer = styled.div`
+  margin-top: 20px;
+`;
 
-  &::placeholder {
-    padding-left: 10px;
-    font-size: 15px;
-  }
+const IdInput = styled.input`
+  padding-left: 20px;
+  border: 1px solid rgb(221 221 221);
+  border-radius: 16px;
+  height: 30px;
+  width: 250px;
+  border-width: 2px;
+`;
+
+const PwContainer = styled.div`
+  margin-top: 10px;
+`;
+
+const PwInput = styled.input`
+  padding-left: 20px;
+  border: 1px solid rgb(221 221 221);
+  border-radius: 16px;
+  height: 30px;
+  width: 250px;
+  border-width: 2px;
 `;
 
 const FindPassword = styled.span`
   margin-bottom: 20px;
+  padding-top: 10px;
 `;
 
 const LoginButton = styled.button`
@@ -103,8 +174,8 @@ const LoginButton = styled.button`
   padding: 7px 0;
   border-radius: 15px;
   border: none;
-  background-color: ${props => props.theme.middleGrey};
-  color: rgba(225, 225, 225, 0.25);
+  background-color: red;
+  color: white;
   font-size: 20px;
   outline: none;
   cursor: default;
@@ -127,7 +198,7 @@ const KakaoLogin = styled(LoginButton)`
 const KakaoLogout = styled(LoginButton)`
   margin-bottom: 10px;
   background-color: ${props => props.theme.middleGrey};
-  color: rgba(225, 225, 225, 0.25);
+  color: white;
 `;
 
 const ServiceInfo = styled.span`
