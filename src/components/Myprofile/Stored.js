@@ -30,7 +30,7 @@ function Stored({
   const [noIdea, setNoIdea] = useState(true);
 
   const createBoard = async () => {
-    await fetch(`http://${BASE_URL}:10010/board`, {
+    await fetch(`${BASE_URL}board`, {
       headers: {
         'Content-Type': 'application/json',
         // Authorization: localStorage.getItem('access_token'),
@@ -162,7 +162,7 @@ function Stored({
             value={bdName}
           />
           <div className={css.buttonWrap}>
-            <Link to={`/mynickname/${bdName}`}>
+            <Link to={`/mypage/${bdName}`}>
               <Button onClick={createBoard} disabled={bdName ? false : true}>
                 만들기
               </Button>
@@ -200,6 +200,8 @@ function Stored({
       )}
       <div className={css.boardContainer}>
         <Boardcard
+          boardData={bdList && bdList}
+          firstImg={allPins[0].image}
           boardName={'모든 핀'}
           pinCnt={allPins && allPins.length}
           linkNav={linkNav}
@@ -207,6 +209,8 @@ function Stored({
         {bdList &&
           bdList.map((data, index) => (
             <Boardcard
+              boardData={data}
+              firstImg={data.pins[0].image}
               boardName={data.title}
               pinCnt={data.pins.length}
               linkNav={linkNav}

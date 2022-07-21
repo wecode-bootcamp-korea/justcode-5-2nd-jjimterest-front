@@ -15,9 +15,9 @@ function Userpage() {
   const { nickname } = params;
   const [userDate, setUserData] = useState();
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MzA3Mzg3fQ.qtsLD7uyFmd1qYoe7ly0fC7pKoivuXCBYYkvblGER_Y';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
-    fetch(`http://${BASE_URL}:10010/profile/${nickname}`, {
+    fetch(`${BASE_URL}profile/${nickname}`, {
       method: 'GET',
       headers: {
         // Authorization: localStorage.getItem('access_token'),

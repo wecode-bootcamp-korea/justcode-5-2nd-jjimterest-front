@@ -15,7 +15,7 @@ function Setting() {
   const [nickName, setNickName] = useState();
 
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
   // useEffect( () => {
   //    fetch(`http://${BASE_URL}:10010/edit-profile`, {
@@ -34,7 +34,7 @@ function Setting() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
-        await fetch(`http://${BASE_URL}:10010/edit-profile`, {
+        await fetch(`${BASE_URL}edit-profile`, {
           method: 'GET',
           headers: {
             // Authorization: localStorage.getItem('access_token'),

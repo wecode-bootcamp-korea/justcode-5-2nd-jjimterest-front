@@ -1,19 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BASE_URL from '../../config';
 import css from './Boardcard.module.scss';
-function Boardcard({ boardName, pinCnt, linkNav, nickname }) {
+function Boardcard({
+  boardName,
+  pinCnt,
+  linkNav,
+  nickname,
+  firstImg,
+  boardData,
+}) {
   return (
     <div className={css.allPinContainer}>
       <Link
-        to={linkNav ? `/${nickname}/${boardName}` : `/mynickname/${boardName}`}
+        to={linkNav ? `/${nickname}/${boardName}` : `/mypage/${boardName}`}
         className={css.linkLay}
+        state={{ boardData: boardData }}
       >
         <div className={css.allPinImg}>
           <div className={css.firstImg}>
-            <img
-              alt="핀이미지"
-              src="https://images.unsplash.com/photo-1557827983-012eb6ea8dc1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bHVzaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-            />
+            <img alt="핀이미지" src={`${BASE_URL}${firstImg}`} />
           </div>
         </div>
         <div className={css.allPinContents}>

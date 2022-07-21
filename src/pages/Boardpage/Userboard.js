@@ -16,7 +16,7 @@ function Userboard() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
-        await fetch(`http://${BASE_URL}:10010/profile/${nickname}`, {
+        await fetch(`${BASE_URL}profile/${nickname}`, {
           method: 'GET',
           headers: {
             // Authorization: localStorage.getItem('access_token'),

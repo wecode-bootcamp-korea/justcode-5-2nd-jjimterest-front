@@ -9,7 +9,7 @@ import {
 import Dropdown from '../../components/Myprofiledropdown/Dropdown';
 import Created from '../../components/Myprofile/Created';
 import Modal from '../../components/Myprofile/Modal';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 
 function Boardpage() {
   const params = useParams();
@@ -17,9 +17,9 @@ function Boardpage() {
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
   const [desc, setDesc] = useState('');
-
   const [showBoard, setShowBoard] = useState(false);
-
+  const location = useLocation();
+  const data = location.state.boardData;
   const showSimple = () => {
     setShowBoard(true);
   };
@@ -91,7 +91,7 @@ function Boardpage() {
           <p>아이디어 더 보기</p>
         </div>
         <div>
-          <Link to={`/mynickname/${boardname}/_tools`} className={css.linkLay}>
+          <Link to={`/mypage/${boardname}/_tools`} className={css.linkLay}>
             <div className={css.iconBox}>
               <FontAwesomeIcon
                 icon={faSquareCheck}
@@ -103,7 +103,7 @@ function Boardpage() {
         </div>
       </div>
       <div className={css.uiNav}>
-        <div className={css.pinCnt}>핀 1개</div>
+        <div className={css.pinCnt}>핀 {data && data.pins.length}개</div>
         <Dropdown fonticon={1} location={10}>
           <p>옵션 보기</p>
           <li onClick={showSimple}>기본</li>
@@ -111,7 +111,7 @@ function Boardpage() {
         </Dropdown>
       </div>
       <div className={css.pinList}>
-        <Created showBoard={showBoard} />
+        <Created showBoard={showBoard} myDate={data && data.pins} />
       </div>
       <div className={css.linkToPinW}>
         <div className={css.linkToPin}>

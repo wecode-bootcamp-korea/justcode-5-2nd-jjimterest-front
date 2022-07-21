@@ -12,11 +12,11 @@ function SettingM() {
   const [password, setPassword] = useState();
   const [rePassword, setRePassword] = useState();
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MzA3Mzg3fQ.qtsLD7uyFmd1qYoe7ly0fC7pKoivuXCBYYkvblGER_Y';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
-        await fetch(`http://${BASE_URL}:10010/account-settings`, {
+        await fetch(`${BASE_URL}account-settings`, {
           method: 'GET',
           headers: {
             // Authorization: localStorage.getItem('access_token'),
@@ -30,7 +30,7 @@ function SettingM() {
   }, []);
 
   const editPassBtn = () => {
-    fetch(`http://${BASE_URL}:10010/account-settings`, {
+    fetch(`${BASE_URL}account-settings`, {
       headers: {
         'Content-Type': 'application/json',
         // Authorization: localStorage.getItem('access_token'),

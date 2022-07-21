@@ -3,41 +3,32 @@ import css from './Mypage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
 import BASE_URL from '../../config';
 import FollowContainer from '../../components/FollowContainer/FollowContainer';
 
-function Mypage() {
+function Mypage({ myName }) {
   const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
   //데이터 패치
   const [myDate, setMyData] = useState();
+  const location = useLocation();
+  const { search } = location;
+  console.log(myName);
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
-  // useEffect(() => {
-  //   fetch(`http://${BASE_URL}:10010/profile/Mary`, {
-  //     method: 'GET',
-  //     headers: {
-  //       // Authorization: localStorage.getItem('access_token'),
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       setMyData(res);
-  //     });
-  // }, []);
-
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
-        await fetch(`http://${BASE_URL}:10010/profile/정상현`, {
+        await fetch(`${BASE_URL}profile/상현`, {
           method: 'GET',
           headers: {
-            // Authorization: localStorage.getItem('access_token'),
+            // Authorization: `Bearer ${localStorage.getItem('login_token')}`,
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
           },
         })
       ).json();

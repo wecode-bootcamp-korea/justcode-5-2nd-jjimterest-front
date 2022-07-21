@@ -14,7 +14,7 @@ function Boardarrange() {
       <div className={css.header}>
         <div>
           <div className={css.headerContents}>
-            <Link to={`/mynickname/${boardname}`} className={css.linkLay}>
+            <Link to={`/mypage/${boardname}`} className={css.linkLay}>
               <div className={css.faArrowLeftBox}>
                 <FontAwesomeIcon
                   icon={faArrowLeft}
