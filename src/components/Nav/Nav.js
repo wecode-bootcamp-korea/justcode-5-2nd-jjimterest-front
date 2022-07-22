@@ -80,6 +80,7 @@ function Nav() {
   const gotopainpage = () => {
     navigate('/finpage');
   };
+  console.log(profileImg);
 
   return (
     <div className={css.nav} ref={nav}>
@@ -106,12 +107,10 @@ function Nav() {
         <Link to={`/mypage`} state={{ pName: pName }}>
           <img
             className={css.profileImg}
-            src={`${
+            src={
               profileImg &&
-              (profileImg.profile_image === 'h'
-                ? profileImg.profile_image
-                : `${BASE_URL}` + profileImg.profile_image)
-            }`}
+              (profileImg === 'h' ? profileImg : `${BASE_URL}` + profileImg)
+            }
             alt="유저프로필이미지"
           />
         </Link>
