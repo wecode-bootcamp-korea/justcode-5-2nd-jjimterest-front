@@ -7,7 +7,7 @@ function FollowContainer({ img, userName }) {
     <div className={css.container}>
       <img
         alt="프로필 이미지"
-        src={`${img && (img === 'h' ? img : `${BASE_URL}` + img)}`}
+        src={`${img && (img[0] === 'h' ? img : `${BASE_URL}` + img)}`}
       />
       <div>{userName}</div>
     </div>
