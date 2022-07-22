@@ -22,7 +22,7 @@ function Finpage() {
       <Nav />
       <div className={css.container}>
         <button className={css.create} onClick={plus}>
-          Add
+          +
         </button>
         {add.map(add => {
           return (

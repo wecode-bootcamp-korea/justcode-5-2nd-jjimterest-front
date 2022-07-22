@@ -9,7 +9,9 @@ import {
 import Dropdown from '../../components/Myprofiledropdown/Dropdown';
 import Created from '../../components/Myprofile/Created';
 import Modal from '../../components/Myprofile/Modal';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
+import BASE_URL from '../../config';
+import Nav from '../../components/Nav/Nav';
 
 function Boardpage() {
   const params = useParams();
@@ -17,9 +19,55 @@ function Boardpage() {
   const [createModal, setCreateModal] = useState(false);
   const [bdName, setBdName] = useState('');
   const [desc, setDesc] = useState('');
-
   const [showBoard, setShowBoard] = useState(false);
 
+  const location = useLocation();
+  const data = location.state.boardData;
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+
+  const editBoard = () => {
+    fetch(`${BASE_URL}board`, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: localStorage.getItem('login-token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'PUT',
+      body: JSON.stringify({
+        cover_image_url: null,
+        title: bdName.length ? bdName : boardname,
+        intro: desc.length ? desc : null,
+        board_id: data.id,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert('수정완료!');
+      } else {
+        alert('수정 실패!');
+      }
+    });
+  };
+
+  const deleteBoard = () => {
+    fetch(`${BASE_URL}board`, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: localStorage.getItem('login-token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'DELETE',
+      body: JSON.stringify({
+        board_id: data.id,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert('삭제완료!');
+      } else {
+        alert('삭제 실패!');
+      }
+    });
+  };
   const showSimple = () => {
     setShowBoard(true);
   };
@@ -42,6 +90,7 @@ function Boardpage() {
 
   return (
     <div className={css.container}>
+      <Nav />
       <Modal visible={createModal} onClose={closeCreateModal}>
         <div className={css.modalHeader}>보드 수정하기</div>
         <div className={css.modalInner}>
@@ -62,7 +111,12 @@ function Boardpage() {
             onChange={inputHandlerD}
             value={desc}
           />
-          <div className={css.delName}>보드 삭제</div>
+          <div className={css.editBBtn} onClick={editBoard}>
+            수정하기
+          </div>
+          <div className={css.delName} onClick={deleteBoard}>
+            보드 삭제
+          </div>
           <div className={css.delContent}>
             이 보드와 모든 핀을 영구적으로 삭제합니다.
             <br />이 작업은 취소할 수 없습니다!
@@ -91,7 +145,11 @@ function Boardpage() {
           <p>아이디어 더 보기</p>
         </div>
         <div>
-          <Link to={`/mynickname/${boardname}/_tools`} className={css.linkLay}>
+          <Link
+            to={`/mypage/${boardname}/_tools`}
+            className={css.linkLay}
+            state={{ data: data }}
+          >
             <div className={css.iconBox}>
               <FontAwesomeIcon
                 icon={faSquareCheck}
@@ -103,7 +161,9 @@ function Boardpage() {
         </div>
       </div>
       <div className={css.uiNav}>
-        <div className={css.pinCnt}>핀 1개</div>
+        <div className={css.pinCnt}>
+          핀 {data.length === 1 ? 0 : data.pins.length}개
+        </div>
         <Dropdown fonticon={1} location={10}>
           <p>옵션 보기</p>
           <li onClick={showSimple}>기본</li>
@@ -111,7 +171,7 @@ function Boardpage() {
         </Dropdown>
       </div>
       <div className={css.pinList}>
-        <Created showBoard={showBoard} />
+        <Created showBoard={showBoard} myDate={data && data.pins} />
       </div>
       <div className={css.linkToPinW}>
         <div className={css.linkToPin}>

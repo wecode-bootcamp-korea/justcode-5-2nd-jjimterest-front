@@ -11,34 +11,38 @@ function Homepage() {
   const [element, setElement] = useState();
   const [pinData, setPinData] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pinId, setPinId] = useState();
+  const [pinId, setPinId] = useState(0);
 
   const feedOntoggle = e => {
     setFeedOn(prev => !prev);
     window.scrollTo(0, 0);
     setElement(e.target);
   };
+  console.log(pinData);
 
   useEffect(() => {
     const callback = (entries, observer) => {
       entries.forEach(ob => {
         if (ob.isIntersecting) {
-          fetch(`${BASE_URL}/pins?pagenumber=${pageNumber}`, {
+          fetch(`${BASE_URL}pins?pagenumber=${pageNumber}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
               Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M',
             },
           })
             .then(res => res.json())
             .then(data => {
-              setPinData(data);
+              setPageNumber(prev => prev + 1);
+              setPinData(prev => {
+                return prev.concat(data);
+              });
             });
-          setPageNumber(prev => prev + 1);
         }
       });
     };
+
     const option = { threshold: 1.0 };
     let observer = new IntersectionObserver(callback, option);
 
@@ -46,7 +50,7 @@ function Homepage() {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [pageNumber]);
 
   return (
     <>

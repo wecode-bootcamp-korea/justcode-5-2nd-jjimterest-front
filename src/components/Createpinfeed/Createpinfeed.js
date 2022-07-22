@@ -4,15 +4,32 @@ import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
 
 function Createpinfeed({ index, deletepin }) {
-  const [boadData, setBoardData] = useState({});
+  const btn = useRef();
+  const [boadData, setBoardData] = useState();
   const [altBtnOn, setAltBtnOn] = useState(true);
   const [altOn, setAltOn] = useState(false);
+  const [imgUpload] = useState(new FormData());
   const input = useRef();
   const img = useRef();
   const [on, setOn] = useState(false);
   const reader = new FileReader();
-  const imgUpload = new FormData();
   const [onBoradList, setOnBoradList] = useState(false);
+  const myImg = localStorage.getItem('myimg');
+  const [boardtitle, setBoardTitle] = useState();
+  const [pinInfo, setPinInfo] = useState({
+    title: null,
+    intro: null,
+    alt: null,
+    category: null,
+    board_id: 2,
+  });
+
+  const handleInput = e => {
+    const { value, name } = e.target;
+    setPinInfo(prev => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   useEffect(() => {
     fetch(`${BASE_URL}/pin-make`, {
@@ -26,6 +43,7 @@ function Createpinfeed({ index, deletepin }) {
       .then(res => res.json())
       .then(data => {
         setBoardData(data);
+        console.log('핀만들기 데이터', data);
       });
   }, []);
 
@@ -41,10 +59,15 @@ function Createpinfeed({ index, deletepin }) {
     }
   };
   const pinMake = () => {
+    imgUpload.append('title', pinInfo.title);
+    imgUpload.append('alt', pinInfo.alt);
+    imgUpload.append('intro', pinInfo.intro);
+    imgUpload.append('boardId', pinInfo.board_id);
+    imgUpload.append('category', pinInfo.category);
+
     fetch(`${BASE_URL}/pin-make`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data; boundary=something',
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
       },
@@ -52,24 +75,48 @@ function Createpinfeed({ index, deletepin }) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        imgUpload.delete('title');
+        imgUpload.delete('alt');
+        imgUpload.delete('intro');
+        imgUpload.delete('boardId');
+        imgUpload.delete('category');
+        alert(data.message);
+        setPinInfo({
+          title: '',
+          intro: '',
+          alt: '',
+          category: '',
+          board_id: 2,
+        });
       });
   };
   return (
-    <div className={css.pageOutLine}>
+    <div
+      className={css.pageOutLine}
+      onClick={e => {
+        if (e.target === btn.current) {
+          return;
+        } else {
+          setOnBoradList(false);
+        }
+      }}
+    >
       <button className={css.delete} onClick={() => deletepin(index)}>
         X
       </button>
       <div className={css.nav}>
         <div className={css.wrapBoardBtn}>
           <button
+            ref={btn}
             className={css.selectBtn}
             onClick={() => {
               setOnBoradList(prev => !prev);
             }}
           >
-            {onBoradList ? 'boardname' : '보드를선택하세요'}
-            {onBoradList ? <BoardList /> : null}
+            {boardtitle ? boardtitle : '보드를선택하세요'}
+            {onBoradList ? (
+              <BoardList data={boadData[0].boards} title={setBoardTitle} />
+            ) : null}
           </button>
           <button className={css.storeBtn} onClick={pinMake}>
             저장
@@ -78,7 +125,9 @@ function Createpinfeed({ index, deletepin }) {
       </div>
       <div className={css.wrapContents}>
         <div className={css.upload}>
-          {on ? <img ref={img} className={css.previewImage} /> : null}
+          {on ? (
+            <img ref={img} className={css.previewImage} alt="이미지" />
+          ) : null}
           <input
             className={css.uploadInput}
             ref={input}
@@ -98,14 +147,26 @@ function Createpinfeed({ index, deletepin }) {
           )}
         </div>
         <div className={css.info}>
-          <input className={css.title} placeholder="제목 추가"></input>
+          <input
+            name="title"
+            className={css.title}
+            placeholder="제목 추가"
+            onChange={handleInput}
+            value={pinInfo.title}
+          />
           <div className={css.userInfo}>
-            <img className={css.userImg}>{boadData.img}</img>
-            <p className={css.userName}>{boadData.name}</p>
+            <img className={css.userImg} alt="이미지" src={myImg} />
+            <p className={css.userName}>
+              {boadData !== undefined && boadData[0].name}
+            </p>
           </div>
           <input
+            name="intro"
+            type="text"
             className={css.pinInfo}
-            placeholder="핀에 대해 설명해 주세요"
+            placeholder="사람들에게 회원님의 핀에 대해 설명해 보세요"
+            onChange={handleInput}
+            value={pinInfo.intro}
           />
           {altBtnOn ? (
             <button
@@ -118,11 +179,23 @@ function Createpinfeed({ index, deletepin }) {
               alt 텍스트 추가
             </button>
           ) : null}
-          {altOn ? <input /> : null}
+          {altOn ? (
+            <input
+              name="alt"
+              className={css.pinAltInput}
+              placeholder="핀에 무엇이 표시되는지 설명합니다."
+              onChange={handleInput}
+              value={pinInfo.alt}
+            />
+          ) : null}
           <input
-            className={css.pinAltInput}
-            placeholder="핀에 무엇이 표시되는지 설명합니다."
-          ></input>
+            name="category"
+            type="text"
+            placeholder="카테고리를 입력해주세요"
+            className={css.category}
+            onChange={handleInput}
+            value={pinInfo.category}
+          />
         </div>
       </div>
     </div>

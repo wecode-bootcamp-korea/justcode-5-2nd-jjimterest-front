@@ -1,11 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 import Recent from '../Recent/Recent';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import BASE_URL from '../../config';
 
 function Nav() {
+  const [profileImg, setProfileImg] = useState();
+  const [pName, setPName] = useState();
+  const search = useRef();
+  // useEffect(() => {
+  //   fetch(`${BASE_URL}/profile/${user}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization:
+  //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log('네브 패치 데이터 ', data);
+  //       setProfileImg(data[0].profile_image);
+  //       localStorage.setItem('myimg', data[0].profile_image);
+  //     });
+  // }, []);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}edit-profile`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setPName(data);
+        setProfileImg(data[0].profile_image);
+        localStorage.setItem('myimg', data[0].profile_image);
+      });
+  }, []);
+
   const navigate = useNavigate();
   const nav = useRef();
 
@@ -18,21 +54,24 @@ function Nav() {
       window.removeEventListener('scroll', scrollY);
     };
   });
-
   const scrollY = () => {
     setScroll(window.scrollY);
     if (scroll > 15) {
-      nav.current.style.backgroundColor = 'black';
+      nav.current.style.backgroundColor = 'white';
     } else {
       nav.current.style.backgroundColor = 'white';
     }
   };
-
   const onToggle = () => {
     setOn(true);
+    search.current.focus();
   };
   const offToggle = () => {
-    setOn(false);
+    setTimeout(() => {
+      if (document.activeElement !== search.current) {
+        return setOn(false);
+      }
+    }, 120);
   };
   const gotohome = () => {
     navigate('/');
@@ -41,10 +80,7 @@ function Nav() {
   const gotopainpage = () => {
     navigate('/finpage');
   };
-
-  const gotoprofile = () => {
-    navigate('/mypage');
-  };
+  console.log(profileImg);
 
   return (
     <div className={css.nav} ref={nav}>
@@ -58,21 +94,26 @@ function Nav() {
       </div>
       <div className={css.wrapSearchBar}>
         <input
+          ref={search}
           className={css.search}
           placeholder="검색"
           onFocus={onToggle}
           onBlur={offToggle}
         />
-        {on ? <Recent /> : null}
+        {on ? <Recent onToggle={onToggle} /> : null}
       </div>
       <div className={css.emoji}>
-        <FontAwesomeIcon icon={faCommentDots} className={css.message} />
-        <img
-          className={css.profileImg}
-          src="https://images.unsplash.com/photo-1533749968753-1a9994823766?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGx1c2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-          onClick={gotoprofile}
-          alt="유저프로필이미지"
-        />
+        <button className={css.message}>message</button>
+        <Link to={`/mypage`} state={{ pName: pName }}>
+          <img
+            className={css.profileImg}
+            src={
+              profileImg &&
+              (profileImg === 'h' ? profileImg : `${BASE_URL}` + profileImg)
+            }
+            alt="유저프로필이미지"
+          />
+        </Link>
       </div>
     </div>
   );

@@ -5,13 +5,16 @@ import BASE_URL from '../../config';
 function Pin({ feedOntoggle, data, pinId }) {
   const [on, setOn] = useState(false);
   const [onStore, setOnStore] = useState(true);
+  const token = localStorage.getItem('token');
 
   const modalOn = () => {
     setOn(prev => !prev);
   };
+
   const modalOut = () => {
     setOn(prev => !prev);
   };
+
   const btnClick = () => {
     setOnStore(false);
     fetch(`${BASE_URL}/pins/${data.pin_id}`, {
@@ -19,7 +22,7 @@ function Pin({ feedOntoggle, data, pinId }) {
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
       },
     });
   };
@@ -28,9 +31,9 @@ function Pin({ feedOntoggle, data, pinId }) {
       <img
         className={css.pinImg}
         alt="핀이미지"
-        src={data.image}
+        src={BASE_URL + '/' + data.image}
         onClick={e => {
-          pinId(data.pin_id);
+          pinId([data.pin_id, data.image]);
           feedOntoggle(e);
         }}
       />

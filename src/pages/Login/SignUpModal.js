@@ -84,8 +84,9 @@ function SignUpModal({
       isSignUpModalOpened={isSignUpModalOpened}
       isPageScrolledDown={isPageScrolledDown}
     >
-      <AiOutlineClose
-        size="20"
+      <CloseButton
+        src="/images/closebutton.png"
+        alt="closebutton"
         isPageScrolledDown={isPageScrolledDown}
         onClick={() => {
           controlSignUpModal();
@@ -158,6 +159,19 @@ const Modal = styled.div`
       ? 'translate(30%, 450px)'
       : 'translate(-50%, -50%)'};
   z-index: 1000;
+`;
+
+const CloseButton = styled.img`
+  display: ${props => (props.isPageScrolledDown ? 'none' : 'inline')};
+  position: absolute;
+  top: 30px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(204, 204, 204);
+  }
 `;
 
 const Form = styled.form`

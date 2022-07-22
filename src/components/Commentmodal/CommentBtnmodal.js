@@ -23,7 +23,9 @@ export const Done = styled.button`
 
 export const Wrap = styled.div`
   display: flex;
-  justify-content: flex-end;
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
 `;
 
 const CommentBtnmodal = ({ setOn }) => {

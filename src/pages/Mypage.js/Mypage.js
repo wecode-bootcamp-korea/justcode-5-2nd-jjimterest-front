@@ -3,34 +3,39 @@ import css from './Mypage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
 import BASE_URL from '../../config';
+import FollowContainer from '../../components/FollowContainer/FollowContainer';
+import Nav from '../../components/Nav/Nav';
 
 function Mypage() {
-  const [state, setState] = useState(true);
+  const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
   //데이터 패치
-
   const [myDate, setMyData] = useState();
+  const location = useLocation();
+  const data = location.state.pName;
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
   useEffect(() => {
-    fetch(`http://${BASE_URL}:10010/profile/James`, {
-      method: 'GET',
-      headers: {
-        // Authorization: localStorage.getItem('access_token'),
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        setMyData(res);
-        console.log(myDate);
-      });
+    const fetchData = async () => {
+      const result = await (
+        await fetch(`${BASE_URL}profile/${data[0].name}`, {
+          method: 'GET',
+          headers: {
+            // Authorization: `Bearer ${localStorage.getItem('login-token')}`,
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        })
+      ).json();
+      setMyData(result);
+    };
+    fetchData();
   }, []);
-  console.log(myDate);
 
   const openFollowModal = () => {
     setFollowModal(true);
@@ -80,17 +85,39 @@ function Mypage() {
 
   return (
     <div className={css.container}>
+      <Nav />
       <Modal visible={followerModal} onClose={closeFollowerModal}>
         <div className={css.modalHeader}>팔로워</div>
+        {myDate &&
+          myDate.follower.map((data, index) => (
+            <FollowContainer
+              img={data.profile_image}
+              userName={data.nickname}
+              key={index}
+            />
+          ))}
       </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
         <div className={css.modalHeader}>팔로잉</div>
+        {myDate &&
+          myDate.following.map((data, index) => (
+            <FollowContainer
+              img={data.profile_image}
+              userName={data.nickname}
+              key={index}
+            />
+          ))}
       </Modal>
       <div className={css.profileWrapper}>
         <div className={css.profileContents}>
           <div className={css.imgWrapper}>
             <img
-              src={`${myDate && myDate.profile_image}`}
+              src={`${
+                myDate &&
+                (myDate.profile_image[0] === 'h'
+                  ? myDate.profile_image
+                  : `${BASE_URL}` + myDate.profile_image)
+              }`}
               className={css.mePhoto}
               alt="이미지 없음"
             ></img>
@@ -128,7 +155,13 @@ function Mypage() {
         </div>
       </div>
       {state ? (
-        <Stored idea={true} navOnOff={true} myDate={myDate && myDate.boards} />
+        <Stored
+          idea={true}
+          navOnOff={true}
+          myDate={myDate && myDate.boards}
+          myPins={myDate && myDate.no_idea_pins}
+          allPins={myDate && myDate.all_pins}
+        />
       ) : (
         <Created myDate={myDate && myDate.my_pins} showBoard={false} />
       )}

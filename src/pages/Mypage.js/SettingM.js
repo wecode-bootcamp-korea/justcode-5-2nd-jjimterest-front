@@ -1,16 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import css from './SettingM.module.scss';
 import styled from 'styled-components';
 import Profilefooter from '../../components/Profilefooter/Profilefooter';
+import BASE_URL from '../../config';
+import Nav from '../../components/Nav/Nav';
 
 function SettingM() {
   const [switchBtn, setSwitchBtn] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
+  const [email, setEmail] = useState();
+  const [prePassword, setPrePassword] = useState();
+
+  const [password, setPassword] = useState();
+  const [rePassword, setRePassword] = useState();
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await (
+        await fetch(`${BASE_URL}account-settings`, {
+          method: 'GET',
+          headers: {
+            // Authorization: localStorage.getItem('login-token'),
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      ).json();
+      setEmail(`${result[0].email}`);
+    };
+    fetchData();
+  }, []);
+
+  const editPassBtn = () => {
+    fetch(`${BASE_URL}account-settings`, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: localStorage.getItem('login-token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'PUT',
+      body: JSON.stringify({
+        current_password: prePassword,
+        new_password: password,
+        confirm_new_password: rePassword,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert('수정완료!');
+      } else {
+        alert(
+          '비밀번호가 일치하지 않습니다!(영문,숫자,특수기호를 섞어 최소 8자리 이상 입력해주세요!)'
+        );
+      }
+    });
+  };
 
   const inputHandlerE = e => {
     setEmail(e.target.value);
+  };
+  const inputHandlerPrev = e => {
+    setPrePassword(e.target.value);
   };
   const inputHandlerP = e => {
     setPassword(e.target.value);
@@ -55,6 +103,7 @@ function SettingM() {
   `;
   return (
     <div className={css.container}>
+      <Nav></Nav>
       <div className={css.innerContainer}>
         <div className={css.sideBar}>
           <div className={css.sideBarContents}>
@@ -79,8 +128,16 @@ function SettingM() {
               onChange={inputHandlerE}
               value={email}
             />
+            <div>이전 비밀번호</div>
+            <input
+              type="password"
+              className={css.rePasswordInput}
+              onChange={inputHandlerPrev}
+              value={prePassword}
+            />
             <div>비밀번호 변경</div>
             <input
+              type="password"
               className={css.passwordInput}
               placeholder="최소 8자리이상 입력해주세요."
               onChange={inputHandlerP}
@@ -88,14 +145,22 @@ function SettingM() {
             />
             <div>비밀번호 변경확인</div>
             <input
+              type="password"
               className={css.rePasswordInput}
               onChange={inputHandlerR}
               value={rePassword}
             />
+            <div>
+              {password === rePassword ? (
+                <p className={css.correct}>비밀번호가 일치합니다.</p>
+              ) : (
+                <p className={css.correctX}>비밀번호가 일치하지 않습니다.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <Profilefooter />
+      <Profilefooter btn={editPassBtn} />
     </div>
   );
 }
