@@ -1,0 +1,88 @@
+.container {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  .linkLay {
+    color: black;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    &:hover,
+    &:active {
+      text-decoration: none;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    .headerContents {
+      width: 100vw;
+      display: flex;
+      justify-content: space-between;
+    }
+    .headerBdName {
+      font-size: 36px;
+    }
+    .headerRight {
+      width: 50px;
+    }
+    .faArrowLeftBox {
+      padding: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      .faArrowLeft {
+        width: 40px;
+        height: 40px;
+      }
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+  }
+
+  .uiNav {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 40px;
+    .pinCnt {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .allBtn {
+      padding: 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      background-color: #efefef;
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+  }
+  .pinList {
+    margin-top: 10px;
+  }
+  .footer {
+    left: 50%;
+    width: 100px;
+    transform: translate(-50%, -50%);
+    position: fixed;
+    bottom: 0px;
+    cursor: pointer;
+    .faTrash {
+      padding: 20px;
+      background-color: #efefef;
+      box-shadow: 1px 1px 1px 1px #e0e0e0;
+      border-radius: 70%;
+      &:hover {
+        background-color: #e0e0e0;
+      }
+    }
+  }
+}
