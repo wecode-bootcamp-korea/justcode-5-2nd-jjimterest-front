@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
-// import queryString from 'query-string';
 
 const LoginContainer = ({
   isLoginModalOpened,
@@ -198,7 +196,7 @@ const LoginButton = styled.button`
   color: white;
   font-size: 20px;
   outline: none;
-  cursor: default;
+  cursor: pointer;
 `;
 
 const OrText = styled.span`

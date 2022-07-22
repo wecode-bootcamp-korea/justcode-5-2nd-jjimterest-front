@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 import Introduce from './Introduce';
 import ImagesContainer from './ImgaesContainer';
-import queryString from 'query-string';
 
 const LoginPage = () => {
   const [isLoginModalOpened, setIsLoginModalOpened] = useState(false);
@@ -16,31 +14,6 @@ const LoginPage = () => {
   const [imageMockData, setImageMockData] = useState([]);
   const pageHeaderRef = useRef();
   const pageFooterRef = useRef();
-  const navigate = useNavigate();
-
-  const userInfo = queryString.parse(useLocation().search);
-
-  const { email, nickname, profileImage, token, userId } = userInfo;
-  const isSocialLoggedIn = useLocation().search.includes('token');
-
-  useEffect(() => {
-    if (isSocialLoggedIn) {
-      localStorage.setItem('email', email);
-      localStorage.setItem('nickname', nickname);
-      localStorage.setItem('profileImage', profileImage);
-      localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId);
-      navigate('/');
-    }
-  }, [
-    email,
-    nickname,
-    profileImage,
-    token,
-    userId,
-    isSocialLoggedIn,
-    navigate,
-  ]);
 
   useEffect(() => {
     fetch('/data/LoginImages.json')
@@ -189,7 +162,10 @@ const LoginPage = () => {
       </LoginHeader>
       <Introduce />
       {imageMockData && <ImagesContainer imageMockData={imageMockData} />}
-      <PageFooter ref={pageFooterRef} />
+      <PageFooter ref={pageFooterRef}>
+        서비스 약관 &nbsp; 개인정보 보호정책 &nbsp; 도움말 &nbsp;iPhone앱 &nbsp;
+        Android앱 &nbsp; 사용자 &nbsp; 컬렉션 &nbsp; 오늘 &nbsp; 탐색
+      </PageFooter>
     </EntryPageContainer>
   );
 };
@@ -210,14 +186,19 @@ const EntryPageContainer = styled.div``;
 
 const PageShadow = styled.div`
   position: absolute;
-  display: ${props =>
-    props.isLoginModalOpened && props.isSignUpModalOpened ? 'block' : 'none'};
+  display: ${props => (props.isLoginModalOpened ? 'block' : 'none')};
   // display: ${props => (props.isSignUpModalOpened ? 'block' : 'none')};
   width: 100%;
   height: 1607px;
   background-color: black;
   opacity: ${props => (props.isLoginModalOpened ? 0.5 : 0)};
   // opacity: ${props => (props.isSignUpModalOpened ? 0.5 : 0)};
+`;
+
+const bounce1 = keyframes`
+  0% {bottom: 18px}
+  50% {bottom: 20px}
+  100% { bottom: 18px}
 `;
 
 const DownButton = styled.img`
@@ -231,17 +212,44 @@ const DownButton = styled.img`
   color: red;
   transform: translateX(15px);
   cursor: pointer;
+  animation: ${bounce1} 1s infinite;
+  @media screen and (max-width: 1200px) {
+    margin-left: -12%;
+  }
+  @media screen and (max-width: 768px) {
+    margin-left: -17%;
+  }
+  @media screen and (max-width: 480px) {
+    margin-left: -31%;
+  }
 `;
 
-const UpButton = styled(DownButton)`
+const UpButton = styled.img`
   display: ${props => (props.isPageScrolledDown ? 'inline' : 'none')};
-  bottom: -50px;
+  bottom: -100px;
+  position: absolute;
+  right: 50%;
+  width: 50px;
+  height: 50px;
+  color: red;
+  transform: translateX(15px);
+  cursor: pointer;
+  // animation: ${bounce1} 1s infinite;
+  // @media screen and (max-width: 1200px) {
+  //   margin-left: -12%;
+  // }
+  // @media screen and (max-width: 768px) {
+  //   margin-left: -17%;
+  // }
+  // @media screen and (max-width: 480px) {
+  //   margin-left: -31%;
+  // }
 `;
 
 const WelcomeText = styled.div`
   display: ${props => (props.isPageScrolledDown ? 'block' : 'none')};
   position: absolute;
-  bottom: -200px;
+  bottom: -500px;
   margin-left: 60px;
   color: white;
   font-size: 60px;
@@ -313,10 +321,8 @@ const SignUpButton = styled(LoginButton)`
   }
 `;
 
-const bounce1 = keyframes`
-  0% {bottom: 18px}
-  50% {bottom: 20px}
-  100% { bottom: 18px}
+const PageFooter = styled.div`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 380px;
 `;
-
-const PageFooter = styled.div``;
