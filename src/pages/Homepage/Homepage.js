@@ -22,28 +22,6 @@ function Homepage() {
   };
   console.log(pinData);
 
-  const searchCallback = (entries, observer) => {
-    entries.forEach(ob => {
-      if (ob.isIntersecting) {
-        fetch(`${BASE_URL}/pins?pagenumber=${pageNumber}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
-          },
-        })
-          .then(res => res.json())
-          .then(data => {
-            setPageNumber(prev => prev + 1);
-            setPinData(prev => {
-              return prev.concat(data);
-            });
-          });
-      }
-    });
-  };
-
   const callback = (entries, observer) => {
     entries.forEach(ob => {
       if (ob.isIntersecting) {
@@ -111,7 +89,9 @@ function Homepage() {
               );
             })}
       </div>
-      <div className={css.target} ref={target}></div>
+      <div className={css.target} ref={target}>
+        끝
+      </div>
     </>
   );
 }

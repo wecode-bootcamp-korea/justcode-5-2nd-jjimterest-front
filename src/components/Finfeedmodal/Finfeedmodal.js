@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import css from './Finfeedmodal.module.scss';
 import Commentmodal from '../Commentmodal/Commentmodal';
 import CommentBtnmodal from '../Commentmodal/CommentBtnmodal';
+import BoardList from '../BoardList/BoardList';
 import BASE_URL from '../../config';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
+  const btn = useRef();
   const myImg = localStorage.getItem('myimg');
   const [fuse, setFuse] = useState(true);
+  const [followst, setFollowst] = useState(false);
+  const [boardtitle, setBoardTitle] = useState();
+  const [onBoradList, setOnBoradList] = useState(false);
+  const [boadData, setBoardData] = useState();
 
   const [onInput, setOnInput] = useState(false);
 
@@ -32,6 +38,22 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   //       console.log('핀디테일', data);
   //     });
   // }, 5000);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/pin-make`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        setBoardData(data);
+        console.log('핀만들기 데이터', data);
+      });
+  }, []);
 
   useEffect(() => {
     if (fuse) {
@@ -108,8 +130,58 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
     }
   };
 
+  const follow = () => {
+    if (pinData && pinData[0].count) {
+      return `팔로워 ${pinData[0].count}명`;
+    } else {
+      return '팔로워 0명';
+    }
+  };
+  const followbtn = () => {
+    fetch(`${BASE_URL}/follow?followee_id=${pinData[0].user_id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('팔로우데이터', data);
+      });
+    setFollowst(prev => !prev);
+  };
+
+  const store = () => {
+    fetch(`${BASE_URL}/pin-organize`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+      },
+      body: JSON.stringify({
+        pin_id: pinData[0].id,
+        board_id: 3,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  };
   return (
-    <div className={css.wraper}>
+    <div
+      className={css.wraper}
+      onClick={e => {
+        if (e.target === btn.current) {
+          return;
+        } else {
+          setOnBoradList(false);
+        }
+      }}
+    >
       <div className={css.container}>
         <div className={css.imgWraper}>
           <img
@@ -120,8 +192,21 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         </div>
         <div className={css.messenger}>
           <div className={css.toolbar}>
-            <button className={css.boardBtn}>보드를선택하세요</button>
-            <button className={css.storeBtn}>저장</button>
+            <button
+              ref={btn}
+              className={css.boardBtn}
+              onClick={() => {
+                setOnBoradList(prev => !prev);
+              }}
+            >
+              {boardtitle ? boardtitle : '보드를선택하세요'}
+              {onBoradList ? (
+                <BoardList data={boadData[0].boards} title={setBoardTitle} />
+              ) : null}
+            </button>
+            <button className={css.storeBtn} onClick={store}>
+              저장
+            </button>
             <button className={css.back} onClick={closePin}>
               X
             </button>
@@ -129,7 +214,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           <h1 className={css.pinTitle}>
             {pinData !== undefined && pinData[0].title}
           </h1>
-          <div className={css.pinAlt}>Alt</div>
+          <div className={css.pinAlt}></div>
           <div className={css.wrapUserContents}>
             <div className={css.userContents}>
               <img className={css.userImg} src={proimg()} alt="유저사진" />
@@ -137,10 +222,15 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 <p className={css.userId}>
                   {pinData ? pinData[0].nickname : '익명'}
                 </p>
-                <p className={css.follow}>{pinData ? pinData[0].count : 0}</p>
+                <p className={css.follow}>{follow()}</p>
               </div>
             </div>
-            <button className={css.followBtn}>팔로우</button>
+            <button
+              className={followst ? css.followAct : css.followBtn}
+              onClick={followbtn}
+            >
+              {followst ? '팔로잉' : '팔로우'}
+            </button>
           </div>
           <div className={css.wrapComment}>
             <div className={css.comment}>{`댓글 ${UI()} 개`}</div>

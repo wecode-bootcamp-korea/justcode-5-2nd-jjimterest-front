@@ -5,7 +5,7 @@ import BASE_URL from '../../config';
 function Pin({ feedOntoggle, data, pinId }) {
   const [on, setOn] = useState(false);
   const [onStore, setOnStore] = useState(true);
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
 
   const modalOn = () => {
     setOn(prev => !prev);
@@ -14,9 +14,7 @@ function Pin({ feedOntoggle, data, pinId }) {
   const modalOut = () => {
     setOn(prev => !prev);
   };
-
   const btnClick = () => {
-    setOnStore(false);
     fetch(`${BASE_URL}/pins/${data.pin_id}`, {
       method: 'POST',
       headers: {
@@ -24,7 +22,10 @@ function Pin({ feedOntoggle, data, pinId }) {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
       },
-    });
+    })
+      .then(res => res.json())
+      .then(data => console.log(data));
+    setOnStore(false);
   };
   return (
     <div className={css.wrapPin} onMouseEnter={modalOn} onMouseLeave={modalOut}>
