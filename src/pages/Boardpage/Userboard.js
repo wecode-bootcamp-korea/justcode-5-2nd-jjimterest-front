@@ -4,6 +4,7 @@ import Created from '../../components/Myprofile/Created';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import Nav from '../../components/Nav/Nav';
 
 function Userboard() {
   const params = useParams();
@@ -12,6 +13,7 @@ function Userboard() {
   const data = location.state.boardData;
   return (
     <div className={css.container}>
+      <Nav />
       <div className={css.header}>
         <div>
           <div className={css.headerContents}>

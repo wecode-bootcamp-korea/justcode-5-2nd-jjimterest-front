@@ -3,6 +3,7 @@ import css from './SettingM.module.scss';
 import styled from 'styled-components';
 import Profilefooter from '../../components/Profilefooter/Profilefooter';
 import BASE_URL from '../../config';
+import Nav from '../../components/Nav/Nav';
 
 function SettingM() {
   const [switchBtn, setSwitchBtn] = useState(true);
@@ -102,6 +103,7 @@ function SettingM() {
   `;
   return (
     <div className={css.container}>
+      <Nav></Nav>
       <div className={css.innerContainer}>
         <div className={css.sideBar}>
           <div className={css.sideBarContents}>

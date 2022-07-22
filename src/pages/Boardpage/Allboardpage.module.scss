@@ -4,17 +4,6 @@
   flex-direction: column;
   width: 100%;
   position: relative;
-  .linkLay {
-    color: black;
-    border: none;
-    outline: none;
-    text-decoration: none;
-    &:hover,
-    &:active {
-      text-decoration: none;
-    }
-  }
-
   .header {
     display: flex;
     justify-content: center;
@@ -23,7 +12,7 @@
     .headerContents {
       width: 100vw;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
     }
     .headerBdName {
       font-size: 36px;

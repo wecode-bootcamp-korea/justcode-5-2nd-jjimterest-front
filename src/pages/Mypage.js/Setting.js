@@ -133,7 +133,6 @@ function Setting() {
   `;
   return (
     <div className={css.container}>
-      <Nav />
       <input
         className={css.imgInput}
         name="imggeUpload"
@@ -148,6 +147,7 @@ function Setting() {
           사진 선택
         </div>
       </Modal>
+      <Nav />
       <div className={css.innerContainer}>
         <div className={css.sideBar}>
           <div className={css.sideBarContents}>

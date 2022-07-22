@@ -7,6 +7,7 @@ import Modal from '../../components/Myprofile/Modal';
 import { useParams } from 'react-router-dom';
 import BASE_URL from '../../config';
 import FollowContainer from '../../components/FollowContainer/FollowContainer';
+import Nav from '../../components/Nav/Nav';
 function Userpage() {
   const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
@@ -90,6 +91,7 @@ function Userpage() {
 
   return (
     <div className={css.container}>
+      <Nav />
       <Modal visible={followerModal} onClose={closeFollowerModal}>
         <div className={css.modalHeader}>팔로워</div>
         {userDate &&

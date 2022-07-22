@@ -6,7 +6,7 @@ function Allboardcard({ boardName, pinCnt, nickname, firstImg, allPin }) {
   return (
     <div className={css.allPinContainer}>
       <Link
-        to={`/${nickname}/모든핀`}
+        to={`/${nickname}/${boardName}/all`}
         className={css.linkLay}
         state={{ allPinData: allPin }}
       >

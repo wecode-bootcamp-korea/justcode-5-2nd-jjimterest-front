@@ -37,7 +37,6 @@ function Nav() {
       .then(res => res.json())
       .then(data => {
         setPName(data);
-        console.log('네브 패치 데이터 ', data);
         setProfileImg(data[0].profile_image);
         localStorage.setItem('myimg', data[0].profile_image);
       });
@@ -81,9 +80,6 @@ function Nav() {
   const gotopainpage = () => {
     navigate('/finpage');
   };
-  const gotoprofile = () => {
-    navigate('/mypage');
-  };
 
   return (
     <div className={css.nav} ref={nav}>
@@ -110,7 +106,12 @@ function Nav() {
         <Link to={`/mypage`} state={{ pName: pName }}>
           <img
             className={css.profileImg}
-            src={profileImg !== undefined && profileImg}
+            src={`${
+              profileImg &&
+              (profileImg.profile_image === 'h'
+                ? profileImg.profile_image
+                : `${BASE_URL}` + profileImg.profile_image)
+            }`}
             alt="유저프로필이미지"
           />
         </Link>

@@ -27,7 +27,7 @@ function Router() {
         <Route path="/settings/account-settings" element={<SettingM />} />
         <Route path="/mypage/:boardname/_tools" element={<Boardarrange />} />
         <Route path="/:nickname/:boardname/" element={<Userboard />} />
-        <Route path="/:nickname/모든핀" element={<Allboardpage />} />
+        <Route path="/:nickname/:boardname/all" element={<Allboardpage />} />
       </Routes>
     </BrowserRouter>
   );

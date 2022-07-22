@@ -216,7 +216,7 @@ function Stored({
           boardName={'모든 핀'}
           pinCnt={allPins && allPins.length}
           linkNav={linkNav}
-          allPin={allPins && allPins}
+          allPin={allPins}
         />
         {bdList &&
           bdList.map((data, index) => (

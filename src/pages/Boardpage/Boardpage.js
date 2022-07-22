@@ -11,6 +11,7 @@ import Created from '../../components/Myprofile/Created';
 import Modal from '../../components/Myprofile/Modal';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import BASE_URL from '../../config';
+import Nav from '../../components/Nav/Nav';
 
 function Boardpage() {
   const params = useParams();
@@ -89,6 +90,7 @@ function Boardpage() {
 
   return (
     <div className={css.container}>
+      <Nav />
       <Modal visible={createModal} onClose={closeCreateModal}>
         <div className={css.modalHeader}>보드 수정하기</div>
         <div className={css.modalInner}>
@@ -143,7 +145,11 @@ function Boardpage() {
           <p>아이디어 더 보기</p>
         </div>
         <div>
-          <Link to={`/mypage/${boardname}/_tools`} className={css.linkLay}>
+          <Link
+            to={`/mypage/${boardname}/_tools`}
+            className={css.linkLay}
+            state={{ data: data }}
+          >
             <div className={css.iconBox}>
               <FontAwesomeIcon
                 icon={faSquareCheck}
