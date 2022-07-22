@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
 import Recent from '../Recent/Recent';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../config';
 
 function Nav({ setDoneSearch, setSearchData, observer }) {
   const [profileImg, setProfileImg] = useState();
+  const [pName, setPName] = useState();
   const search = useRef();
   const [keyword, setKeyword] = useState();
   const [pageNumber, setPageNumber] = useState(1);
@@ -28,17 +29,17 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
   // }, []);
 
   useEffect(() => {
-    fetch(`${BASE_URL}/edit-profile`, {
+    fetch(`${BASE_URL}edit-profile`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M',
       },
     })
       .then(res => res.json())
       .then(data => {
-        console.log('네브 패치 데이터 ', data);
+        setPName(data);
         setProfileImg(data[0].profile_image);
         localStorage.setItem('myimg', data[0].profile_image);
       });
@@ -56,7 +57,6 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
       window.removeEventListener('scroll', scrollY);
     };
   });
-
   const scrollY = () => {
     setScroll(window.scrollY);
     if (scroll > 15) {
@@ -83,10 +83,7 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
   const gotopainpage = () => {
     navigate('/finpage');
   };
-
-  const gotoprofile = () => {
-    navigate('/mypage');
-  };
+  console.log(profileImg);
 
   const gotokeyword = () => {
     fetch(`${BASE_URL}/pins?pagenumber=${pageNumber}&keyword=${keyword}`, {
@@ -139,12 +136,16 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
       </div>
       <div className={css.emoji}>
         <button className={css.message}>message</button>
-        <img
-          className={css.profileImg}
-          src={profileImg !== undefined && profileImg}
-          onClick={gotoprofile}
-          alt="유저프로필이미지"
-        />
+        <Link to={`/mypage`} state={{ pName: pName }}>
+          <img
+            className={css.profileImg}
+            src={
+              profileImg &&
+              (profileImg === 'h' ? profileImg : `${BASE_URL}` + profileImg)
+            }
+            alt="유저프로필이미지"
+          />
+        </Link>
       </div>
     </div>
   );

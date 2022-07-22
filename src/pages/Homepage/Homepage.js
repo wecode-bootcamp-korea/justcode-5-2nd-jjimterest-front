@@ -22,6 +22,7 @@ function Homepage() {
   };
   console.log(pinData);
 
+<<<<<<< HEAD
   const callback = (entries, observer) => {
     entries.forEach(ob => {
       if (ob.isIntersecting) {
@@ -38,6 +39,26 @@ function Homepage() {
             setPageNumber(prev => prev + 1);
             setPinData(prev => {
               return prev.concat(data);
+=======
+  useEffect(() => {
+    const callback = (entries, observer) => {
+      entries.forEach(ob => {
+        if (ob.isIntersecting) {
+          fetch(`${BASE_URL}pins?pagenumber=${pageNumber}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization:
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M',
+            },
+          })
+            .then(res => res.json())
+            .then(data => {
+              setPageNumber(prev => prev + 1);
+              setPinData(prev => {
+                return prev.concat(data);
+              });
+>>>>>>> develop
             });
           });
       }
