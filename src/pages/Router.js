@@ -9,6 +9,8 @@ import Userpage from './Mypage.js/Userpage';
 import ScrollToTop from '../components/Scroll/Scroll';
 import SettingM from './Mypage.js/SettingM';
 import Boardarrange from './Boardpage/Boardarrange';
+import Userboard from './Boardpage/Userboard';
+import Allboardpage from './Boardpage/Allboardpage';
 
 function Router() {
   return (
@@ -18,15 +20,14 @@ function Router() {
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Loginpage />} />
         <Route path="/finpage" element={<Finpage />} />
-        <Route path="/mynickname" element={<Mypage />} />
+        <Route path="/mypage" element={<Mypage />} />
         <Route path="/settings" element={<Setting />} />
-        <Route path="/mynickname/:boardname" element={<Boardpage />} />
+        <Route path="/mypage/:boardname" element={<Boardpage />} />
         <Route path="/:nickname" element={<Userpage />} />
         <Route path="/settings/account-settings" element={<SettingM />} />
-        <Route
-          path="/mynickname/:boardname/_tools"
-          element={<Boardarrange />}
-        />
+        <Route path="/mypage/:boardname/_tools" element={<Boardarrange />} />
+        <Route path="/:nickname/:boardname/" element={<Userboard />} />
+        <Route path="/:nickname/:boardname/all" element={<Allboardpage />} />
       </Routes>
     </BrowserRouter>
   );

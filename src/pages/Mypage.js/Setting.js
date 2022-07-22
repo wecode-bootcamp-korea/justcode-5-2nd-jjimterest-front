@@ -3,38 +3,76 @@ import css from './Setting.module.scss';
 import styled from 'styled-components';
 import Modal from '../../components/Myprofile/Modal';
 import Profilefooter from '../../components/Profilefooter/Profilefooter';
-import { BASE_URL } from '../../config';
+import BASE_URL from '../../config';
+import Nav from '../../components/Nav/Nav';
 
 function Setting() {
   const [switchBtn, setSwitchBtn] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [desc, setDesc] = useState('');
-  const [web, setWeb] = useState('');
-  const [nickName, setNickName] = useState('');
   const [createModal, setCreateModal] = useState(false);
   const imgInput = useRef();
   const [fileImage, setFileImage] = useState('');
-  const [setting, SetSetting] = useState();
+  const [userName, setUserName] = useState();
+  const [desc, setDesc] = useState();
+  const [nickName, setNickName] = useState();
+  const [imgUpload] = useState(new FormData());
+  const reader = new FileReader();
+
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNjU4MTk0OTQzfQ.NCdRjQSoDGLAKuarZU7WTXDWnYWwwc6JLEjoFNEMyM0';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
   useEffect(() => {
-    fetch(`http://localhost:10010/edit-profile`, {
-      method: 'GET',
+    const fetchData = async () => {
+      const result = await (
+        await fetch(`${BASE_URL}edit-profile`, {
+          method: 'GET',
+          headers: {
+            // Authorization: localStorage.getItem('login-token'),
+            Authorization: `Bearer ${token}`,
+          },
+        })
+      ).json();
+      setUserName(`${result[0].name}`);
+      setNickName(`${result[0].nickname}`);
+      setFileImage(`${result[0].profile_image}`);
+    };
+    fetchData();
+  }, []);
+
+  const view = imgInput => {
+    if (imgInput.current.files[0]) {
+      reader.readAsDataURL(imgInput.current.files[0]);
+
+      reader.onload = e => {
+        imgInput.current.src = e.target.result;
+      };
+      imgUpload.append('image', URL.createObjectURL(imgInput.current.files[0]));
+    }
+  };
+
+  const profileEdit = () => {
+    imgUpload.append('name', userName);
+    imgUpload.append('nickname', nickName);
+    imgUpload.append('intro', desc);
+
+    fetch(`${BASE_URL}edit-profile`, {
       headers: {
-        // Authorization: localStorage.getItem('access_token'),
+        // Authorization: localStorage.getItem('login-token'),
         Authorization: `Bearer ${token}`,
       },
-    })
-      .then(res => res.json())
-      .then(res => {
-        SetSetting(res);
-      });
-  }, []);
-  console.log(setting);
+      method: 'PUT',
+      body: imgUpload,
+    }).then(res => {
+      if (res.ok) {
+        alert('수정완료!');
+      } else {
+        alert('수정에 실패했습니다!');
+      }
+    });
+  };
 
   const saveFileImage = event => {
     setFileImage(URL.createObjectURL(event.target.files[0]));
+    view(imgInput);
   };
   const onImgInputBtnClick = event => {
     event.preventDefault();
@@ -54,9 +92,6 @@ function Setting() {
   };
   const inputHandlerD = e => {
     setDesc(e.target.value);
-  };
-  const inputHandlerW = e => {
-    setWeb(e.target.value);
   };
   const inputHandlerN = e => {
     setNickName(e.target.value);
@@ -112,6 +147,7 @@ function Setting() {
           사진 선택
         </div>
       </Modal>
+      <Nav />
       <div className={css.innerContainer}>
         <div className={css.sideBar}>
           <div className={css.sideBarContents}>
@@ -132,14 +168,15 @@ function Setting() {
             <div>사진</div>
             <div className={css.imgBox}>
               <div className={css.imgWrapper}>
-                {fileImage ? (
-                  <img alt="sample" src={fileImage} className={css.mePhoto} />
-                ) : (
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/KakaoTalk_Photo_2022-07-12-14-22-49.jpeg`}
-                    className={css.mePhoto}
-                  ></img>
-                )}
+                {fileImage &&
+                  (fileImage !== null ? (
+                    <img alt="sample" src={fileImage} className={css.mePhoto} />
+                  ) : (
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/normal.png`}
+                      className={css.mePhoto}
+                    ></img>
+                  ))}
               </div>
               <div className={css.imgBtn} onClick={openCreateModal}>
                 변경
@@ -149,7 +186,7 @@ function Setting() {
             <input
               className={css.nameInput}
               onChange={inputHandlerU}
-              value={userName}
+              value={userName && userName}
             />
             <div>소개</div>
             <textarea
@@ -157,13 +194,6 @@ function Setting() {
               placeholder="회원님의 이야기를 들려주세요."
               onChange={inputHandlerD}
               value={desc}
-            />
-            <div>웹사이트</div>
-            <input
-              className={css.webInput}
-              placeholder="회원님의 사이트로 트래픽을 유도하는 링크를 추가하세요."
-              onChange={inputHandlerW}
-              value={web}
             />
             <div>사용자이름</div>
             <input
@@ -174,7 +204,7 @@ function Setting() {
           </div>
         </div>
       </div>
-      <Profilefooter></Profilefooter>
+      <Profilefooter btn={profileEdit}></Profilefooter>
     </div>
   );
 }
