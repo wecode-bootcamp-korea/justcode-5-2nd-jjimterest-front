@@ -101,10 +101,24 @@
       .wrapComment {
         width: 90%;
         display: flex;
+        align-items: center;
+        position: relative;
 
         .comment {
+          margin-top: 25px;
+          font-size: 20px;
         }
         .plusBtn {
+          position: absolute;
+          left: 30%;
+          bottom: 10%;
+          width: 15px;
+          height: 15px;
+          border: none;
+          border-top: 3px solid #000;
+          border-right: 3px solid #000;
+          transform: rotate(45deg);
+          background-color: white;
         }
       }
       .commentInputContainer {

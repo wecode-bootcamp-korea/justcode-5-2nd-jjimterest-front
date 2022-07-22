@@ -6,14 +6,57 @@ import BASE_URL from '../../config';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const myImg = localStorage.getItem('myimg');
+  const [fuse, setFuse] = useState(true);
 
   const [onInput, setOnInput] = useState(false);
 
   const [pinData, setPinData] = useState();
+  const [comment, setComment] = useState();
 
   const commentOn = e => {
     setOnInput(true);
   };
+
+  // const timer = setInterval(() => {
+  //   fetch(`${BASE_URL}/pins/${pinId[0]}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization:
+  //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setPinData(data);
+  //       console.log('핀디테일', data);
+  //     });
+  // }, 5000);
+
+  useEffect(() => {
+    if (fuse) {
+      const timer = setInterval(() => {
+        fetch(`${BASE_URL}/pins/${pinId[0]}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          },
+        })
+          .then(res => res.json())
+          .then(data => {
+            setPinData(data);
+            console.log('핀디테일', data);
+          });
+      }, 1000);
+      return () => {
+        console.log('인터벌종료');
+        setFuse(false);
+        clearInterval(timer);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     fetch(`${BASE_URL}/pins/${pinId[0]}`, {
@@ -26,14 +69,20 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('핀상세', data);
         setPinData(data);
+        console.log('핀디테일', data);
       });
-  }, [pinId]);
+  }, []);
 
   const [on, setOn] = useState(false);
-  const onToggle = () => {
+
+  const onToggle = e => {
     setOn(prev => !prev);
+    if (!on) {
+      e.target.style.transform = `rotate(135deg)`;
+    } else {
+      e.target.style.transform = `rotate(45deg)`;
+    }
   };
   const closePin = () => {
     setFeedOn(false);
@@ -45,6 +94,17 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       return pinData[0].comments.filter(data => data.parent_id === null).length;
     } else {
       return 0;
+    }
+  };
+
+  const proimg = () => {
+    if (pinData) {
+      console.log(`${BASE_URL}` + '/' + pinData[0].profile_image);
+      return pinData[0].profile_image[0] === 'h'
+        ? pinData[0].profile_image
+        : `${BASE_URL}` + '/' + pinData[0].profile_image;
+    } else {
+      return 'https://i.pinimg.com/474x/6b/95/08/6b95083b8472a0e3c41ea2fa9297e5ec.jpg';
     }
   };
 
@@ -72,15 +132,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           <div className={css.pinAlt}>Alt</div>
           <div className={css.wrapUserContents}>
             <div className={css.userContents}>
-              <img
-                className={css.userImg}
-                src={
-                  pinData
-                    ? pinData[0].profile_image
-                    : 'https://i.pinimg.com/564x/ea/04/39/ea0439877a5f4fa018632bcd6b20b3d6.jpg'
-                }
-                alt="유저사진"
-              />
+              <img className={css.userImg} src={proimg()} alt="유저사진" />
               <div className={css.userText}>
                 <p className={css.userId}>
                   {pinData ? pinData[0].nickname : '익명'}
@@ -92,9 +144,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           </div>
           <div className={css.wrapComment}>
             <div className={css.comment}>{`댓글 ${UI()} 개`}</div>
-            <button className={css.plusBtn} onClick={onToggle}>
-              더보기
-            </button>
+            <button className={css.plusBtn} onClick={onToggle}></button>
           </div>
           {on ? <Commentmodal pinData={pinData[0].comments} /> : null}
           <div className={css.commentInputContainer}>
@@ -103,9 +153,18 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
               className={css.commentInput}
               placeholder="댓글 추가"
               onFocus={commentOn}
+              onChange={e => {
+                setComment(e.target.value);
+              }}
             />
           </div>
-          {onInput ? <CommentBtnmodal setOn={setOnInput} /> : null}
+          {onInput ? (
+            <CommentBtnmodal
+              setOn={setOnInput}
+              comment={comment}
+              pinId={pinId[0]}
+            />
+          ) : null}
         </div>
       </div>
     </div>
