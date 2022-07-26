@@ -41,7 +41,6 @@ function Nav({
       window.removeEventListener('scroll', scrollY);
     };
   });
-
   const scrollY = () => {
     setScroll(window.scrollY);
     if (scroll > 15) {
@@ -82,7 +81,6 @@ function Nav({
   const gotopainpage = () => {
     navigate('/finpage');
   };
-
   const gotoprofile = () => {
     navigate('/mypage');
   };

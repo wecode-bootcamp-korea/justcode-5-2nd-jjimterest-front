@@ -6,6 +6,7 @@
   background-color: white;
   z-index: 1;
   position: fixed;
+  top: 0px;
 
   .wrapBtn {
     display: flex;
@@ -18,12 +19,16 @@
       border-radius: 30%;
       border: none;
       margin-right: 5px;
+      cursor: pointer;
     }
     .addBtn {
       width: 70px;
       height: 80%;
       border-radius: 30%;
       border: none;
+      background-color: #efefef;
+      cursor: pointer;
+      font-size: 14px;
     }
   }
   .wrapSearchBar {
@@ -41,6 +46,7 @@
       background-color: rgba(128, 128, 128, 0.125);
       border-radius: 30px;
       padding-left: 25px;
+      outline: none;
       &:focus-visible {
         outline: 5px solid skyblue;
       }
