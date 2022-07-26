@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import NestedComments from '../NestedComments/NestedComments';
-import css from './Comment.module.scss';
 import BASE_URL from '../../config';
-import Nestedcomment from '../NestedComment/Nestedcomment';
+import css from './Nestedcomment.module.scss';
 
-function Comment({ data, pinId, nestedcomments }) {
+function Nestedcomment({ data }) {
   const [on, setOn] = useState(false);
   const [likeCount, setLikeCount] = useState(data.like_count);
   const now = new Date().getTime();
   const be = new Date(data.created_at);
   const before = be.getTime();
   const time = (now - before) / 1000 / 60;
-  const [nestOn, setNestOn] = useState(true);
 
   const NestedCommentsOn = () => {
     setOn(true);
@@ -56,10 +53,6 @@ function Comment({ data, pinId, nestedcomments }) {
         }
       });
   };
-  const nestedcommentstoggle = () => {
-    setNestOn(false);
-  };
-
   return (
     <div className={css.commentContainer}>
       <img className={css.commentImg} src={data.profile_image} alt="이미지" />
@@ -80,24 +73,9 @@ function Comment({ data, pinId, nestedcomments }) {
             삭제
           </div>
         </div>
-        {nestedcomments[0] ? (
-          nestOn ? (
-            <div onClick={nestedcommentstoggle} className={css.nestedcomment}>
-              --- 답변 {nestedcomments.length}개 보기
-            </div>
-          ) : null
-        ) : null}
-        {nestedcomments[0]
-          ? nestOn
-            ? null
-            : nestedcomments.map(data => {
-                return <Nestedcomment data={data} />;
-              })
-          : null}
-        {on ? <NestedComments data={data} setOn={setOn} pinId={pinId} /> : null}
       </div>
     </div>
   );
 }
 
-export default Comment;
+export default Nestedcomment;

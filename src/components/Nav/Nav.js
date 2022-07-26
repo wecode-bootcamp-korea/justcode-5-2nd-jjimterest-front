@@ -4,28 +4,15 @@ import Recent from '../Recent/Recent';
 import { useNavigate } from 'react-router-dom';
 import BASE_URL from '../../config';
 
-function Nav({ setDoneSearch, setSearchData, observer }) {
+function Nav({
+  setDoneSearch,
+  setKeyword,
+  setPageNumber,
+  setSearchData,
+  setSearchPageNumber,
+}) {
   const [profileImg, setProfileImg] = useState();
   const search = useRef();
-  const [keyword, setKeyword] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
-
-  // useEffect(() => {
-  //   fetch(`${BASE_URL}/profile/${user}`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization:
-  //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
-  //     },
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log('네브 패치 데이터 ', data);
-  //       setProfileImg(data[0].profile_image);
-  //       localStorage.setItem('myimg', data[0].profile_image);
-  //     });
-  // }, []);
 
   useEffect(() => {
     fetch(`${BASE_URL}/edit-profile`, {
@@ -38,9 +25,7 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('네브 패치 데이터 ', data);
         setProfileImg(data[0].profile_image);
-        localStorage.setItem('myimg', data[0].profile_image);
       });
   }, []);
 
@@ -65,10 +50,24 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
       nav.current.style.backgroundColor = 'white';
     }
   };
+
   const onToggle = () => {
     setOn(true);
     search.current.focus();
+    fetch(`${BASE_URL}/recent-search`, {
+      method: 'DELETE',
+      headers: {
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+      },
+    });
   };
+
+  const focus = () => {
+    setOn(true);
+    search.current.focus();
+  };
+
   const offToggle = () => {
     setTimeout(() => {
       if (document.activeElement !== search.current) {
@@ -89,24 +88,10 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
   };
 
   const gotokeyword = () => {
-    fetch(`${BASE_URL}/pins?pagenumber=${pageNumber}&keyword=${keyword}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('키워드 패치 데이터', data);
-        setPageNumber(prev => prev + 1);
-        setSearchData(prev => {
-          return prev.concat(data);
-        });
-        setDoneSearch(false);
-      });
-    observer.disconnect();
+    setDoneSearch(false);
+    setPageNumber(1);
+    setSearchData([]);
+    setSearchPageNumber(1);
   };
 
   return (
@@ -124,7 +109,7 @@ function Nav({ setDoneSearch, setSearchData, observer }) {
           ref={search}
           className={css.search}
           placeholder="검색"
-          onFocus={onToggle}
+          onFocus={focus}
           onBlur={offToggle}
           onChange={e => {
             setKeyword(e.target.value);
