@@ -1,0 +1,42 @@
+.commentContainer {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+  .commentImg {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+  }
+  .firstLine {
+    display: flex;
+    align-items: center;
+    .nickname {
+      margin-right: 10px;
+      text-align: center;
+    }
+    .content {
+      font-weight: 400;
+    }
+  }
+  .secondLine {
+    display: flex;
+    font-weight: 100;
+    .recomment {
+      margin-right: 5px;
+      color: silver;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .time {
+      margin-right: 5px;
+    }
+    .like {
+      margin-right: 5px;
+      cursor: pointer;
+      color: red;
+    }
+    .delete {
+      cursor: pointer;
+    }
+  }
+}
