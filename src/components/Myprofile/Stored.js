@@ -242,7 +242,9 @@ function Stored({
           <div className={css.pinContainer}>
             {myPins.length
               ? myPins.map(data => {
-                  return <img alt="핀 이미지" src={`${data.image}`} />;
+                  return (
+                    <img alt="핀 이미지" src={`${BASE_URL}${data.image}`} />
+                  );
                 })
               : setNoIdea(false)}
           </div>

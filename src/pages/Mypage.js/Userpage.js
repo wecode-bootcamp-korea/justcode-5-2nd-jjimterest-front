@@ -97,7 +97,7 @@ function Userpage() {
         {userDate &&
           userDate.follower.map((data, index) => (
             <FollowContainer
-              boardName={data.profile_image}
+              img={data.profile_image}
               userName={data.nickname}
               key={index}
             />
@@ -108,7 +108,7 @@ function Userpage() {
         {userDate &&
           userDate.following.map((data, index) => (
             <FollowContainer
-              boardName={data.profile_image}
+              img={data.profile_image}
               userName={data.nickname}
               key={index}
             />
