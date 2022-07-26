@@ -30,6 +30,8 @@ function Stored({
   const [bdName, setBdName] = useState('');
   const [noIdea, setNoIdea] = useState(true);
 
+  const checkedBox = () => {};
+
   const createBoard = async () => {
     await fetch(`${BASE_URL}board`, {
       headers: {
@@ -243,7 +245,11 @@ function Stored({
             {myPins.length
               ? myPins.map(data => {
                   return (
-                    <img alt="핀 이미지" src={`${BASE_URL}${data.image}`} />
+                    <img
+                      alt="핀 이미지"
+                      src={`${BASE_URL}${data.image}`}
+                      onClick={checkedBox}
+                    />
                   );
                 })
               : setNoIdea(false)}
