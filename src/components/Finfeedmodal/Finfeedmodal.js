@@ -13,31 +13,10 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const [boardtitle, setBoardTitle] = useState();
   const [onBoradList, setOnBoradList] = useState(false);
   const [boadData, setBoardData] = useState();
-
+  const [on, setOn] = useState(false);
   const [onInput, setOnInput] = useState(false);
-
   const [pinData, setPinData] = useState();
   const [comment, setComment] = useState();
-
-  const commentOn = e => {
-    setOnInput(true);
-  };
-
-  // const timer = setInterval(() => {
-  //   fetch(`${BASE_URL}/pins/${pinId[0]}`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization:
-  //         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
-  //     },
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setPinData(data);
-  //       console.log('핀디테일', data);
-  //     });
-  // }, 5000);
 
   useEffect(() => {
     fetch(`${BASE_URL}/pin-make`, {
@@ -51,7 +30,6 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       .then(res => res.json())
       .then(data => {
         setBoardData(data);
-        console.log('핀만들기 데이터', data);
       });
   }, []);
 
@@ -69,16 +47,14 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           .then(res => res.json())
           .then(data => {
             setPinData(data);
-            console.log('핀디테일', data);
           });
       }, 1000);
       return () => {
-        console.log('인터벌종료');
         setFuse(false);
         clearInterval(timer);
       };
     }
-  }, []);
+  }, [pinId, fuse]);
 
   useEffect(() => {
     fetch(`${BASE_URL}/pins/${pinId[0]}`, {
@@ -92,11 +68,8 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       .then(res => res.json())
       .then(data => {
         setPinData(data);
-        console.log('핀디테일', data);
       });
-  }, []);
-
-  const [on, setOn] = useState(false);
+  }, [pinId]);
 
   const onToggle = e => {
     setOn(prev => !prev);
@@ -110,6 +83,9 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
     setFeedOn(false);
     element.scrollIntoView(false);
   };
+  const commentOn = e => {
+    setOnInput(true);
+  };
 
   const UI = () => {
     if (pinData && pinData[0].comments) {
@@ -121,10 +97,9 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
 
   const proimg = () => {
     if (pinData) {
-      console.log(`${BASE_URL}` + '/' + pinData[0].profile_image);
       return pinData[0].profile_image[0] === 'h'
         ? pinData[0].profile_image
-        : `${BASE_URL}` + '/' + pinData[0].profile_image;
+        : BASE_URL + '/' + pinData[0].profile_image;
     } else {
       return 'https://i.pinimg.com/474x/6b/95/08/6b95083b8472a0e3c41ea2fa9297e5ec.jpg';
     }
@@ -137,6 +112,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       return '팔로워 0명';
     }
   };
+
   const followbtn = () => {
     fetch(`${BASE_URL}/follow?followee_id=${pinData[0].user_id}`, {
       method: 'POST',
@@ -145,11 +121,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
       },
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log('팔로우데이터', data);
-      });
+    });
     setFollowst(prev => !prev);
   };
 
@@ -165,11 +137,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         pin_id: pinData[0].id,
         board_id: 3,
       }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
+    });
   };
   return (
     <div
@@ -214,7 +182,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           <h1 className={css.pinTitle}>
             {pinData !== undefined && pinData[0].title}
           </h1>
-          <div className={css.pinAlt}></div>
+          <div className={css.pinAlt} />
           <div className={css.wrapUserContents}>
             <div className={css.userContents}>
               <img className={css.userImg} src={proimg()} alt="유저사진" />
@@ -234,9 +202,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           </div>
           <div className={css.wrapComment}>
             <div className={css.comment}>{`댓글 ${UI()} 개`}</div>
-            <button className={css.plusBtn} onClick={onToggle}></button>
+            <button className={css.plusBtn} onClick={onToggle} />
           </div>
-          {on ? <Commentmodal pinData={pinData[0].comments} /> : null}
+          {on ? (
+            <Commentmodal pinData={pinData[0].comments} pinId={pinId[0]} />
+          ) : null}
           <div className={css.commentInputContainer}>
             <img className={css.myImg} src={myImg} alt="이미지" />
             <input
