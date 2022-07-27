@@ -281,7 +281,7 @@ function Stored({
           bdList.map((data, index) => (
             <Boardcard
               boardData={data}
-              firstImg={data.pins[0].image}
+              firstImg={data.pins[0] && data.pins[0].image}
               boardName={data.title}
               pinCnt={data.pins.length}
               linkNav={linkNav}
