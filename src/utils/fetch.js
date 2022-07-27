@@ -2,7 +2,7 @@
 //   const firstResult = await fetch(url, option).then(res => res.json());
 
 //   if (firstResult.status === 401) {
-//     tokenResult = await fetch(tokenAPI, { 
+//     tokenResult = await fetch(tokenAPI, {
 //     headers: {
 //         'Content-Type': 'application/json',
 //         'Authorization': localStorage.getItem('refresh_token')
