@@ -144,7 +144,7 @@ function Boardpage() {
       </div>
       <div className={css.uiToolBox}>
         <div>
-          <Link to={`/`} className={css.linkLay}>
+          <Link to={`/main`} className={css.linkLay}>
             <div className={css.iconBox}>
               <FontAwesomeIcon icon={faStar} className={css.faStar} />
             </div>
@@ -182,7 +182,7 @@ function Boardpage() {
       </div>
       <div className={css.linkToPinW}>
         <div className={css.linkToPin}>
-          <Link to={`/`} className={css.linkLay}>
+          <Link to={`/main`} className={css.linkLay}>
             이 보드를 위한 아이디어를 찾아 볼까요?
             <div></div>
           </Link>
