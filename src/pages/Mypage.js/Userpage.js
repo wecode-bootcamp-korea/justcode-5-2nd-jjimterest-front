@@ -15,14 +15,12 @@ function Userpage() {
   const params = useParams();
   const { nickname } = params;
   const [userDate, setUserData] = useState();
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+
   useEffect(() => {
     fetch(`${BASE_URL}profile/${nickname}`, {
       method: 'GET',
       headers: {
-        // Authorization: localStorage.getItem('login-token'),
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
       .then(res => res.json())

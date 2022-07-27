@@ -4,6 +4,8 @@ import css from './Homepage.module.scss';
 import Pin from '../../components/Pin/Pin';
 import Nav from '../../components/Nav/Nav';
 import BASE_URL from '../../config';
+import queryString from 'query-string';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Homepage() {
   const [feedOn, setFeedOn] = useState(false);
@@ -15,8 +17,6 @@ function Homepage() {
   const [doneSearch, setDoneSearch] = useState(true);
   const [searchData, setSearchData] = useState([]);
   const [keyword, setKeyword] = useState();
-  // import queryString from 'query-string';
-  // import { useLocation, useNavigate } from 'react-router-dom';
   const target = useRef();
 
   const feedOntoggle = e => {
@@ -25,31 +25,31 @@ function Homepage() {
     setElement(e.target);
   };
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  // const userInfo = queryString.parse(useLocation().search);
+  const userInfo = queryString.parse(useLocation().search);
 
-  // const { email, nickname, profileImage, token, userId } = userInfo;
-  // const isSocialLoggedIn = useLocation().search.includes('token');
+  const { email, nickname, profileImage, token, userId } = userInfo;
+  const isSocialLoggedIn = useLocation().search.includes('token');
 
-  // useEffect(() => {
-  //   if (isSocialLoggedIn) {
-  //     localStorage.setItem('email', email);
-  //     localStorage.setItem('nickname', nickname);
-  //     localStorage.setItem('profileImage', profileImage);
-  //     localStorage.setItem('token', token);
-  //     localStorage.setItem('userId', userId);
-  //     navigate('/');
-  //   }
-  // }, [
-  //   email,
-  //   nickname,
-  //   profileImage,
-  //   token,
-  //   userId,
-  //   isSocialLoggedIn,
-  //   navigate,
-  // ]);
+  useEffect(() => {
+    if (isSocialLoggedIn) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('nickname', nickname);
+      localStorage.setItem('profileImage', profileImage);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+      navigate('/');
+    }
+  }, [
+    email,
+    nickname,
+    profileImage,
+    token,
+    userId,
+    isSocialLoggedIn,
+    navigate,
+  ]);
 
   const refresh = (pageNumber, keyword, isSearch) =>
     fetch(

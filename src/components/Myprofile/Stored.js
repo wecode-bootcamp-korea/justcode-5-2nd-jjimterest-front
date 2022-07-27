@@ -19,8 +19,6 @@ function Stored({
   nickname,
 }) {
   const [bdList, setBoardList] = useState(myDate);
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
   const arrRef = useRef();
   const creRef = useRef();
@@ -40,8 +38,7 @@ function Stored({
     fetch(`${BASE_URL}pin-organize`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('login-token'),
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'POST',
       body: JSON.stringify({
@@ -72,8 +69,7 @@ function Stored({
     await fetch(`${BASE_URL}board`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('login-token'),
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'POST',
       body: JSON.stringify({
