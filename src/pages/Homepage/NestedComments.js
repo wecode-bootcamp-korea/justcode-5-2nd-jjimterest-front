@@ -7,6 +7,14 @@ function NestedComments({ data, setOn, pinId }) {
   const myImg = localStorage.getItem('myImg');
   const [comment, setComment] = useState('');
 
+  const parent = () => {
+    if (data.parent_id) {
+      return data.parent_id;
+    } else {
+      return data.id;
+    }
+  };
+
   const send = () => {
     fetch(`${BASE_URL}comments`, {
       method: 'POST',
@@ -15,7 +23,7 @@ function NestedComments({ data, setOn, pinId }) {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        parent_id: data.id,
+        parent_id: parent(),
         pin_id: pinId,
         content: comment,
       }),
