@@ -11,7 +11,6 @@ const LoginContainer = ({
   changeBodyScroll,
 }) => {
   const navigate = useNavigate();
-  // const isLoggedIn = localStorage.getItem('token') !== null;
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
 
@@ -50,10 +49,6 @@ const LoginContainer = ({
         }
       });
   };
-
-  // useEffect(() => {
-  //   if (isLoggedIn) navigate('/');
-  // }, [isLoggedIn, navigate]);
 
   return (
     <Modal
