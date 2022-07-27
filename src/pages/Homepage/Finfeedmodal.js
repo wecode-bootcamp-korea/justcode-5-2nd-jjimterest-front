@@ -20,7 +20,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const navigate = useNavigate();
 
   const gotprofile = () => {
-    navigate(`/${pinData[0].nickname}`);
+    navigate(`/${pinData[0].name}`);
   };
 
   useEffect(() => {
@@ -70,6 +70,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       })
         .then(res => res.json())
         .then(data => {
+          console.log(data);
           setPinData(data);
         });
     }, 500);

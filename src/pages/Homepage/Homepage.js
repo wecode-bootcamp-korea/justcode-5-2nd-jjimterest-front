@@ -4,6 +4,8 @@ import css from './Homepage.module.scss';
 import Pin from './Pin';
 import Nav from '../../components/Nav/Nav';
 import BASE_URL from '../../config';
+import queryString from 'query-string';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Homepage() {
   const [feedOn, setFeedOn] = useState(false);
@@ -15,7 +17,6 @@ function Homepage() {
   const [doneSearch, setDoneSearch] = useState(true);
   const [searchData, setSearchData] = useState([]);
   const [keyword, setKeyword] = useState();
-
   const target = useRef();
 
   const feedOntoggle = e => {
@@ -23,6 +24,32 @@ function Homepage() {
     window.scrollTo(0, 0);
     setElement(e.target);
   };
+
+  const navigate = useNavigate();
+
+  const userInfo = queryString.parse(useLocation().search);
+
+  const { email, nickname, profileImage, token, userId } = userInfo;
+  const isSocialLoggedIn = useLocation().search.includes('token');
+
+  useEffect(() => {
+    if (isSocialLoggedIn) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('nickname', nickname);
+      localStorage.setItem('profileImage', profileImage);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+      navigate('/');
+    }
+  }, [
+    email,
+    nickname,
+    profileImage,
+    token,
+    userId,
+    isSocialLoggedIn,
+    navigate,
+  ]);
 
   const refresh = (pageNumber, keyword, isSearch) =>
     fetch(
@@ -32,7 +59,7 @@ function Homepage() {
         headers: {
           'Content-Type': 'application/json',
           Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjU4OTA1MjA0fQ.x_jRAVfJ1F72Z7gfmQOTspY5B3Hi8I-ko6_DFasLwnY',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
         },
       }
     );
@@ -62,7 +89,7 @@ function Homepage() {
             headers: {
               'Content-Type': 'application/json',
               Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjU4OTA1MjA0fQ.x_jRAVfJ1F72Z7gfmQOTspY5B3Hi8I-ko6_DFasLwnY',
+                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
             },
           })
             .then(res => res.json())

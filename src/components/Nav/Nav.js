@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
 import Recent from './Recent';
@@ -143,12 +142,6 @@ function Nav({
       </div>
     </div>
   );
-=======
-import React from 'react';
-
-function Nav() {
-  return <div>Nav</div>;
->>>>>>> develop
 }
 
 export default Nav;
