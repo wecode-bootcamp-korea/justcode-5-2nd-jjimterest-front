@@ -37,24 +37,24 @@ function Stored({
   //정리하기 post 온클릭함수
   const onArrangePost = boardId => {
     console.log(boardId);
-    // fetch(`${BASE_URL}pin-organize`, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     // Authorization: localStorage.getItem('login-token'),
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     pin_id: checkedList,
-    //     board_id: boardId,
-    //   }),
-    // }).then(res => {
-    //   if (res.ok) {
-    //     alert('수정완료!');
-    //   } else {
-    //     alert('수정 실패!');
-    //   }
-    // });
+    fetch(`${BASE_URL}pin-organize`, {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: localStorage.getItem('login-token'),
+        Authorization: `Bearer ${token}`,
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        pin_id: checkedList,
+        board_id: boardId,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert('수정완료!');
+      } else {
+        alert('수정 실패!');
+      }
+    });
     closeAModal();
   };
 
