@@ -1,0 +1,51 @@
+.container {
+  position: relative;
+  .innerContainer {
+    display: flex;
+    margin-top: 140px;
+    width: 100%;
+    .sideBar {
+      width: 20%;
+      display: flex;
+      .sideBarContents {
+        margin-left: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+  .correct {
+    padding-bottom: 150px;
+  }
+  .correctX {
+    padding-bottom: 150px;
+    color: red;
+  }
+  .mainContents {
+    width: 40%;
+    div {
+      margin: 20px 0px;
+    }
+    input,
+    textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: #efefef solid 2px;
+      font-size: 16px;
+      &:hover {
+        border: #969696 solid 2px;
+      }
+    }
+
+    .emailInput {
+      height: 48px;
+    }
+    .passwordInput {
+      height: 48px;
+    }
+    .rePasswordInput {
+      height: 48px;
+    }
+  }
+}

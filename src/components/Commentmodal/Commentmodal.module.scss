@@ -1,0 +1,25 @@
+.container {
+  width: 90%;
+  height: 300px;
+  overflow: scroll;
+  .commentList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .userImg {
+      width: 10%;
+      height: 50px;
+      border-radius: 100%;
+    }
+    .userInfo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 90%;
+      .userText {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
