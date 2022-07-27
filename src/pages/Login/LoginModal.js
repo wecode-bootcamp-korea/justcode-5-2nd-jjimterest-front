@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
-// import queryString from 'query-string';
 
 const LoginContainer = ({
   isLoginModalOpened,
@@ -13,7 +11,6 @@ const LoginContainer = ({
   changeBodyScroll,
 }) => {
   const navigate = useNavigate();
-  // const isLoggedIn = localStorage.getItem('token') !== null;
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
 
@@ -52,10 +49,6 @@ const LoginContainer = ({
         }
       });
   };
-
-  // useEffect(() => {
-  //   if (isLoggedIn) navigate('/');
-  // }, [isLoggedIn, navigate]);
 
   return (
     <Modal
@@ -198,7 +191,7 @@ const LoginButton = styled.button`
   color: white;
   font-size: 20px;
   outline: none;
-  cursor: default;
+  cursor: pointer;
 `;
 
 const OrText = styled.span`
