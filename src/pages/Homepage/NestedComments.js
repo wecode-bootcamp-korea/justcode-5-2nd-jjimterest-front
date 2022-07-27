@@ -38,8 +38,9 @@ function NestedComments({ data, setOn, pinId }) {
       <img
         className={css.myImg}
         src={
-          myImg &&
-          'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+          myImg[0] === 'n'
+            ? 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+            : myImg
         }
         alt="이미지"
       />
