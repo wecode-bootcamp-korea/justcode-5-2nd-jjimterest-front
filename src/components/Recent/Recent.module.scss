@@ -1,0 +1,39 @@
+.container {
+  width: 96%;
+  position: absolute;
+  background: white;
+  left: 12px;
+  bottom: -55px;
+  z-index: 1;
+  border-radius: 5px 5px 15px 15px;
+  .wrapRecent {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    .recentSearch {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding-left: 10px;
+      padding-right: 5px;
+      .RecentText {
+        font-size: 13px;
+      }
+    }
+    .deleteBtn {
+      height: 60%;
+      border: none;
+      border-radius: 50%;
+      font-size: 5px;
+    }
+  }
+  .text {
+    width: 100%;
+    height: 30px;
+    .keyword {
+      border: none;
+      border-radius: 10px;
+      margin-left: 5px;
+    }
+  }
+}
