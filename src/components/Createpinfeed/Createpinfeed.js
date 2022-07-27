@@ -32,7 +32,7 @@ function Createpinfeed({ index, deletepin }) {
   };
 
   useEffect(() => {
-    fetch(`${BASE_URL}/pin-make`, {
+    fetch(`${BASE_URL}pin-make`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ function Createpinfeed({ index, deletepin }) {
     imgUpload.append('boardId', pinInfo.board_id);
     imgUpload.append('category', pinInfo.category);
 
-    fetch(`${BASE_URL}/pin-make`, {
+    fetch(`${BASE_URL}pin-make`, {
       method: 'POST',
       headers: {
         Authorization:

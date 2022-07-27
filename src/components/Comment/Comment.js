@@ -26,7 +26,7 @@ function Comment({ data, pinId, nestedcomments }) {
   const compareTime = compare();
 
   const deletecommnet = () => {
-    fetch(`${BASE_URL}/comments/${data.id}`, {
+    fetch(`${BASE_URL}comments/${data.id}`, {
       method: 'DELETE',
       headers: {
         Authorization:
@@ -36,7 +36,7 @@ function Comment({ data, pinId, nestedcomments }) {
   };
 
   const likeBtn = () => {
-    fetch(`${BASE_URL}/comments/${data.id}/like`, {
+    fetch(`${BASE_URL}comments/${data.id}/like`, {
       method: 'POST',
       headers: {
         Authorization:
@@ -57,7 +57,7 @@ function Comment({ data, pinId, nestedcomments }) {
       });
   };
   const nestedcommentstoggle = () => {
-    setNestOn(false);
+    setNestOn(prev => !prev);
   };
 
   return (
@@ -80,21 +80,21 @@ function Comment({ data, pinId, nestedcomments }) {
             삭제
           </div>
         </div>
-        {nestedcomments[0] ? (
-          nestOn ? (
+        {on && <NestedComments data={data} setOn={setOn} pinId={pinId} />}
+        {nestedcomments[0] &&
+          (nestOn ? (
             <div onClick={nestedcommentstoggle} className={css.nestedcomment}>
               --- 답변 {nestedcomments.length}개 보기
             </div>
-          ) : null
-        ) : null}
-        {nestedcomments[0]
-          ? nestOn
-            ? null
-            : nestedcomments.map(data => {
-                return <Nestedcomment data={data} />;
-              })
-          : null}
-        {on ? <NestedComments data={data} setOn={setOn} pinId={pinId} /> : null}
+          ) : (
+            <div onClick={nestedcommentstoggle} className={css.nestedcomment}>
+              --- 답변 숨기기
+            </div>
+          ))}
+        {(nestedcomments[0] && nestOn) ||
+          nestedcomments.map(data => {
+            return <Nestedcomment key={data.id} data={data} pinId={pinId} />;
+          })}
       </div>
     </div>
   );

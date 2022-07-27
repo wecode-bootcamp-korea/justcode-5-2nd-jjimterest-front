@@ -36,7 +36,7 @@ const CommentBtnmodal = ({ setOn, comment, pinId }) => {
 
   const btnOff = () => {
     setOn(false);
-    fetch(`${BASE_URL}/comments`, {
+    fetch(`${BASE_URL}comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

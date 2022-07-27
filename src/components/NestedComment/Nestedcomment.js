@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import BASE_URL from '../../config';
 import css from './Nestedcomment.module.scss';
+import NestedComments from '../NestedComments/NestedComments';
 
-function Nestedcomment({ data }) {
+function Nestedcomment({ data, pinId }) {
   const [on, setOn] = useState(false);
   const [likeCount, setLikeCount] = useState(data.like_count);
   const now = new Date().getTime();
@@ -23,7 +24,7 @@ function Nestedcomment({ data }) {
   const compareTime = compare();
 
   const deletecommnet = () => {
-    fetch(`${BASE_URL}/comments/${data.id}`, {
+    fetch(`${BASE_URL}comments/${data.id}`, {
       method: 'DELETE',
       headers: {
         Authorization:
@@ -33,7 +34,7 @@ function Nestedcomment({ data }) {
   };
 
   const likeBtn = () => {
-    fetch(`${BASE_URL}/comments/${data.id}/like`, {
+    fetch(`${BASE_URL}comments/${data.id}/like`, {
       method: 'POST',
       headers: {
         Authorization:
@@ -73,10 +74,10 @@ function Nestedcomment({ data }) {
             삭제
           </div>
         </div>
+        {on && <NestedComments data={data} setOn={setOn} pinId={pinId} />}
       </div>
     </div>
   );
 }
 
 export default Nestedcomment;
-

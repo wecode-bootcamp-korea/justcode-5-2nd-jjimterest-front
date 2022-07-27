@@ -7,7 +7,7 @@ const Recent = ({ onToggle }) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      fetch(`${BASE_URL}/recent-search`, {
+      fetch(`${BASE_URL}recent-search`, {
         method: 'GET',
         headers: {
           Authorization:
