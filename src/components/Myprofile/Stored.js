@@ -56,6 +56,7 @@ function Stored({
       }
     });
     closeAModal();
+    window.location.reload();
   };
 
   //체크리스트 함수
@@ -307,6 +308,7 @@ function Stored({
                     <div key={data.id}>
                       <label htmlFor={data.id}>
                         <input
+                          className={css.noIdeaInput}
                           type="checkbox"
                           id={data.id}
                           value={data.id}
