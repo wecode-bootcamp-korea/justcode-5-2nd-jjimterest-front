@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import NestedComments from '../NestedComments/NestedComments';
+import NestedComments from '../../pages/Homepage/NestedComments';
 import css from './Comment.module.scss';
 import BASE_URL from '../../config';
-import Nestedcomment from '../NestedComment/Nestedcomment';
+import Nestedcomment from '../../pages/Homepage/Nestedcomment';
+import { token } from '../../components/Nav/Nav';
 
 function Comment({ data, pinId, nestedcomments }) {
   const [on, setOn] = useState(false);
@@ -29,8 +30,7 @@ function Comment({ data, pinId, nestedcomments }) {
     fetch(`${BASE_URL}comments/${data.id}`, {
       method: 'DELETE',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     });
   };
@@ -39,8 +39,7 @@ function Comment({ data, pinId, nestedcomments }) {
     fetch(`${BASE_URL}comments/${data.id}/like`, {
       method: 'POST',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())

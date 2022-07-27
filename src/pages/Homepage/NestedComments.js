@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 import css from './NestedComments.module.scss';
 import BASE_URL from '../../config';
+import { token } from '../../components/Nav/Nav';
 
 function NestedComments({ data, setOn, pinId }) {
-  const myImg = localStorage.getItem('myimg');
+  const myImg = localStorage.getItem('myImg');
   const [comment, setComment] = useState('');
+
+  const parent = () => {
+    if (data.parent_id) {
+      return data.parent_id;
+    } else {
+      return data.id;
+    }
+  };
 
   const send = () => {
     fetch(`${BASE_URL}comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        parent_id: data.id,
+        parent_id: parent(),
         pin_id: pinId,
         content: comment,
       }),
@@ -27,7 +35,15 @@ function NestedComments({ data, setOn, pinId }) {
   };
   return (
     <div className={css.commentInputContainer}>
-      <img className={css.myImg} src={myImg} alt="이미지" />
+      <img
+        className={css.myImg}
+        src={
+          myImg[0] === 'n'
+            ? 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+            : myImg
+        }
+        alt="이미지"
+      />
       <input
         className={css.commentInput}
         placeholder="답변 추가"
