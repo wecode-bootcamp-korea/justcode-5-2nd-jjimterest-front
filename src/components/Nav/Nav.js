@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
-import Recent from '../Recent/Recent';
-import { useNavigate } from 'react-router-dom';
+import Recent from './Recent';
+import { Link, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../config';
 
 function Nav({
@@ -13,6 +13,7 @@ function Nav({
   refresh,
 }) {
   const [profileImg, setProfileImg] = useState();
+  const [pName, setPName] = useState();
   const search = useRef();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function Nav({
     })
       .then(res => res.json())
       .then(data => {
+        setPName(data);
         setProfileImg(data[0].profile_image);
       });
   }, []);
@@ -82,9 +84,6 @@ function Nav({
   const gotopainpage = () => {
     navigate('/finpage');
   };
-  const gotoprofile = () => {
-    navigate('/mypage');
-  };
 
   const gotokeyword = e => {
     setSearchPageNumber(2);
@@ -130,12 +129,16 @@ function Nav({
       </div>
       <div className={css.emoji}>
         <button className={css.message}>message</button>
-        <img
-          className={css.profileImg}
-          src={profileImg && profileImg}
-          onClick={gotoprofile}
-          alt="유저프로필이미지"
-        />
+        <Link to={`/mypage`} state={{ pName: pName }}>
+          <img
+            className={css.profileImg}
+            src={
+              profileImg &&
+              (profileImg[0] === 'h' ? profileImg : `${BASE_URL}` + profileImg)
+            }
+            alt="유저프로필이미지"
+          />
+        </Link>
       </div>
     </div>
   );

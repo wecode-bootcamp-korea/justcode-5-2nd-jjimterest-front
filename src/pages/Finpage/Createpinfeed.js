@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import BoardList from '../BoardList/BoardList';
+import BoardList from '../../components/BoardList/BoardList';
 import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
 

@@ -22,9 +22,7 @@ function Pin({ feedOntoggle, data, pinId }) {
         Authorization:
           'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
       },
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+    });
     setOnStore(false);
   };
   return (
@@ -38,16 +36,16 @@ function Pin({ feedOntoggle, data, pinId }) {
           feedOntoggle(e);
         }}
       />
-      {on ? (
+      {on && (
         <button className={css.buttonStore} onClick={btnClick}>
           {onStore ? '저장' : '저장됨'}
         </button>
-      ) : null}
-      {on ? (
+      )}
+      {on && (
         <div className={css.pinModal}>
           <button className={css.buttonProfile}>프로필</button>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

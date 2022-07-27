@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import css from './Finfeedmodal.module.scss';
-import Commentmodal from '../Commentmodal/Commentmodal';
-import CommentBtnmodal from '../Commentmodal/CommentBtnmodal';
-import BoardList from '../BoardList/BoardList';
+import Commentmodal from './Commentmodal';
+import CommentBtnmodal from './CommentBtnmodal';
+import BoardList from '../../components/BoardList/BoardList';
 import BASE_URL from '../../config';
+import { useNavigate } from 'react-router-dom';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const btn = useRef();
@@ -16,6 +17,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const [pinData, setPinData] = useState();
   const [comment, setComment] = useState();
   const [followState, setFollowState] = useState();
+  const navigate = useNavigate();
+
+  const gotprofile = () => {
+    navigate(`/${pinData[0].nickname}`);
+  };
 
   useEffect(() => {
     fetch(`${BASE_URL}pin-make`, {
@@ -83,6 +89,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setPinData(data);
       });
   }, [pinId]);
@@ -185,9 +192,9 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 }}
               >
                 {boardtitle ? boardtitle : '보드를선택하세요'}
-                {onBoradList ? (
+                {onBoradList && (
                   <BoardList data={boadData[0].boards} title={setBoardTitle} />
-                ) : null}
+                )}
               </button>
               <button className={css.storeBtn} onClick={store}>
                 저장
@@ -202,9 +209,14 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
             <div className={css.pinAlt} />
             <div className={css.wrapUserContents}>
               <div className={css.userContents}>
-                <img className={css.userImg} src={proimg()} alt="유저사진" />
+                <img
+                  className={css.userImg}
+                  src={proimg()}
+                  alt="유저사진"
+                  onClick={gotprofile}
+                />
                 <div className={css.userText}>
-                  <p className={css.userId}>
+                  <p className={css.userId} onClick={gotprofile}>
                     {pinData ? pinData[0].nickname : '익명'}
                   </p>
                   <p className={css.follow}>{follow()}</p>
@@ -235,13 +247,13 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 }}
               />
             </div>
-            {onInput ? (
+            {onInput && (
               <CommentBtnmodal
                 setOn={setOnInput}
                 comment={comment}
                 pinId={pinId[0]}
               />
-            ) : null}
+            )}
           </div>
         </div>
       </div>

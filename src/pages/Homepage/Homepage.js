@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Finfeedmodal from '../../components/Finfeedmodal/Finfeedmodal';
+import Finfeedmodal from './Finfeedmodal';
 import css from './Homepage.module.scss';
-import Pin from '../../components/Pin/Pin';
+import Pin from './Pin';
 import Nav from '../../components/Nav/Nav';
 import BASE_URL from '../../config';
 
