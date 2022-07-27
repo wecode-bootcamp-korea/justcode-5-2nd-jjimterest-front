@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import css from './Pin.module.scss';
 import BASE_URL from '../../config';
+import { token } from '../../components/Nav/Nav';
 
 function Pin({ feedOntoggle, data, pinId }) {
   const [on, setOn] = useState(false);
   const [onStore, setOnStore] = useState(true);
-  // const token = localStorage.getItem('token');
 
   const modalOn = () => {
     setOn(prev => !prev);
@@ -19,8 +19,7 @@ function Pin({ feedOntoggle, data, pinId }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     });
     setOnStore(false);

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Finfeedmodal from './Finfeedmodal';
 import css from './Homepage.module.scss';
 import Pin from './Pin';
-import Nav from '../../components/Nav/Nav';
+import Nav, { token } from '../../components/Nav/Nav';
 import BASE_URL from '../../config';
 import queryString from 'query-string';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ function Homepage() {
 
   const userInfo = queryString.parse(useLocation().search);
 
-  const { email, nickname, profileImage, token, userId } = userInfo;
+  const { email, nickname, profileImage, Token, userId } = userInfo;
   const isSocialLoggedIn = useLocation().search.includes('token');
 
   useEffect(() => {
@@ -37,15 +37,15 @@ function Homepage() {
       localStorage.setItem('email', email);
       localStorage.setItem('nickname', nickname);
       localStorage.setItem('profileImage', profileImage);
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', Token);
       localStorage.setItem('userId', userId);
-      navigate('/');
+      navigate('/main');
     }
   }, [
     email,
     nickname,
     profileImage,
-    token,
+    Token,
     userId,
     isSocialLoggedIn,
     navigate,
@@ -58,8 +58,7 @@ function Homepage() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -88,8 +87,7 @@ function Homepage() {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+              Authorization: `Bearer ${token}`,
             },
           })
             .then(res => res.json())

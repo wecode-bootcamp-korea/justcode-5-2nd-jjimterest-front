@@ -5,10 +5,11 @@ import CommentBtnmodal from './CommentBtnmodal';
 import BoardList from '../../components/BoardList/BoardList';
 import BASE_URL from '../../config';
 import { useNavigate } from 'react-router-dom';
+import { token } from '../../components/Nav/Nav';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const btn = useRef();
-  const myImg = localStorage.getItem('myimg');
+  const myImg = localStorage.getItem('myImg');
   const [boardtitle, setBoardTitle] = useState();
   const [onBoradList, setOnBoradList] = useState(false);
   const [boadData, setBoardData] = useState();
@@ -28,8 +29,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
@@ -44,8 +44,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(res => res.json())
@@ -64,13 +63,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           setPinData(data);
         });
     }, 500);
@@ -84,13 +81,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setPinData(data);
       });
   }, [pinId]);
@@ -142,8 +137,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     });
   };
@@ -153,8 +147,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         pin_id: pinData[0].id,

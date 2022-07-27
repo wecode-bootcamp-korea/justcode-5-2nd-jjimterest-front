@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import css from './Recent.module.scss';
 import BASE_URL from '../../config';
+import { token } from './Nav';
 
 const Recent = ({ onToggle }) => {
   const [recentSearch, setRecentSearch] = useState([]);
@@ -10,8 +11,7 @@ const Recent = ({ onToggle }) => {
       fetch(`${BASE_URL}recent-search`, {
         method: 'GET',
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(res => res.json())

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import BoardList from '../../components/BoardList/BoardList';
 import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
+import { token } from '../../components/Nav/Nav';
 
 function Createpinfeed({ index, deletepin }) {
   const btn = useRef();
@@ -14,13 +15,13 @@ function Createpinfeed({ index, deletepin }) {
   const [on, setOn] = useState(false);
   const reader = new FileReader();
   const [onBoradList, setOnBoradList] = useState(false);
-  const myImg = localStorage.getItem('myimg');
+  const myImg = localStorage.getItem('myImg');
   const [boardtitle, setBoardTitle] = useState();
   const [pinInfo, setPinInfo] = useState({
-    title: null,
-    intro: null,
-    alt: null,
-    category: null,
+    title: '',
+    intro: '',
+    alt: '',
+    category: '',
     board_id: 2,
   });
 
@@ -35,9 +36,7 @@ function Createpinfeed({ index, deletepin }) {
     fetch(`${BASE_URL}pin-make`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
@@ -67,8 +66,7 @@ function Createpinfeed({ index, deletepin }) {
     fetch(`${BASE_URL}pin-make`, {
       method: 'POST',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+        Authorization: `Bearer ${token}`,
       },
       body: imgUpload,
     })
@@ -79,7 +77,7 @@ function Createpinfeed({ index, deletepin }) {
         imgUpload.delete('intro');
         imgUpload.delete('boardId');
         imgUpload.delete('category');
-        // imgUpload.delete('image');
+        imgUpload.delete('image');
         alert(data.message);
         setPinInfo({
           title: '',
@@ -115,9 +113,9 @@ function Createpinfeed({ index, deletepin }) {
             }}
           >
             {boardtitle ? boardtitle : '보드를선택하세요'}
-            {onBoradList ? (
+            {onBoradList && (
               <BoardList data={boadData[0].boards} title={setBoardTitle} />
-            ) : null}
+            )}
           </button>
           <button className={css.storeBtn} onClick={pinMake}>
             저장
@@ -126,9 +124,7 @@ function Createpinfeed({ index, deletepin }) {
       </div>
       <div className={css.wrapContents}>
         <div className={css.upload}>
-          {on ? (
-            <img ref={img} className={css.previewImage} alt="이미지" />
-          ) : null}
+          {on && <img ref={img} className={css.previewImage} alt="이미지" />}
           <input
             className={css.uploadInput}
             ref={input}
@@ -138,10 +134,8 @@ function Createpinfeed({ index, deletepin }) {
               view(input);
             }}
           />
-          {on ? null : (
-            <p className={css.uploadText}>드래그하거나 클릭하여 업로드</p>
-          )}
-          {on ? null : (
+          {on || <p className={css.uploadText}>드래그하거나 클릭하여 업로드</p>}
+          {on || (
             <p className={css.uplodInfo}>
               권장 사항: 20MB 이하 고화질 .jpg 파일
             </p>
@@ -169,7 +163,7 @@ function Createpinfeed({ index, deletepin }) {
             onChange={handleInput}
             value={pinInfo.intro}
           />
-          {altBtnOn ? (
+          {altBtnOn && (
             <button
               className={css.pinAltBtn}
               onClick={() => {
@@ -179,8 +173,8 @@ function Createpinfeed({ index, deletepin }) {
             >
               alt 텍스트 추가
             </button>
-          ) : null}
-          {altOn ? (
+          )}
+          {altOn && (
             <input
               name="alt"
               className={css.pinAltInput}
@@ -188,7 +182,7 @@ function Createpinfeed({ index, deletepin }) {
               onChange={handleInput}
               value={pinInfo.alt}
             />
-          ) : null}
+          )}
           <input
             name="category"
             type="text"
