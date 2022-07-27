@@ -35,7 +35,14 @@ function NestedComments({ data, setOn, pinId }) {
   };
   return (
     <div className={css.commentInputContainer}>
-      <img className={css.myImg} src={myImg} alt="이미지" />
+      <img
+        className={css.myImg}
+        src={
+          myImg &&
+          'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+        }
+        alt="이미지"
+      />
       <input
         className={css.commentInput}
         placeholder="답변 추가"
