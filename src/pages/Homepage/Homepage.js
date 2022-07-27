@@ -10,7 +10,7 @@ function Homepage() {
   const [element, setElement] = useState();
   const [pinData, setPinData] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [searchPageNumber, setSearchPageNumber] = useState(1);
+  const [searchPageNumber, setSearchPageNumber] = useState(2);
   const [pinId, setPinId] = useState(0);
   const [doneSearch, setDoneSearch] = useState(true);
   const [searchData, setSearchData] = useState([]);
@@ -24,65 +24,68 @@ function Homepage() {
     setElement(e.target);
   };
 
-  const searchcallback = (entries, observer) => {
-    entries.forEach(ob => {
-      if (ob.isIntersecting) {
-        fetch(
-          `${BASE_URL}/pins?pagenumber=${searchPageNumber}&keyword=${keyword}`,
-          {
+  const refresh = (pageNumber, keyword, isSearch) =>
+    fetch(
+      `${BASE_URL}pins?pagenumber=${pageNumber}&keyword=${keyword}&isSearch=${isSearch}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        },
+      }
+    );
+
+  useEffect(() => {
+    const searchcallback = (entries, observer) => {
+      entries.forEach(ob => {
+        if (ob.isIntersecting) {
+          refresh(searchPageNumber, keyword, false)
+            .then(res => res.json())
+            .then(data => {
+              setSearchPageNumber(prev => prev + 1);
+              setSearchData(prev => {
+                return prev.concat(data);
+              });
+              setPinData([]);
+            });
+        }
+      });
+    };
+
+    const callback = (entries, observer) => {
+      entries.forEach(ob => {
+        if (ob.isIntersecting) {
+          fetch(`${BASE_URL}pins?pagenumber=${pageNumber}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
               Authorization:
                 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
             },
-          }
-        )
-          .then(res => res.json())
-          .then(data => {
-            setSearchPageNumber(prev => prev + 1);
-            setSearchData(prev => {
-              return prev.concat(data);
+          })
+            .then(res => res.json())
+            .then(data => {
+              setPageNumber(prev => prev + 1);
+              setPinData(prev => {
+                return prev.concat(data);
+              });
             });
-            setPinData([]);
-          });
-      }
-    });
-  };
+        }
+      });
+    };
 
-  const callback = (entries, observer) => {
-    entries.forEach(ob => {
-      if (ob.isIntersecting) {
-        fetch(`${BASE_URL}/pins?pagenumber=${pageNumber}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization:
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
-          },
-        })
-          .then(res => res.json())
-          .then(data => {
-            setPageNumber(prev => prev + 1);
-            setPinData(prev => {
-              return prev.concat(data);
-            });
-          });
-      }
-    });
-  };
-  const option = { threshold: 0.5 };
-  let observer = new IntersectionObserver(
-    doneSearch ? callback : searchcallback,
-    option
-  );
+    let observer = new IntersectionObserver(
+      doneSearch ? callback : searchcallback,
+      { threshold: 0.5 }
+    );
 
-  useEffect(() => {
     observer.observe(target.current);
     return () => {
       observer.disconnect();
     };
-  });
+  }, [target, doneSearch, keyword, pageNumber, searchPageNumber]);
 
   return (
     <>
@@ -92,10 +95,11 @@ function Homepage() {
         setPageNumber={setPageNumber}
         setSearchData={setSearchData}
         setSearchPageNumber={setSearchPageNumber}
+        refresh={refresh}
       />
-      {feedOn ? (
+      {feedOn && (
         <Finfeedmodal setFeedOn={setFeedOn} pinId={pinId} element={element} />
-      ) : null}
+      )}
       <div className={css.container}>
         {doneSearch
           ? pinData.map(data => {

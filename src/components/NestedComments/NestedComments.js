@@ -7,7 +7,7 @@ function NestedComments({ data, setOn, pinId }) {
   const [comment, setComment] = useState('');
 
   const send = () => {
-    fetch(`${BASE_URL}/comments`, {
+    fetch(`${BASE_URL}comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

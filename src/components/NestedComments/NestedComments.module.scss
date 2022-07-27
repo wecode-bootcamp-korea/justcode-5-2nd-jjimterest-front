@@ -1,9 +1,10 @@
 .commentInputContainer {
   display: flex;
   align-items: center;
-  position: relative;
   width: 100%;
-  height: 100%;
+  height: 37px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   .myImg {
     width: 15%;
     height: 30px;
@@ -14,7 +15,7 @@
     border: 1px solid grey;
     border-radius: 50px;
     width: 85%;
-    height: 40%;
+    height: 100%;
   }
   .cancle {
     border-radius: 10px;

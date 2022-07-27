@@ -10,12 +10,13 @@ function Nav({
   setPageNumber,
   setSearchData,
   setSearchPageNumber,
+  refresh,
 }) {
   const [profileImg, setProfileImg] = useState();
   const search = useRef();
 
   useEffect(() => {
-    fetch(`${BASE_URL}/edit-profile`, {
+    fetch(`${BASE_URL}edit-profile`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ function Nav({
   const onToggle = () => {
     setOn(true);
     search.current.focus();
-    fetch(`${BASE_URL}/recent-search`, {
+    fetch(`${BASE_URL}recent-search`, {
       method: 'DELETE',
       headers: {
         Authorization:
@@ -85,11 +86,18 @@ function Nav({
     navigate('/mypage');
   };
 
-  const gotokeyword = () => {
-    setDoneSearch(false);
-    setPageNumber(1);
+  const gotokeyword = e => {
+    setSearchPageNumber(2);
     setSearchData([]);
-    setSearchPageNumber(1);
+    setPageNumber(1);
+    setDoneSearch(false);
+    refresh(1, e.target.value, true)
+      .then(res => res.json())
+      .then(data => {
+        setSearchData(prev => {
+          return prev.concat(data);
+        });
+      });
   };
 
   return (
@@ -114,7 +122,7 @@ function Nav({
           }}
           onKeyPress={e => {
             if (e.key === 'Enter') {
-              gotokeyword();
+              gotokeyword(e);
             }
           }}
         />
@@ -124,7 +132,7 @@ function Nav({
         <button className={css.message}>message</button>
         <img
           className={css.profileImg}
-          src={profileImg !== undefined && profileImg}
+          src={profileImg && profileImg}
           onClick={gotoprofile}
           alt="유저프로필이미지"
         />
