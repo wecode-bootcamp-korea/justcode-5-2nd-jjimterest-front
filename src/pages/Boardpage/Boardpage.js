@@ -47,6 +47,7 @@ function Boardpage() {
         alert('수정 실패!');
       }
     });
+    closeCreateModal();
   };
 
   const deleteBoard = () => {
@@ -67,6 +68,7 @@ function Boardpage() {
         alert('삭제 실패!');
       }
     });
+    closeCreateModal();
   };
   const showSimple = () => {
     setShowBoard(true);

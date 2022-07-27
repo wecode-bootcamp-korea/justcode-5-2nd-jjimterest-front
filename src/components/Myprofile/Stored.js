@@ -27,10 +27,45 @@ function Stored({
   const [arrangeDisplay, setArrangeDisplay] = useState(false);
   const [createDisplay, setCreateDisplay] = useState(false);
   const [createModal, setCreateModal] = useState(false);
+  const [aModal, setAModal] = useState(false);
+
   const [bdName, setBdName] = useState('');
   const [noIdea, setNoIdea] = useState(true);
+  const [checkedList, setCheckedList] = useState([]);
+  console.log(checkedList);
 
-  const checkedBox = () => {};
+  //정리하기 post 온클릭함수
+  const onArrangePost = boardId => {
+    console.log(boardId);
+    // fetch(`${BASE_URL}pin-organize`, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     // Authorization: localStorage.getItem('login-token'),
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     pin_id: checkedList,
+    //     board_id: boardId,
+    //   }),
+    // }).then(res => {
+    //   if (res.ok) {
+    //     alert('수정완료!');
+    //   } else {
+    //     alert('수정 실패!');
+    //   }
+    // });
+    closeAModal();
+  };
+
+  //체크리스트 함수
+  const onCheckedElement = (checked, item) => {
+    if (checked) {
+      setCheckedList([...checkedList, Number(item)]);
+    } else if (!checked) {
+      setCheckedList(checkedList.filter(el => el !== Number(item)));
+    }
+  };
 
   const createBoard = async () => {
     await fetch(`${BASE_URL}board`, {
@@ -72,6 +107,12 @@ function Stored({
   };
   const closeCreateModal = () => {
     setCreateModal(false);
+  };
+  const openAModal = () => {
+    setAModal(true);
+  };
+  const closeAModal = () => {
+    setAModal(false);
   };
 
   //드랍다운 창
@@ -170,8 +211,11 @@ function Stored({
               state={{
                 boardData: [
                   {
-                    id: bdList[bdList.length - 1].id + 100,
-                    pins: [{ image: '' }],
+                    id: Number(bdList[bdList.length - 1].id) + 100,
+                    pins: [
+                      { image: `${process.env.PUBLIC_URL}/images/normal.png` },
+                    ],
+                    title: bdName,
                   },
                 ],
               }}
@@ -182,6 +226,19 @@ function Stored({
             </Link>
           </div>
         </div>
+      </Modal>
+      <Modal visible={aModal} onClose={closeAModal}>
+        <div className={css.modalHeader}>정리할 보드 선택</div>
+        {bdList &&
+          bdList.map((data, index) => (
+            <div
+              className={css.boardNList}
+              key={index}
+              onClick={e => onArrangePost(data.id)}
+            >
+              {data.title}
+            </div>
+          ))}
       </Modal>
       {navOnOff && (
         <div className={css.boardUi}>
@@ -238,18 +295,28 @@ function Stored({
           <div className={css.arrangeNav}>
             <div className={css.one}>정리되지 않은 아이디어</div>
             <div className={css.twoBtn}>
-              <div className={css.two}>정리하기</div>
+              <div className={css.two} onClick={openAModal}>
+                정리하기
+              </div>
             </div>
           </div>
           <div className={css.pinContainer}>
             {myPins.length
               ? myPins.map(data => {
                   return (
-                    <img
-                      alt="핀 이미지"
-                      src={`${BASE_URL}${data.image}`}
-                      onClick={checkedBox}
-                    />
+                    <div key={data.id}>
+                      <label htmlFor={data.id}>
+                        <input
+                          type="checkbox"
+                          id={data.id}
+                          value={data.id}
+                          onChange={e => {
+                            onCheckedElement(e.target.checked, e.target.value);
+                          }}
+                        />
+                        <img alt="핀 이미지" src={`${BASE_URL}${data.image}`} />
+                      </label>
+                    </div>
                   );
                 })
               : setNoIdea(false)}
