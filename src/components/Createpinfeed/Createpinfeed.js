@@ -32,7 +32,7 @@ function Createpinfeed({ index, deletepin }) {
   };
 
   useEffect(() => {
-    fetch(`${BASE_URL}/pin-make`, {
+    fetch(`${BASE_URL}pin-make`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +43,6 @@ function Createpinfeed({ index, deletepin }) {
       .then(res => res.json())
       .then(data => {
         setBoardData(data);
-        console.log('핀만들기 데이터', data);
       });
   }, []);
 
@@ -65,7 +64,7 @@ function Createpinfeed({ index, deletepin }) {
     imgUpload.append('boardId', pinInfo.board_id);
     imgUpload.append('category', pinInfo.category);
 
-    fetch(`${BASE_URL}/pin-make`, {
+    fetch(`${BASE_URL}pin-make`, {
       method: 'POST',
       headers: {
         Authorization:
@@ -80,6 +79,7 @@ function Createpinfeed({ index, deletepin }) {
         imgUpload.delete('intro');
         imgUpload.delete('boardId');
         imgUpload.delete('category');
+        // imgUpload.delete('image');
         alert(data.message);
         setPinInfo({
           title: '',
@@ -88,6 +88,7 @@ function Createpinfeed({ index, deletepin }) {
           category: '',
           board_id: 2,
         });
+        setOn(false);
       });
   };
   return (

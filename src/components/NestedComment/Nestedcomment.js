@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import NestedComments from '../NestedComments/NestedComments';
-import css from './Comment.module.scss';
 import BASE_URL from '../../config';
-import Nestedcomment from '../NestedComment/Nestedcomment';
+import css from './Nestedcomment.module.scss';
+import NestedComments from '../NestedComments/NestedComments';
 
-function Comment({ data, pinId, nestedcomments }) {
+function Nestedcomment({ data, pinId }) {
   const [on, setOn] = useState(false);
   const [likeCount, setLikeCount] = useState(data.like_count);
   const now = new Date().getTime();
   const be = new Date(data.created_at);
   const before = be.getTime();
   const time = (now - before) / 1000 / 60;
-  const [nestOn, setNestOn] = useState(true);
 
   const NestedCommentsOn = () => {
     setOn(true);
@@ -56,10 +54,6 @@ function Comment({ data, pinId, nestedcomments }) {
         }
       });
   };
-  const nestedcommentstoggle = () => {
-    setNestOn(prev => !prev);
-  };
-
   return (
     <div className={css.commentContainer}>
       <img className={css.commentImg} src={data.profile_image} alt="이미지" />
@@ -81,23 +75,9 @@ function Comment({ data, pinId, nestedcomments }) {
           </div>
         </div>
         {on && <NestedComments data={data} setOn={setOn} pinId={pinId} />}
-        {nestedcomments[0] &&
-          (nestOn ? (
-            <div onClick={nestedcommentstoggle} className={css.nestedcomment}>
-              --- 답변 {nestedcomments.length}개 보기
-            </div>
-          ) : (
-            <div onClick={nestedcommentstoggle} className={css.nestedcomment}>
-              --- 답변 숨기기
-            </div>
-          ))}
-        {(nestedcomments[0] && nestOn) ||
-          nestedcomments.map(data => {
-            return <Nestedcomment key={data.id} data={data} pinId={pinId} />;
-          })}
       </div>
     </div>
   );
 }
 
-export default Comment;
+export default Nestedcomment;

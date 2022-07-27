@@ -15,7 +15,7 @@ function Pin({ feedOntoggle, data, pinId }) {
     setOn(prev => !prev);
   };
   const btnClick = () => {
-    fetch(`${BASE_URL}/pins/${data.pin_id}`, {
+    fetch(`${BASE_URL}pins/${data.pin_id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ function Pin({ feedOntoggle, data, pinId }) {
       <img
         className={css.pinImg}
         alt="핀이미지"
-        src={BASE_URL + '/' + data.image}
+        src={BASE_URL + data.image}
         onClick={e => {
           pinId([data.pin_id, data.image]);
           feedOntoggle(e);

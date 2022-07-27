@@ -30,11 +30,13 @@ export const Wrap = styled.div`
 `;
 
 const CommentBtnmodal = ({ setOn, comment, pinId }) => {
+  const canclebtn = () => {
+    setOn(false);
+  };
+
   const btnOff = () => {
     setOn(false);
-    console.log('버튼테스트', comment, pinId);
-
-    fetch(`${BASE_URL}/comments`, {
+    fetch(`${BASE_URL}comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,15 +48,11 @@ const CommentBtnmodal = ({ setOn, comment, pinId }) => {
         pin_id: pinId,
         content: comment,
       }),
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
+    });
   };
   return (
     <Wrap>
-      <Cancel onClick={btnOff}>취소</Cancel>
+      <Cancel onClick={canclebtn}>취소</Cancel>
       <Done onClick={btnOff}>완료</Done>
     </Wrap>
   );

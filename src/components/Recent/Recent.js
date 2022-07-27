@@ -6,19 +6,28 @@ const Recent = ({ onToggle }) => {
   const [recentSearch, setRecentSearch] = useState([]);
 
   useEffect(() => {
-    fetch(`${BASE_URL}/recent-search`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
-        setRecentSearch(data);
-      });
+    const timer = setInterval(() => {
+      fetch(`${BASE_URL}recent-search`, {
+        method: 'GET',
+        headers: {
+          Authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.message) {
+            setRecentSearch([]);
+          } else {
+            setRecentSearch(data);
+          }
+        });
+    }, 500);
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
+
   return (
     <div className={css.container}>
       <div className={css.wrapRecent}>
