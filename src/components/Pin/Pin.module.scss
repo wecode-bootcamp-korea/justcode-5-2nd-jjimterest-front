@@ -1,0 +1,56 @@
+.wrapPin {
+  position: relative;
+  margin-bottom: 10px;
+  .pinImg {
+    width: 100%;
+    border-radius: 10%;
+    cursor: pointer;
+  }
+  .buttonStore {
+    position: absolute;
+    top: 6%;
+    right: 5%;
+    border: none;
+    font-size: medium;
+    color: white;
+    background-color: red;
+    padding: 10px 15px 10px 15px;
+    border-radius: 30%;
+    pointer-events: auto;
+    z-index: 1;
+    cursor: pointer;
+  }
+  .pinModal {
+    position: absolute;
+    border-radius: 10%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(20, 20, 20, 0.673);
+    pointer-events: none;
+
+    .buttonProfile {
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      color: white;
+      font-size: medium;
+      background-color: transparent;
+      border: none;
+    }
+
+    // .buttonStore {
+    //   position: absolute;
+    //   top: 6%;
+    //   right: 5%;
+    //   border: none;
+    //   font-size: medium;
+    //   color: white;
+    //   background-color: red;
+    //   padding: 10px 15px 10px 15px;
+    //   border-radius: 30%;
+    //   pointer-events: auto;
+    // }
+  }
+}
