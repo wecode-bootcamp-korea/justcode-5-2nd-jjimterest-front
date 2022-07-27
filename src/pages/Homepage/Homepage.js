@@ -15,7 +15,8 @@ function Homepage() {
   const [doneSearch, setDoneSearch] = useState(true);
   const [searchData, setSearchData] = useState([]);
   const [keyword, setKeyword] = useState();
-
+  // import queryString from 'query-string';
+  // import { useLocation, useNavigate } from 'react-router-dom';
   const target = useRef();
 
   const feedOntoggle = e => {
@@ -23,6 +24,32 @@ function Homepage() {
     window.scrollTo(0, 0);
     setElement(e.target);
   };
+
+  // const navigate = useNavigate();
+
+  // const userInfo = queryString.parse(useLocation().search);
+
+  // const { email, nickname, profileImage, token, userId } = userInfo;
+  // const isSocialLoggedIn = useLocation().search.includes('token');
+
+  // useEffect(() => {
+  //   if (isSocialLoggedIn) {
+  //     localStorage.setItem('email', email);
+  //     localStorage.setItem('nickname', nickname);
+  //     localStorage.setItem('profileImage', profileImage);
+  //     localStorage.setItem('token', token);
+  //     localStorage.setItem('userId', userId);
+  //     navigate('/');
+  //   }
+  // }, [
+  //   email,
+  //   nickname,
+  //   profileImage,
+  //   token,
+  //   userId,
+  //   isSocialLoggedIn,
+  //   navigate,
+  // ]);
 
   const refresh = (pageNumber, keyword, isSearch) =>
     fetch(
