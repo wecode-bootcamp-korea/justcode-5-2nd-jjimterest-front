@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
-// import queryString from 'query-string';
 
 const LoginContainer = ({
   isLoginModalOpened,
@@ -13,7 +11,6 @@ const LoginContainer = ({
   changeBodyScroll,
 }) => {
   const navigate = useNavigate();
-  // const isLoggedIn = localStorage.getItem('token') !== null;
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
 
@@ -25,16 +22,20 @@ const LoginContainer = ({
     setPwValue(e.target.value);
   };
 
-  const loginBtnHandle = event => {
-    event.preventDefault();
+  const goToList = () => {
+    navigate('/main');
+  };
+
+  const loginBtnHandle = () => {
     fetch(`http://localhost:10010/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      mode: 'cors',
       body: JSON.stringify({
-        email: emailValue.email,
-        password: pwValue.password,
+        email: emailValue,
+        password: pwValue,
       }),
     })
       .then(response => {
@@ -44,18 +45,14 @@ const LoginContainer = ({
       })
       .then(result => {
         if (result.token) {
-          localStorage.setItem('login-token', result.token);
+          localStorage.setItem('token', result.token);
           alert('로그인이 완료되었습니다');
-          navigate('/');
+          goToList('/main');
         } else {
           alert('아이디혹은 비밀번호가 잘못되었습니다');
         }
       });
   };
-
-  // useEffect(() => {
-  //   if (isLoggedIn) navigate('/');
-  // }, [isLoggedIn, navigate]);
 
   return (
     <Modal
@@ -198,7 +195,7 @@ const LoginButton = styled.button`
   color: white;
   font-size: 20px;
   outline: none;
-  cursor: default;
+  cursor: pointer;
 `;
 
 const OrText = styled.span`

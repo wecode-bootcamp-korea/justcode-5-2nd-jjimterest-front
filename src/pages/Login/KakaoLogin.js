@@ -44,7 +44,7 @@ const KakaoLogin = () => {
             .then(backData => {
               if (backData.MESSAGE === 'SUCCESS') {
                 localStorage.setItem('back_token', backData.ACCESS_TOKEN);
-                navigate('/Homepage');
+                navigate('/main');
                 alert('로그인에 성공했습니다!');
               } else {
                 alert('로그인에 실패했습니다!');

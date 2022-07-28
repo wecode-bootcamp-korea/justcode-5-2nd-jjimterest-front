@@ -30,7 +30,7 @@ const LoginPage = () => {
       localStorage.setItem('profileImage', profileImage);
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
-      navigate('/');
+      navigate('/main');
     }
   }, [
     email,
@@ -220,6 +220,12 @@ const PageShadow = styled.div`
   // opacity: ${props => (props.isSignUpModalOpened ? 0.5 : 0)};
 `;
 
+const bounce = keyframes`
+  0% {bottom: 18px}
+  50% {bottom: 20px}
+  100% { bottom: 18px}
+`;
+
 const DownButton = styled.img`
   display: ${props =>
     props.isPageScrolledDown || props.isLoginModalOpened ? 'none' : 'inline'};
@@ -231,6 +237,16 @@ const DownButton = styled.img`
   color: red;
   transform: translateX(15px);
   cursor: pointer;
+  animation: ${bounce} 1s infinite;
+  @media screen and (max-width: 1200px) {
+    margin-left: -12%;
+  }
+  @media screen and (max-width: 768px) {
+    margin-left: -17%;
+  }
+  @media screen and (max-width: 480px) {
+    margin-left: -31%;
+  }
 `;
 
 const UpButton = styled(DownButton)`
