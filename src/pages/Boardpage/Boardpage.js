@@ -67,7 +67,7 @@ function Boardpage() {
     gotoMypage();
   };
   const gotoMypage = () => {
-    navigate('/Mypage');
+    navigate('/main');
   };
 
   const showSimple = () => {
