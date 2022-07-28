@@ -7,3 +7,5 @@ import './styles/common.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
+//REACT_APP_BASE_URL="http://13.125.195.237:10010/"

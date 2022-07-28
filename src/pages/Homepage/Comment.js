@@ -20,8 +20,10 @@ function Comment({ data, pinId, nestedcomments }) {
   const compare = () => {
     if (time < 60) {
       return `${Math.floor(time)}분전 `;
-    } else {
+    } else if (time / 60 < 24) {
       return `${Math.floor(time / 60)}시간 전`;
+    } else {
+      return `${Math.floor(time / 1440)}일 전`;
     }
   };
   const compareTime = compare();

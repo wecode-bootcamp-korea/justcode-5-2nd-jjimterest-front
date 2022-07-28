@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import BoardList from '../../components/BoardList/BoardList';
+import BoardLists from '../../components/BoardList/BoardLists';
 import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
 import { token } from '../../components/Nav/Nav';
@@ -24,6 +24,16 @@ function Createpinfeed({ index, deletepin }) {
     category: '',
     board_id: 2,
   });
+
+  const text = () => {
+    if (boadData) {
+      if (boadData[0].boards.length === 0) {
+        return '보드를 만들어주세요';
+      } else {
+        return '보드를 선택해주세요';
+      }
+    }
+  };
 
   const handleInput = e => {
     const { value, name } = e.target;
@@ -112,9 +122,9 @@ function Createpinfeed({ index, deletepin }) {
               setOnBoradList(prev => !prev);
             }}
           >
-            {boardtitle ? boardtitle : '보드를선택하세요'}
+            {boardtitle ? boardtitle : text()}
             {onBoradList && (
-              <BoardList data={boadData[0].boards} title={setBoardTitle} />
+              <BoardLists data={boadData[0].boards} title={setBoardTitle} />
             )}
           </button>
           <button className={css.storeBtn} onClick={pinMake}>
