@@ -17,16 +17,14 @@ function Mypage() {
   const [myDate, setMyData] = useState();
   const location = useLocation();
   const data = location.state.pName;
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
         await fetch(`${BASE_URL}profile/${data[0].name}`, {
           method: 'GET',
           headers: {
-            // Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },

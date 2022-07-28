@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import BASE_URL from '../../config';
+import { token } from '../../components/Nav/Nav';
 
 export const Cancel = styled.button`
   width: 80px;
@@ -40,8 +41,7 @@ const CommentBtnmodal = ({ setOn, comment, pinId }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         parent_id: null,

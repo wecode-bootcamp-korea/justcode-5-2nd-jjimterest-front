@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
-import Recent from '../Recent/Recent';
-import { useNavigate } from 'react-router-dom';
+import Recent from './Recent';
+import { Link, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../config';
+export const token = localStorage.getItem('token');
 
 function Nav({
   setDoneSearch,
@@ -13,6 +14,7 @@ function Nav({
   refresh,
 }) {
   const [profileImg, setProfileImg] = useState();
+  const [pName, setPName] = useState();
   const search = useRef();
 
   useEffect(() => {
@@ -20,13 +22,14 @@ function Nav({
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
       .then(data => {
+        setPName(data);
         setProfileImg(data[0].profile_image);
+        localStorage.setItem('myImg', data[0].profile_image);
       });
   }, []);
 
@@ -57,8 +60,7 @@ function Nav({
     fetch(`${BASE_URL}recent-search`, {
       method: 'DELETE',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     });
   };
@@ -76,14 +78,11 @@ function Nav({
     }, 120);
   };
   const gotohome = () => {
-    navigate('/');
+    navigate('/main');
     window.location.reload();
   };
   const gotopainpage = () => {
     navigate('/finpage');
-  };
-  const gotoprofile = () => {
-    navigate('/mypage');
   };
 
   const gotokeyword = e => {
@@ -130,12 +129,19 @@ function Nav({
       </div>
       <div className={css.emoji}>
         <button className={css.message}>message</button>
-        <img
-          className={css.profileImg}
-          src={profileImg && profileImg}
-          onClick={gotoprofile}
-          alt="유저프로필이미지"
-        />
+        <Link to={`/mypage`} state={{ pName: pName }}>
+          <img
+            className={css.profileImg}
+            src={
+              profileImg
+                ? profileImg[0] === 'h'
+                  ? profileImg
+                  : `${BASE_URL}` + profileImg
+                : 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+            }
+            alt="유저프로필이미지"
+          />
+        </Link>
       </div>
     </div>
   );

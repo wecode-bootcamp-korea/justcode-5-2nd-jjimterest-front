@@ -13,11 +13,9 @@ const LoginContainer = ({
   const navigate = useNavigate();
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
-
   const handleEmailInput = e => {
     setEmailValue(e.target.value);
   };
-
   const handlePwInput = e => {
     setPwValue(e.target.value);
   };
@@ -104,9 +102,7 @@ const LoginContainer = ({
     </Modal>
   );
 };
-
 export default LoginContainer;
-
 const Modal = styled.div`
   position: absolute;
   top: 50%;
@@ -124,7 +120,6 @@ const Modal = styled.div`
       : 'translate(-50%, -50%)'};
   z-index: 1000;
 `;
-
 const CloseButton = styled.img`
   display: ${props => (props.isPageScrolledDown ? 'none' : 'inline')};
   position: absolute;
@@ -137,28 +132,23 @@ const CloseButton = styled.img`
     background-color: rgb(204, 204, 204);
   }
 `;
-
 const JJimterestLogo = styled.img`
   width: 50px;
   height: 50px;
   margin-top: 5px;
 `;
-
 const Welcome = styled.span`
   margin: 20px 0;
   font-size: 40px;
   text-align: center;
 `;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
-
 const IdContainer = styled.div`
   margin-top: 20px;
 `;
-
 const IdInput = styled.input`
   padding-left: 20px;
   border: 1px solid rgb(221 221 221);
@@ -167,11 +157,9 @@ const IdInput = styled.input`
   width: 250px;
   border-width: 2px;
 `;
-
 const PwContainer = styled.div`
   margin-top: 10px;
 `;
-
 const PwInput = styled.input`
   padding-left: 20px;
   border: 1px solid rgb(221 221 221);
@@ -180,12 +168,10 @@ const PwInput = styled.input`
   width: 250px;
   border-width: 2px;
 `;
-
 const FindPassword = styled.span`
   margin-bottom: 20px;
   padding-top: 10px;
 `;
-
 const LoginButton = styled.button`
   width: 250px;
   padding: 7px 0;
@@ -197,27 +183,22 @@ const LoginButton = styled.button`
   outline: none;
   cursor: pointer;
 `;
-
 const OrText = styled.span`
   margin: 20px 0;
   text-align: center;
 `;
-
 const LoginLink = styled.a``;
-
 const KakaoLogin = styled(LoginButton)`
   margin-bottom: 10px;
   background-color: #fee500;
   color: rgb(24, 22, 0);
   cursor: pointer;
 `;
-
 const KakaoLogout = styled(LoginButton)`
   margin-bottom: 10px;
   background-color: ${props => props.theme.middleGrey};
   color: white;
 `;
-
 const ServiceInfo = styled.span`
   padding: 20px 60px;
   color: rgb(204, 204, 204);

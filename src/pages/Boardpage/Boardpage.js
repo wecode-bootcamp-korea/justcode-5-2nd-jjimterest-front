@@ -9,7 +9,7 @@ import {
 import Dropdown from '../../components/Myprofiledropdown/Dropdown';
 import Created from '../../components/Myprofile/Created';
 import Modal from '../../components/Myprofile/Modal';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../config';
 import Nav from '../../components/Nav/Nav';
 
@@ -20,18 +20,17 @@ function Boardpage() {
   const [bdName, setBdName] = useState('');
   const [desc, setDesc] = useState('');
   const [showBoard, setShowBoard] = useState(false);
+  const navigate = useNavigate();
 
   const location = useLocation();
   const data = location.state.boardData;
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
 
   const editBoard = () => {
     fetch(`${BASE_URL}board`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('login-token'),
-        Authorization: `Bearer ${token}`,
+
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'PUT',
       body: JSON.stringify({
@@ -47,19 +46,16 @@ function Boardpage() {
         alert('수정 실패!');
       }
     });
+    closeCreateModal();
   };
 
-  const deleteBoard = () => {
-    fetch(`${BASE_URL}board`, {
+  const deleteBoard = id => {
+    fetch(`${BASE_URL}board/${id}`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('login-token'),
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'DELETE',
-      body: JSON.stringify({
-        board_id: data.id,
-      }),
     }).then(res => {
       if (res.ok) {
         alert('삭제완료!');
@@ -67,7 +63,13 @@ function Boardpage() {
         alert('삭제 실패!');
       }
     });
+    closeCreateModal();
+    gotoMypage();
   };
+  const gotoMypage = () => {
+    navigate('/Mypage');
+  };
+
   const showSimple = () => {
     setShowBoard(true);
   };
@@ -114,7 +116,12 @@ function Boardpage() {
           <div className={css.editBBtn} onClick={editBoard}>
             수정하기
           </div>
-          <div className={css.delName} onClick={deleteBoard}>
+          <div
+            className={css.delName}
+            onClick={e => {
+              deleteBoard(data.id);
+            }}
+          >
             보드 삭제
           </div>
           <div className={css.delContent}>
@@ -137,7 +144,7 @@ function Boardpage() {
       </div>
       <div className={css.uiToolBox}>
         <div>
-          <Link to={`/`} className={css.linkLay}>
+          <Link to={`/main`} className={css.linkLay}>
             <div className={css.iconBox}>
               <FontAwesomeIcon icon={faStar} className={css.faStar} />
             </div>
@@ -175,7 +182,7 @@ function Boardpage() {
       </div>
       <div className={css.linkToPinW}>
         <div className={css.linkToPin}>
-          <Link to={`/`} className={css.linkLay}>
+          <Link to={`/main`} className={css.linkLay}>
             이 보드를 위한 아이디어를 찾아 볼까요?
             <div></div>
           </Link>

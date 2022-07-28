@@ -1,5 +1,5 @@
 import React from 'react';
-import Comment from '../Comment/Comment.js';
+import Comment from './Comment';
 import css from './Commentmodal.module.scss';
 
 const Commentmodal = ({ pinData, pinId }) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Createpinfeed from '../../components/Createpinfeed/Createpinfeed';
+import Createpinfeed from './Createpinfeed';
 import Nav from '../../components/Nav/Nav';
 import css from './Finpage.module.scss';
 
