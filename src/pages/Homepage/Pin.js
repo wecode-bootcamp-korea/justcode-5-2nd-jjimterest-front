@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import css from './Pin.module.scss';
 import BASE_URL from '../../config';
+import { token } from '../../components/Nav/Nav';
 
 function Pin({ feedOntoggle, data, pinId }) {
   const [on, setOn] = useState(false);
   const [onStore, setOnStore] = useState(true);
-  // const token = localStorage.getItem('token');
 
   const modalOn = () => {
     setOn(prev => !prev);
@@ -19,12 +19,9 @@ function Pin({ feedOntoggle, data, pinId }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
-    })
-      .then(res => res.json())
-      .then(data => console.log(data));
+    });
     setOnStore(false);
   };
   return (
@@ -38,16 +35,16 @@ function Pin({ feedOntoggle, data, pinId }) {
           feedOntoggle(e);
         }}
       />
-      {on ? (
+      {on && (
         <button className={css.buttonStore} onClick={btnClick}>
           {onStore ? '저장' : '저장됨'}
         </button>
-      ) : null}
-      {on ? (
+      )}
+      {on && (
         <div className={css.pinModal}>
           <button className={css.buttonProfile}>프로필</button>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

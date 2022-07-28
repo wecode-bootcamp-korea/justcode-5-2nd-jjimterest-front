@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
-import Recent from '../Recent/Recent';
+import Recent from './Recent';
 import { Link, useNavigate } from 'react-router-dom';
 import BASE_URL from '../../config';
+export const token = localStorage.getItem('token');
 
 function Nav({
   setDoneSearch,
@@ -21,14 +22,14 @@ function Nav({
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
       .then(data => {
         setPName(data);
         setProfileImg(data[0].profile_image);
+        localStorage.setItem('myImg', data[0].profile_image);
       });
   }, []);
 
@@ -59,8 +60,7 @@ function Nav({
     fetch(`${BASE_URL}recent-search`, {
       method: 'DELETE',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     });
   };
@@ -78,7 +78,7 @@ function Nav({
     }, 120);
   };
   const gotohome = () => {
-    navigate('/');
+    navigate('/main');
     window.location.reload();
   };
   const gotopainpage = () => {
@@ -132,12 +132,13 @@ function Nav({
         <Link to={`/mypage`} state={{ pName: pName }}>
           <img
             className={css.profileImg}
-            src={`${
-              profileImg &&
-              (profileImg[0] === 'h'
-                ? `${profileImg}`
-                : `${BASE_URL}` + profileImg)
-            }`}
+            src={
+              profileImg
+                ? profileImg[0] === 'h'
+                  ? profileImg
+                  : `${BASE_URL}` + profileImg
+                : 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+            }
             alt="유저프로필이미지"
           />
         </Link>

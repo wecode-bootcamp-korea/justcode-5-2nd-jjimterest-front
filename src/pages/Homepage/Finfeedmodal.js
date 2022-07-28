@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import css from './Finfeedmodal.module.scss';
-import Commentmodal from '../Commentmodal/Commentmodal';
-import CommentBtnmodal from '../Commentmodal/CommentBtnmodal';
-import BoardList from '../BoardList/BoardList';
+import Commentmodal from './Commentmodal';
+import CommentBtnmodal from './CommentBtnmodal';
+import BoardList from '../../components/BoardList/BoardList';
 import BASE_URL from '../../config';
+import { useNavigate } from 'react-router-dom';
+import { token } from '../../components/Nav/Nav';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const btn = useRef();
-  const myImg = localStorage.getItem('myimg');
+  const myImg = localStorage.getItem('myImg');
   const [boardtitle, setBoardTitle] = useState();
   const [onBoradList, setOnBoradList] = useState(false);
   const [boadData, setBoardData] = useState();
@@ -16,14 +18,18 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const [pinData, setPinData] = useState();
   const [comment, setComment] = useState();
   const [followState, setFollowState] = useState();
+  const navigate = useNavigate();
+
+  const gotprofile = () => {
+    navigate(`/${pinData[0].name}`);
+  };
 
   useEffect(() => {
     fetch(`${BASE_URL}pin-make`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU4MTQxNjkzfQ.1VvOO4zwJX_UDWT7jzXSouA1khl14bCpL-McJu-0OQM',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
@@ -38,8 +44,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(res => res.json())
@@ -58,8 +63,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(res => res.json())
@@ -77,8 +81,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())
@@ -134,8 +137,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
     });
   };
@@ -145,8 +147,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjU4MzEzMzkwfQ.MqiZkp3H0yn_33JS4Te3sPJ84NhsFtTL4dNtATvlyDE',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         pin_id: pinData[0].id,
@@ -185,9 +186,9 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 }}
               >
                 {boardtitle ? boardtitle : '보드를선택하세요'}
-                {onBoradList ? (
+                {onBoradList && (
                   <BoardList data={boadData[0].boards} title={setBoardTitle} />
-                ) : null}
+                )}
               </button>
               <button className={css.storeBtn} onClick={store}>
                 저장
@@ -202,9 +203,14 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
             <div className={css.pinAlt} />
             <div className={css.wrapUserContents}>
               <div className={css.userContents}>
-                <img className={css.userImg} src={proimg()} alt="유저사진" />
+                <img
+                  className={css.userImg}
+                  src={proimg()}
+                  alt="유저사진"
+                  onClick={gotprofile}
+                />
                 <div className={css.userText}>
-                  <p className={css.userId}>
+                  <p className={css.userId} onClick={gotprofile}>
                     {pinData ? pinData[0].nickname : '익명'}
                   </p>
                   <p className={css.follow}>{follow()}</p>
@@ -225,7 +231,15 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
               <Commentmodal pinData={pinData[0].comments} pinId={pinId[0]} />
             )}
             <div className={css.commentInputContainer}>
-              <img className={css.myImg} src={myImg} alt="이미지" />
+              <img
+                className={css.myImg}
+                src={
+                  myImg[0] === 'n'
+                    ? 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+                    : myImg
+                }
+                alt="이미지"
+              />
               <input
                 className={css.commentInput}
                 placeholder="댓글 추가"
@@ -235,13 +249,13 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 }}
               />
             </div>
-            {onInput ? (
+            {onInput && (
               <CommentBtnmodal
                 setOn={setOnInput}
                 comment={comment}
                 pinId={pinId[0]}
               />
-            ) : null}
+            )}
           </div>
         </div>
       </div>
