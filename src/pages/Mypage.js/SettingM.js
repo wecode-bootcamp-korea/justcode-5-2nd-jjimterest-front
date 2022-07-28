@@ -12,16 +12,14 @@ function SettingM() {
 
   const [password, setPassword] = useState();
   const [rePassword, setRePassword] = useState();
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjU4MzY4MzE5fQ.0Z8XRjodmNbm07fjSsAAir14VY255DWt-cXh1FYCy3M';
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await (
         await fetch(`${BASE_URL}account-settings`, {
           method: 'GET',
           headers: {
-            // Authorization: localStorage.getItem('login-token'),
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
       ).json();
@@ -34,8 +32,7 @@ function SettingM() {
     fetch(`${BASE_URL}account-settings`, {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: localStorage.getItem('login-token'),
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'PUT',
       body: JSON.stringify({
