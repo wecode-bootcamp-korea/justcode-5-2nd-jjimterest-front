@@ -49,7 +49,7 @@ const TEXTS = [
   '식물 재배 아이디어',
 ];
 
-const TEXTS_COLOR = ['#e60023', 'blue', 'pink', 'orange'];
+const TEXTS_COLOR = ['#e60023', '#50C2FF', '#FF92B1', '#FFC314'];
 
 const ORDER = [0, 1, 2, 3];
 const Introduce = styled.div`
