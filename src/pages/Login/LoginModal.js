@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from './OAuth';
+
 const LoginContainer = ({
   isLoginModalOpened,
   controlLoginModal,
@@ -18,9 +19,11 @@ const LoginContainer = ({
   const handlePwInput = e => {
     setPwValue(e.target.value);
   };
+
   const goToList = () => {
     navigate('/main');
   };
+
   const loginBtnHandle = () => {
     fetch(`http://localhost:10010/users/login`, {
       method: 'POST',
@@ -48,6 +51,7 @@ const LoginContainer = ({
         }
       });
   };
+
   return (
     <Modal
       isLoginModalOpened={isLoginModalOpened}

@@ -33,7 +33,7 @@ function SignUpModal({
     /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
 
   const goToList = () => {
-    navigate('/'); //관심리스트 뽑는 곳
+    navigate('/main'); //main
   };
 
   const signUpLogic = () => {
