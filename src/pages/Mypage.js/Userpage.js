@@ -128,7 +128,9 @@ function Userpage() {
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
+              nName={data.name}
               key={index}
+              onClose={closeFollowerModal}
             />
           ))}
       </Modal>
@@ -139,7 +141,9 @@ function Userpage() {
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
+              nName={data.name}
               key={index}
+              onClose={closeFollowModal}
             />
           ))}
       </Modal>

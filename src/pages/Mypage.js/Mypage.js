@@ -110,6 +110,7 @@ function Mypage() {
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
+              nName={data.name}
               key={index}
             />
           ))}
@@ -121,6 +122,7 @@ function Mypage() {
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
+              nName={data.name}
               key={index}
             />
           ))}
