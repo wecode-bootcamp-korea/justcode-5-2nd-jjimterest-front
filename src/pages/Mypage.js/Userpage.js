@@ -15,6 +15,8 @@ function Userpage() {
   const params = useParams();
   const { nickname } = params;
   const [userDate, setUserData] = useState();
+  const [following, setFollowing] = useState(false);
+  useEffect(() => {}, [userDate]);
 
   useEffect(() => {
     fetch(`${BASE_URL}profile/${nickname}`, {
@@ -28,6 +30,36 @@ function Userpage() {
         setUserData(res);
       });
   }, [nickname]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      fetch(`${BASE_URL}follow/${userDate.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          setFollowing(data.is_follow);
+        });
+    }, 100);
+    return () => {
+      clearInterval(timer);
+    };
+  });
+
+  const onFollowBtn = () => {
+    fetch(`${BASE_URL}follow?followee_id=${userDate.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    window.location.reload();
+  };
 
   const openFollowModal = () => {
     setFollowModal(true);
@@ -76,7 +108,7 @@ function Userpage() {
   `;
   const FollowBtn = styled.button`
     padding: 12px 16px;
-    background-color: rgb(230, 9, 26);
+    background-color: ${following ? '#e0e0e0' : 'rgb(230, 9, 26)'};
     border: none;
     border-radius: 20px;
     font-size: 16px;
@@ -138,7 +170,9 @@ function Userpage() {
             </div>
           </div>
           <div className={css.profileBtn}>
-            <FollowBtn>팔로우</FollowBtn>
+            <FollowBtn onClick={onFollowBtn}>
+              {following ? '언팔로우' : '팔로우'}
+            </FollowBtn>
           </div>
         </div>
       </div>
