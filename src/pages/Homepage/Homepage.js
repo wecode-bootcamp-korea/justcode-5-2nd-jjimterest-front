@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Finfeedmodal from '../../components/Finfeedmodal/Finfeedmodal';
+import Finfeedmodal from './Finfeedmodal';
 import css from './Homepage.module.scss';
-import Pin from '../../components/Pin/Pin';
-import Nav from '../../components/Nav/Nav';
+import Pin from './Pin';
+import Nav, { token } from '../../components/Nav/Nav';
 import BASE_URL from '../../config';
+import queryString from 'query-string';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Homepage() {
   const [feedOn, setFeedOn] = useState(false);
@@ -15,7 +17,6 @@ function Homepage() {
   const [doneSearch, setDoneSearch] = useState(true);
   const [searchData, setSearchData] = useState([]);
   const [keyword, setKeyword] = useState();
-
   const target = useRef();
 
   const feedOntoggle = e => {
@@ -24,6 +25,32 @@ function Homepage() {
     setElement(e.target);
   };
 
+  const navigate = useNavigate();
+
+  const userInfo = queryString.parse(useLocation().search);
+
+  const { email, nickname, profileImage, Token, userId } = userInfo;
+  const isSocialLoggedIn = useLocation().search.includes('token');
+
+  useEffect(() => {
+    if (isSocialLoggedIn) {
+      localStorage.setItem('email', email);
+      localStorage.setItem('nickname', nickname);
+      localStorage.setItem('profileImage', profileImage);
+      localStorage.setItem('token', Token);
+      localStorage.setItem('userId', userId);
+      navigate('/main');
+    }
+  }, [
+    email,
+    nickname,
+    profileImage,
+    Token,
+    userId,
+    isSocialLoggedIn,
+    navigate,
+  ]);
+
   const refresh = (pageNumber, keyword, isSearch) =>
     fetch(
       `${BASE_URL}pins?pagenumber=${pageNumber}&keyword=${keyword}&isSearch=${isSearch}`,
@@ -31,8 +58,7 @@ function Homepage() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjU4OTA1MjA0fQ.x_jRAVfJ1F72Z7gfmQOTspY5B3Hi8I-ko6_DFasLwnY',
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -61,8 +87,7 @@ function Homepage() {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjU4OTA1MjA0fQ.x_jRAVfJ1F72Z7gfmQOTspY5B3Hi8I-ko6_DFasLwnY',
+              Authorization: `Bearer ${token}`,
             },
           })
             .then(res => res.json())

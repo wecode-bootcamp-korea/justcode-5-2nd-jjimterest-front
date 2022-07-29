@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { AiOutlineClose } from 'react-icons/ai';
 import { KAKAO_AUTH_URL } from './OAuth';
 import { BASE_URL } from './../../config';
 
@@ -32,7 +33,7 @@ function SignUpModal({
     /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
 
   const goToList = () => {
-    navigate('/'); //관심리스트 뽑는 곳
+    navigate('/main'); //main
   };
 
   const signUpLogic = () => {
@@ -114,7 +115,7 @@ function SignUpModal({
         <AlertFormContainer
           style={{ visibility: isFormVisibility ? 'visible' : 'hidden' }}
         >
-          <div>잘못된 이메일 형식입니다!</div>
+          <div>올바른 이메일 형식이 아닙니다.</div>
         </AlertFormContainer>
         <AlertEmailContainer
           style={{ visibility: isEmailVisibility ? 'visible' : 'hidden' }}
@@ -223,7 +224,6 @@ const KakaoLogin = styled.button`
   height: 30px;
   width: 250px;
   border-width: 2px;
-  cursor: pointer;
 
   a {
     text-decoration: none;
@@ -239,7 +239,6 @@ const LoginDefault = styled.button`
   width: 250px;
   border-width: 2px;
   background-color: gry;
-  cursor: pointer;
 `;
 
 const SocialLoginWrapper = styled.div`

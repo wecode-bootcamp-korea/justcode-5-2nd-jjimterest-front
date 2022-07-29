@@ -267,7 +267,7 @@ const UpButton = styled.img`
 const WelcomeText = styled.div`
   display: ${props => (props.isPageScrolledDown ? 'block' : 'none')};
   position: absolute;
-  bottom: -500px;
+  bottom: -200px;
   margin-left: 60px;
   color: white;
   font-size: 60px;

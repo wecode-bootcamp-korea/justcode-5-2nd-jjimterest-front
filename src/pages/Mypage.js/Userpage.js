@@ -1,39 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import css from './Mypage.module.scss';
+import css from './Userpage.module.scss';
 import Stored from '../../components/Myprofile/Stored';
 import Created from '../../components/Myprofile/Created';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
 import Modal from '../../components/Myprofile/Modal';
+import { useParams } from 'react-router-dom';
 import BASE_URL from '../../config';
 import FollowContainer from '../../components/FollowContainer/FollowContainer';
 import Nav from '../../components/Nav/Nav';
-
-function Mypage() {
+function Userpage() {
   const [state, setState] = useState(false);
   const [followModal, setFollowModal] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
-  //데이터 패치
-  const [myDate, setMyData] = useState();
-  const location = useLocation();
-  const data = location.state.pName;
+  const params = useParams();
+  const { nickname } = params;
+  const [userDate, setUserData] = useState();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await (
-        await fetch(`${BASE_URL}profile/${data[0].name}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        })
-      ).json();
-      setMyData(result);
-    };
-    fetchData();
-  }, []);
+    fetch(`${BASE_URL}profile/${nickname}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then(res => res.json())
+      .then(res => {
+        setUserData(res);
+      });
+  }, [nickname]);
 
   const openFollowModal = () => {
     setFollowModal(true);
@@ -80,14 +74,26 @@ function Mypage() {
       background-color: #efefef;
     }`}
   `;
+  const FollowBtn = styled.button`
+    padding: 12px 16px;
+    background-color: rgb(230, 9, 26);
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    &:hover {
+      opacity: 0.8;
+    }
+  `;
 
   return (
     <div className={css.container}>
       <Nav />
       <Modal visible={followerModal} onClose={closeFollowerModal}>
         <div className={css.modalHeader}>팔로워</div>
-        {myDate &&
-          myDate.follower.map((data, index) => (
+        {userDate &&
+          userDate.follower.map((data, index) => (
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
@@ -97,8 +103,8 @@ function Mypage() {
       </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
         <div className={css.modalHeader}>팔로잉</div>
-        {myDate &&
-          myDate.following.map((data, index) => (
+        {userDate &&
+          userDate.following.map((data, index) => (
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
@@ -111,32 +117,28 @@ function Mypage() {
           <div className={css.imgWrapper}>
             <img
               src={`${
-                myDate &&
-                (myDate.profile_image[0] === 'h'
-                  ? myDate.profile_image
-                  : `${BASE_URL}` + myDate.profile_image)
+                userDate &&
+                (userDate.profile_image[0] === 'h'
+                  ? userDate.profile_image
+                  : `${BASE_URL}` + userDate.profile_image)
               }`}
               className={css.mePhoto}
-              alt="이미지 없음"
             ></img>
           </div>
           <div className={css.nameWrapper}>
-            <div className={css.userName}>{myDate && myDate.name}</div>
-            <div className={css.userId}>{myDate && myDate.nickname}</div>
+            <div className={css.userName}>{userDate && userDate.name}</div>
+            <div className={css.userId}>{userDate && userDate.nickname}</div>
           </div>
           <div className={css.followBox}>
             <div className={css.follow} onClick={openFollowerModal}>
-              팔로워 {myDate && myDate.follower.length}명
+              팔로워 {userDate && userDate.follower.length}명
             </div>
             <div className={css.follow} onClick={openFollowModal}>
-              팔로잉 {myDate && myDate.following.length}명
+              팔로잉 {userDate && userDate.following.length}명
             </div>
           </div>
           <div className={css.profileBtn}>
-            {/* 로그인한 아이디와 들어간 프로필 아이디 비교 로직 추가 */}
-            <Link to={`/settings`}>
-              <button>프로필 수정</button>
-            </Link>
+            <FollowBtn>팔로우</FollowBtn>
           </div>
         </div>
       </div>
@@ -154,17 +156,19 @@ function Mypage() {
       </div>
       {state ? (
         <Stored
-          idea={true}
-          navOnOff={true}
-          myDate={myDate && myDate.boards}
-          myPins={myDate && myDate.no_idea_pins}
-          allPins={myDate && myDate.all_pins}
+          idea={false}
+          navOnOff={false}
+          myDate={userDate && userDate.boards}
+          myPins={userDate && userDate.no_idea_pins}
+          linkNav={true}
+          nickname={nickname}
+          allPins={userDate && userDate.all_pins}
         />
       ) : (
-        <Created myDate={myDate && myDate.my_pins} showBoard={false} />
+        <Created myDate={userDate && userDate.my_pins} showBoard={false} />
       )}
     </div>
   );
 }
 
-export default Mypage;
+export default Userpage;

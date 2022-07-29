@@ -1,0 +1,170 @@
+.pageOutLine {
+  position: relative;
+  width: 850px;
+  height: 700px;
+  background-color: white;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  border-radius: 3%;
+  .delete {
+    border: none;
+    width: 30px;
+    height: 25px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    border-radius: 10px;
+  }
+  .nav {
+    width: 90%;
+    height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 60px;
+    margin-left: 40px;
+
+    .wrapBoardBtn {
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      .selectBtn {
+        width: 25%;
+        height: 100%;
+        position: relative;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+      }
+      .storeBtn {
+        height: 100%;
+        background-color: red;
+        color: white;
+        width: 60px;
+        border: none;
+        border-radius: 10px;
+      }
+    }
+  }
+  .wrapContents {
+    display: flex;
+    margin-top: 40px;
+    .upload {
+      position: relative;
+      width: 40%;
+      height: 500px;
+      margin-left: 40px;
+      margin-right: 40px;
+      display: flex;
+      align-items: center;
+      border: 5px double rgba(128, 128, 128, 0.341);
+      .previewImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .uploadInput {
+        position: absolute;
+        cursor: pointer;
+        height: 100%;
+        opacity: 0;
+        width: 100%;
+        left: 0px;
+        top: 0px;
+        font-size: 0px;
+      }
+      .uploadText {
+        position: absolute;
+        left: 22%;
+        top: 50%;
+      }
+      .uplodInfo {
+        position: absolute;
+        left: 13%;
+        bottom: 10%;
+      }
+    }
+    .info {
+      position: relative;
+      width: 45%;
+      .title {
+        font-size: 30px;
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        padding-bottom: 10px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
+      }
+      .userInfo {
+        width: 100;
+        display: flex;
+        align-items: center;
+        .userImg {
+          display: flex;
+          align-items: center;
+          border-radius: 100%;
+          width: 50px;
+          height: 50px;
+          margin-right: 10px;
+        }
+        .userName {
+          display: flex;
+          font-size: 20px;
+        }
+      }
+      .pinInfo {
+        font-size: 15px;
+        margin-top: 20px;
+        border: none;
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
+      }
+      .pinAltBtn {
+        margin-top: 20px;
+        width: 130px;
+        height: 40px;
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .pinAltInput {
+        border: none;
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
+      }
+      .category {
+        font-size: 15px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border: none;
+        height: 50px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.341);
+        &:focus-visible {
+          outline: none;
+          border-bottom: 2px solid rgba(0, 64, 255, 0.325);
+        }
+      }
+    }
+  }
+}
