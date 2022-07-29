@@ -26,6 +26,7 @@ function Pin({ feedOntoggle, data, pinId }) {
       .then(res => res.json())
       .then(data => {
         alert(data.message);
+        setOnStore(false);
       });
   };
   return (
