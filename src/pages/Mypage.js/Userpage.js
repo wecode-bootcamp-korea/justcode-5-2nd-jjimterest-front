@@ -16,7 +16,6 @@ function Userpage() {
   const { nickname } = params;
   const [userDate, setUserData] = useState();
   const [following, setFollowing] = useState(false);
-  useEffect(() => {}, [userDate]);
 
   useEffect(() => {
     fetch(`${BASE_URL}profile/${nickname}`, {
@@ -48,7 +47,7 @@ function Userpage() {
     return () => {
       clearInterval(timer);
     };
-  });
+  }, []);
 
   const onFollowBtn = () => {
     fetch(`${BASE_URL}follow?followee_id=${userDate.id}`, {
@@ -129,7 +128,9 @@ function Userpage() {
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
+              nName={data.name}
               key={index}
+              onClose={closeFollowerModal}
             />
           ))}
       </Modal>
@@ -140,7 +141,9 @@ function Userpage() {
             <FollowContainer
               img={data.profile_image}
               userName={data.nickname}
+              nName={data.name}
               key={index}
+              onClose={closeFollowModal}
             />
           ))}
       </Modal>
