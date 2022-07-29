@@ -96,10 +96,6 @@ function Boardpage() {
       <Modal visible={createModal} onClose={closeCreateModal}>
         <div className={css.modalHeader}>보드 수정하기</div>
         <div className={css.modalInner}>
-          <div>보드 커버</div>
-          <div className={css.faPlusBox}>
-            <FontAwesomeIcon icon={faPlus} className={css.faPlus} />
-          </div>
           <div>이름</div>
           <input
             className={css.nameInput}
