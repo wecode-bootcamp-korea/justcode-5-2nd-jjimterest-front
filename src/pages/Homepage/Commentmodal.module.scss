@@ -1,7 +1,12 @@
+.container::-webkit-scrollbar {
+  display: none;
+}
 .container {
   width: 90%;
   height: 300px;
   overflow: scroll;
+  -ms-overflow-style: none;
+
   .commentList {
     display: flex;
     flex-direction: column;

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import css from './Finfeedmodal.module.scss';
 import Commentmodal from './Commentmodal';
 import CommentBtnmodal from './CommentBtnmodal';
-import BoardList from '../../components/BoardList/BoardList';
+import BoardLists from '../../components/BoardList/BoardLists';
 import BASE_URL from '../../config';
 import { useNavigate } from 'react-router-dom';
 import { token } from '../../components/Nav/Nav';
@@ -24,6 +24,15 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
     navigate(`/${pinData[0].name}`);
   };
 
+  const text = () => {
+    if (boadData) {
+      if (boadData[0].boards.length === 0) {
+        return '보드를 만들어주세요';
+      } else {
+        return '보드를 선택해주세요';
+      }
+    }
+  };
   useEffect(() => {
     fetch(`${BASE_URL}pin-make`, {
       method: 'GET',
@@ -185,9 +194,9 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                   setOnBoradList(prev => !prev);
                 }}
               >
-                {boardtitle ? boardtitle : '보드를선택하세요'}
+                {boardtitle ? boardtitle : text()}
                 {onBoradList && (
-                  <BoardList data={boadData[0].boards} title={setBoardTitle} />
+                  <BoardLists data={boadData[0].boards} title={setBoardTitle} />
                 )}
               </button>
               <button className={css.storeBtn} onClick={store}>
@@ -231,15 +240,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
               <Commentmodal pinData={pinData[0].comments} pinId={pinId[0]} />
             )}
             <div className={css.commentInputContainer}>
-              <img
-                className={css.myImg}
-                src={
-                  myImg[0] === 'n'
-                    ? 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
-                    : myImg
-                }
-                alt="이미지"
-              />
+              <img className={css.myImg} src={myImg} alt="이미지" />
               <input
                 className={css.commentInput}
                 placeholder="댓글 추가"
