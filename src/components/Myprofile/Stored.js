@@ -191,138 +191,182 @@ function Stored({
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
   `;
-  return (
-    <div className={css.contentsContainer}>
-      <Modal visible={createModal} onClose={closeCreateModal}>
-        <div className={css.modalHeader}>보드 만들기</div>
-        <div className={css.modalInner}>
-          <div className={css.modalName}>이름</div>
-          <input
-            placeholder="예 : 가고 싶은 곳 또는 요리법"
-            onChange={inputHandler}
-            value={bdName}
-          />
-          <div className={css.buttonWrap}>
-            <Link
-              to={`/mypage/${bdName}`}
-              state={{
-                boardData: [
-                  {
-                    id: Number(bdList[bdList.length - 1].id) + 100,
-                    pins: [
-                      { image: `${process.env.PUBLIC_URL}/images/normal.png` },
-                    ],
-                    title: bdName,
-                  },
-                ],
-              }}
-            >
-              <Button onClick={createBoard} disabled={bdName ? false : true}>
-                만들기
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </Modal>
-      <Modal visible={aModal} onClose={closeAModal}>
-        <div className={css.modalHeader}>정리할 보드 선택</div>
-        {bdList &&
-          bdList.map((data, index) => (
+  if (myDate.length === 0) {
+    return (
+      <div className={css.contentsContainer}>
+        {navOnOff && (
+          <div className={css.boardUi}>
             <div
-              className={css.boardNList}
-              key={index}
-              onClick={e => onArrangePost(data.id)}
+              className={`${css.iconWrapper} ${css.arrangeBtn}`}
+              onClick={onClickArrange}
             >
-              {data.title}
+              <FontAwesomeIcon icon={faEquals} className={css.icon} />
+              <Arrange ref={arrRef}>
+                <p>정렬기준</p>
+                <li onClick={abcSortHandle}>알파벳 순</li>
+                <li onClick={lastDaySortHandle}>마지막 저장일</li>
+              </Arrange>
             </div>
-          ))}
-      </Modal>
-      {navOnOff && (
-        <div className={css.boardUi}>
-          <div
-            className={`${css.iconWrapper} ${css.arrangeBtn}`}
-            onClick={onClickArrange}
-          >
-            <FontAwesomeIcon icon={faEquals} className={css.icon} />
-            <Arrange ref={arrRef}>
-              <p>정렬기준</p>
-              <li onClick={abcSortHandle}>알파벳 순</li>
-              <li onClick={lastDaySortHandle}>마지막 저장일</li>
-            </Arrange>
+            <div
+              className={`${css.iconWrapper} ${css.createBtn}`}
+              onClick={onClickCreate}
+            >
+              <FontAwesomeIcon icon={faPlus} className={css.icon} />
+              <Create ref={creRef}>
+                <p>만들기</p>
+                <Link to={`/finpage`} className={css.linkLay}>
+                  <li>핀</li>
+                </Link>
+                <li onClick={openCreateModal}>보드</li>
+              </Create>
+            </div>
           </div>
-          <div
-            className={`${css.iconWrapper} ${css.createBtn}`}
-            onClick={onClickCreate}
-          >
-            <FontAwesomeIcon icon={faPlus} className={css.icon} />
-            <Create ref={creRef}>
-              <p>만들기</p>
-              <Link to={`/finpage`} className={css.linkLay}>
-                <li>핀</li>
-              </Link>
-              <li onClick={openCreateModal}>보드</li>
-            </Create>
-          </div>
-        </div>
-      )}
-      <div className={css.boardContainer}>
-        <Allboardcard
-          nickname={nickname}
-          firstImg={allPins[0].image}
-          boardName={'모든 핀'}
-          pinCnt={allPins && allPins.length}
-          linkNav={linkNav}
-          allPin={allPins}
-        />
-        {bdList &&
-          bdList.map((data, index) => (
-            <Boardcard
-              boardData={data}
-              firstImg={data.pins[0] && data.pins[0].image}
-              boardName={data.title}
-              pinCnt={data.pins.length}
-              linkNav={linkNav}
-              nickname={nickname}
-              key={index}
-            />
-          ))}
+        )}
+        <div>아직 생성된 보드가 없습니다</div>
       </div>
-      {idea && noIdea && (
-        <>
-          <div className={css.arrangeNav}>
-            <div className={css.one}>정리되지 않은 아이디어</div>
-            <div className={css.twoBtn}>
-              <div className={css.two} onClick={openAModal}>
-                정리하기
+    );
+  } else {
+    return (
+      <div className={css.contentsContainer}>
+        <Modal visible={createModal} onClose={closeCreateModal}>
+          <div className={css.modalHeader}>보드 만들기</div>
+          <div className={css.modalInner}>
+            <div className={css.modalName}>이름</div>
+            <input
+              placeholder="예 : 가고 싶은 곳 또는 요리법"
+              onChange={inputHandler}
+              value={bdName}
+            />
+            <div className={css.buttonWrap}>
+              <Link
+                to={`/mypage/${bdName}`}
+                state={{
+                  boardData: [
+                    {
+                      id: Number(bdList[bdList.length - 1].id) + 100,
+                      pins: [
+                        {
+                          image: `${process.env.PUBLIC_URL}/images/normal.png`,
+                        },
+                      ],
+                      title: bdName,
+                    },
+                  ],
+                }}
+              >
+                <Button onClick={createBoard} disabled={bdName ? false : true}>
+                  만들기
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </Modal>
+        <Modal visible={aModal} onClose={closeAModal}>
+          <div className={css.modalHeader}>정리할 보드 선택</div>
+          {bdList &&
+            bdList.map((data, index) => (
+              <div
+                className={css.boardNList}
+                key={index}
+                onClick={e => onArrangePost(data.id)}
+              >
+                {data.title}
+              </div>
+            ))}
+        </Modal>
+        {navOnOff && (
+          <div className={css.boardUi}>
+            <div
+              className={`${css.iconWrapper} ${css.arrangeBtn}`}
+              onClick={onClickArrange}
+            >
+              <FontAwesomeIcon icon={faEquals} className={css.icon} />
+              <Arrange ref={arrRef}>
+                <p>정렬기준</p>
+                <li onClick={abcSortHandle}>알파벳 순</li>
+                <li onClick={lastDaySortHandle}>마지막 저장일</li>
+              </Arrange>
+            </div>
+            <div
+              className={`${css.iconWrapper} ${css.createBtn}`}
+              onClick={onClickCreate}
+            >
+              <FontAwesomeIcon icon={faPlus} className={css.icon} />
+              <Create ref={creRef}>
+                <p>만들기</p>
+                <Link to={`/finpage`} className={css.linkLay}>
+                  <li>핀</li>
+                </Link>
+                <li onClick={openCreateModal}>보드</li>
+              </Create>
+            </div>
+          </div>
+        )}
+        <div className={css.boardContainer}>
+          <Allboardcard
+            nickname={nickname}
+            firstImg={allPins[0].image}
+            boardName={'모든 핀'}
+            pinCnt={allPins && allPins.length}
+            linkNav={linkNav}
+            allPin={allPins}
+          />
+          {bdList &&
+            bdList.map((data, index) => (
+              <Boardcard
+                boardData={data}
+                firstImg={data.pins[0] && data.pins[0].image}
+                boardName={data.title}
+                pinCnt={data.pins.length}
+                linkNav={linkNav}
+                nickname={nickname}
+                key={index}
+              />
+            ))}
+        </div>
+        {idea && noIdea && (
+          <>
+            <div className={css.arrangeNav}>
+              <div className={css.one}>정리되지 않은 아이디어</div>
+              <div className={css.twoBtn}>
+                <div className={css.two} onClick={openAModal}>
+                  정리하기
+                </div>
               </div>
             </div>
-          </div>
-          <div className={css.pinContainer}>
-            {myPins.length
-              ? myPins.map(data => {
-                  return (
-                    <div key={data.id}>
-                      <label htmlFor={data.id}>
-                        <input
-                          className={css.noIdeaInput}
-                          type="checkbox"
-                          id={data.id}
-                          value={data.id}
-                          onChange={e => {
-                            onCheckedElement(e.target.checked, e.target.value);
-                          }}
-                        />
-                        <img alt="핀 이미지" src={`${BASE_URL}${data.image}`} />
-                      </label>
-                    </div>
-                  );
-                })
-              : setNoIdea(false)}
-          </div>
-        </>
-      )}
-    </div>
-  );
+            <div className={css.pinContainer}>
+              {myPins.length
+                ? myPins.map(data => {
+                    return (
+                      <div key={data.id}>
+                        <label htmlFor={data.id}>
+                          <input
+                            className={css.noIdeaInput}
+                            type="checkbox"
+                            id={data.id}
+                            value={data.id}
+                            onChange={e => {
+                              onCheckedElement(
+                                e.target.checked,
+                                e.target.value
+                              );
+                            }}
+                          />
+                          <img
+                            alt="핀 이미지"
+                            src={`${BASE_URL}${data.image}`}
+                          />
+                        </label>
+                      </div>
+                    );
+                  })
+                : setNoIdea(false)}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
 }
 
 export default Stored;

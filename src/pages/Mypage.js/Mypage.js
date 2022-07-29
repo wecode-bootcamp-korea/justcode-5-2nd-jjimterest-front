@@ -34,6 +34,25 @@ function Mypage() {
     };
     fetchData();
   }, []);
+  console.log(myDate && myDate.name);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     fetch(`${BASE_URL}profile/${data[0].name}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //       },
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         setMyData(data);
+  //       });
+  //   }, 100);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   const openFollowModal = () => {
     setFollowModal(true);
