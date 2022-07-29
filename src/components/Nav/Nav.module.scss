@@ -13,22 +13,33 @@
     align-items: center;
     height: 100%;
     .homeBtn {
+      font-weight: bolder;
       margin-left: 10px;
-      width: 70px;
+      background-color: white;
+      width: 60px;
       height: 80%;
       border-radius: 30%;
       border: none;
       margin-right: 5px;
       cursor: pointer;
+      &:hover {
+        background-color: black;
+        color: white;
+      }
     }
     .addBtn {
+      font-weight: bolder;
+      background-color: white;
       width: 70px;
       height: 80%;
       border-radius: 30%;
       border: none;
-      background-color: #efefef;
       cursor: pointer;
       font-size: 14px;
+      &:hover {
+        background-color: red;
+        color: white;
+      }
     }
   }
   .wrapSearchBar {

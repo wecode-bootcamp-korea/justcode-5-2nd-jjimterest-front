@@ -14,6 +14,7 @@ function Pin({ feedOntoggle, data, pinId }) {
   const modalOut = () => {
     setOn(prev => !prev);
   };
+
   const btnClick = () => {
     fetch(`${BASE_URL}pins/${data.pin_id}`, {
       method: 'POST',
@@ -21,8 +22,11 @@ function Pin({ feedOntoggle, data, pinId }) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-    });
-    setOnStore(false);
+    })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+      });
   };
   return (
     <div className={css.wrapPin} onMouseEnter={modalOn} onMouseLeave={modalOut}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import css from './Nav.module.scss';
 import Recent from './Recent';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import BASE_URL from '../../config';
 export const token = localStorage.getItem('token');
 
@@ -16,6 +16,15 @@ function Nav({
   const [profileImg, setProfileImg] = useState();
   const [pName, setPName] = useState();
   const search = useRef();
+  const location = useLocation();
+  const home = useRef();
+
+  useEffect(() => {
+    if (location.pathname === '/main') {
+      home.current.style.backgroundColor = 'black';
+      home.current.style.color = 'white';
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     fetch(`${BASE_URL}edit-profile`, {
@@ -29,7 +38,12 @@ function Nav({
       .then(data => {
         setPName(data);
         setProfileImg(data[0].profile_image);
-        localStorage.setItem('myImg', data[0].profile_image);
+        localStorage.setItem(
+          'myImg',
+          data[0].profile_image
+            ? data[0].profile_image
+            : 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
+        );
       });
   }, []);
 
@@ -102,7 +116,7 @@ function Nav({
   return (
     <div className={css.nav} ref={nav}>
       <div className={css.wrapBtn}>
-        <button className={css.homeBtn} onClick={gotohome}>
+        <button ref={home} className={css.homeBtn} onClick={gotohome}>
           홈
         </button>
         <button className={css.addBtn} onClick={gotopainpage}>
@@ -128,7 +142,7 @@ function Nav({
         {on ? <Recent onToggle={onToggle} /> : null}
       </div>
       <div className={css.emoji}>
-        <button className={css.message}>message</button>
+        {/* <button className={css.message}>message</button> */}
         <Link to={`/mypage`} state={{ pName: pName }}>
           <img
             className={css.profileImg}
