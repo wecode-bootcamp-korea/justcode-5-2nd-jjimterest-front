@@ -189,7 +189,10 @@ const LoginPage = () => {
       </LoginHeader>
       <Introduce />
       {imageMockData && <ImagesContainer imageMockData={imageMockData} />}
-      <PageFooter ref={pageFooterRef} />
+      <PageFooter ref={pageFooterRef}>
+        서비스 약관 &nbsp; 개인정보 보호정책 &nbsp; 도움말 &nbsp; iPhone 앱
+        &nbsp; Android 앱 &nbsp; 사용자 &nbsp; 컬렉션 &nbsp; 오늘 &nbsp; 탐색
+      </PageFooter>
     </EntryPageContainer>
   );
 };
@@ -249,9 +252,16 @@ const DownButton = styled.img`
   }
 `;
 
-const UpButton = styled(DownButton)`
+const UpButton = styled.img`
   display: ${props => (props.isPageScrolledDown ? 'inline' : 'none')};
-  bottom: -50px;
+  bottom: -100px;
+  position: absolute;
+  right: 50%;
+  width: 50px;
+  height: 50px;
+  color: red;
+  transform: translateX(15px);
+  cursor: pointer;
 `;
 
 const WelcomeText = styled.div`
@@ -335,4 +345,8 @@ const bounce1 = keyframes`
   100% { bottom: 18px}
 `;
 
-const PageFooter = styled.div``;
+const PageFooter = styled.div`
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 400px;
+`;
