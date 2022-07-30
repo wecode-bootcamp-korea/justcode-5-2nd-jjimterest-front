@@ -16,13 +16,14 @@ function Createpinfeed({ index, deletepin }) {
   const reader = new FileReader();
   const [onBoradList, setOnBoradList] = useState(false);
   const myImg = localStorage.getItem('myImg');
+  const [boardId, setBoardId] = useState('');
   const [boardtitle, setBoardTitle] = useState();
   const [pinInfo, setPinInfo] = useState({
     title: '',
     intro: '',
     alt: '',
     category: '',
-    board_id: 2,
+    board_id: boardId,
   });
 
   const text = () => {
@@ -94,7 +95,7 @@ function Createpinfeed({ index, deletepin }) {
           intro: '',
           alt: '',
           category: '',
-          board_id: 2,
+          board_id: '',
         });
         setOn(false);
       });
@@ -124,7 +125,11 @@ function Createpinfeed({ index, deletepin }) {
           >
             {boardtitle ? boardtitle : text()}
             {onBoradList && (
-              <BoardLists data={boadData[0].boards} title={setBoardTitle} />
+              <BoardLists
+                data={boadData[0].boards}
+                title={setBoardTitle}
+                setBoardId={setBoardId}
+              />
             )}
           </button>
           <button className={css.storeBtn} onClick={pinMake}>

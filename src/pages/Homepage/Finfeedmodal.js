@@ -18,6 +18,8 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const [pinData, setPinData] = useState();
   const [comment, setComment] = useState();
   const [followState, setFollowState] = useState();
+  const [boardId, setBoardId] = useState();
+
   const navigate = useNavigate();
 
   const gotprofile = () => {
@@ -160,9 +162,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       },
       body: JSON.stringify({
         pin_id: pinData[0].id,
-        board_id: 3,
+        board_id: boardId,
       }),
-    });
+    })
+      .then(res => res.json())
+      .then(data => alert(data));
   };
 
   if (pinData) {
@@ -196,7 +200,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
               >
                 {boardtitle ? boardtitle : text()}
                 {onBoradList && (
-                  <BoardLists data={boadData[0].boards} title={setBoardTitle} />
+                  <BoardLists
+                    data={boadData[0].boards}
+                    title={setBoardTitle}
+                    setBoardId={setBoardId}
+                  />
                 )}
               </button>
               <button className={css.storeBtn} onClick={store}>
