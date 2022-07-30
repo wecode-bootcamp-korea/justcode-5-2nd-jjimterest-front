@@ -23,9 +23,7 @@ function Createpinfeed({ index, deletepin }) {
     intro: '',
     alt: '',
     category: '',
-    board_id: boardId,
   });
-
   const text = () => {
     if (boadData) {
       if (boadData[0].boards.length === 0) {
@@ -71,7 +69,7 @@ function Createpinfeed({ index, deletepin }) {
     imgUpload.append('title', pinInfo.title);
     imgUpload.append('alt', pinInfo.alt);
     imgUpload.append('intro', pinInfo.intro);
-    imgUpload.append('boardId', pinInfo.board_id);
+    imgUpload.append('boardId', boardId);
     imgUpload.append('category', pinInfo.category);
 
     fetch(`${BASE_URL}pin-make`, {
