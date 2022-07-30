@@ -166,7 +166,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       }),
     })
       .then(res => res.json())
-      .then(data => alert(data));
+      .then(data => alert(data.message));
   };
 
   if (pinData) {
