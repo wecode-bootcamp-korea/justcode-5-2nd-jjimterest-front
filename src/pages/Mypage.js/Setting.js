@@ -13,7 +13,6 @@ function Setting() {
   const [fileImage, setFileImage] = useState('');
   const [userName, setUserName] = useState();
   const [desc, setDesc] = useState();
-  const [intro, setIntro] = useState();
   const [nickName, setNickName] = useState();
   const [imgUpload] = useState(new FormData());
   const reader = new FileReader();
@@ -31,7 +30,7 @@ function Setting() {
       setUserName(`${result[0].name}`);
       setNickName(`${result[0].nickname}`);
       setFileImage(`${result[0].profile_image}`);
-      setIntro(`${result[0].intro}`);
+      setDesc(`${result[0].intro}`);
     };
     fetchData();
   }, []);
@@ -199,7 +198,7 @@ function Setting() {
               className={css.descInput}
               placeholder="회원님의 이야기를 들려주세요."
               onChange={inputHandlerD}
-              value={intro && intro}
+              value={desc}
             />
             <div>사용자이름</div>
             <input
