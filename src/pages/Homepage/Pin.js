@@ -32,10 +32,7 @@ function Pin({ feedOntoggle, data, pinId }) {
       },
     })
       .then(res => res.json())
-      .then(data => {
-        alert(data.message);
-        setOnStore(false);
-      });
+      .then(() => setOnStore(false));
   };
   return (
     <div className={css.wrapPin} onMouseEnter={modalOn} onMouseLeave={modalOut}>
