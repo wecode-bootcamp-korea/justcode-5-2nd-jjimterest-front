@@ -64,9 +64,10 @@ function Boardpage() {
       }
     });
     closeCreateModal();
-    gotoMypage();
+    gotoMain();
   };
-  const gotoMypage = () => {
+
+  const gotoMain = () => {
     navigate('/main');
   };
 
@@ -129,7 +130,9 @@ function Boardpage() {
       <div className={css.header}>
         <div>
           <div className={css.headerContents}>
-            <span className={css.headerBdName}>{boardname}</span>
+            <span className={css.headerBdName}>
+              {bdName ? bdName : boardname}
+            </span>
             <Dropdown fonticon={2}>
               <p>보드 옵션</p>
               <li onClick={openCreateModal}>보드 수정</li>
