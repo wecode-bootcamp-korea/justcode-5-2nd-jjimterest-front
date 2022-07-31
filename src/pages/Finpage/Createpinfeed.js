@@ -108,7 +108,7 @@ function Createpinfeed({ index, deletepin }) {
   return (
     <>
       {onmsg && (
-        <Alert message={message}>
+        <Alert>
           <AlertBtn onClick={alertbtn}>x</AlertBtn>
           {message && message}
         </Alert>

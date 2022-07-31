@@ -30,9 +30,10 @@ export const Wrap = styled.div`
   bottom: 5%;
 `;
 
-const CommentBtnmodal = ({ setOn, comment, pinId }) => {
+const CommentBtnmodal = ({ setOn, comment, pinId, setComment }) => {
   const canclebtn = () => {
     setOn(false);
+    setComment('');
   };
 
   const btnOff = () => {
@@ -48,7 +49,7 @@ const CommentBtnmodal = ({ setOn, comment, pinId }) => {
         pin_id: pinId,
         content: comment,
       }),
-    });
+    }).then(setComment(''));
   };
   return (
     <Wrap>
