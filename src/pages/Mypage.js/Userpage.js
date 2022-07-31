@@ -15,19 +15,39 @@ function Userpage() {
   const params = useParams();
   const { nickname } = params;
   const [userDate, setUserData] = useState();
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState();
+  console.log(following);
+
+  // useEffect(() => {
+  //   fetch(`${BASE_URL}profile/${nickname}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       setUserData(res);
+  //     });
+  // }, [nickname]);
 
   useEffect(() => {
-    fetch(`${BASE_URL}profile/${nickname}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        setUserData(res);
-      });
+    const timer = setInterval(() => {
+      fetch(`${BASE_URL}profile/${nickname}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          setUserData(data);
+        });
+    }, 500);
+    return () => {
+      clearInterval(timer);
+    };
   }, [nickname]);
 
   useEffect(() => {
@@ -47,7 +67,7 @@ function Userpage() {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  });
 
   const onFollowBtn = () => {
     fetch(`${BASE_URL}follow?followee_id=${userDate.id}`, {
@@ -122,7 +142,7 @@ function Userpage() {
     <div className={css.container}>
       <Nav />
       <Modal visible={followerModal} onClose={closeFollowerModal}>
-        <div className={css.modalHeader}>팔로워</div>
+        <div className={css.modalHeader}>팔로잉</div>
         {userDate &&
           userDate.follower.map((data, index) => (
             <FollowContainer
@@ -135,7 +155,7 @@ function Userpage() {
           ))}
       </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
-        <div className={css.modalHeader}>팔로잉</div>
+        <div className={css.modalHeader}>팔로워</div>
         {userDate &&
           userDate.following.map((data, index) => (
             <FollowContainer
@@ -166,10 +186,10 @@ function Userpage() {
           </div>
           <div className={css.followBox}>
             <div className={css.follow} onClick={openFollowerModal}>
-              팔로워 {userDate && userDate.follower.length}명
+              팔로잉 {userDate && userDate.follower.length}명
             </div>
             <div className={css.follow} onClick={openFollowModal}>
-              팔로잉 {userDate && userDate.following.length}명
+              팔로워 {userDate && userDate.following.length}명
             </div>
           </div>
           <div className={css.profileBtn}>

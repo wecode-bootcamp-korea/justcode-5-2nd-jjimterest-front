@@ -104,7 +104,7 @@ function Mypage() {
     <div className={css.container}>
       <Nav />
       <Modal visible={followerModal} onClose={closeFollowerModal}>
-        <div className={css.modalHeader}>팔로워</div>
+        <div className={css.modalHeader}>팔로잉</div>
         {myDate &&
           myDate.follower.map((data, index) => (
             <FollowContainer
@@ -116,7 +116,7 @@ function Mypage() {
           ))}
       </Modal>
       <Modal visible={followModal} onClose={closeFollowModal}>
-        <div className={css.modalHeader}>팔로잉</div>
+        <div className={css.modalHeader}>팔로워</div>
         {myDate &&
           myDate.following.map((data, index) => (
             <FollowContainer
@@ -147,10 +147,10 @@ function Mypage() {
           </div>
           <div className={css.followBox}>
             <div className={css.follow} onClick={openFollowerModal}>
-              팔로워 {myDate && myDate.follower.length}명
+              팔로잉 {myDate && myDate.follower.length}명
             </div>
             <div className={css.follow} onClick={openFollowModal}>
-              팔로잉 {myDate && myDate.following.length}명
+              팔로워 {myDate && myDate.following.length}명
             </div>
           </div>
           <div className={css.profileBtn}>
