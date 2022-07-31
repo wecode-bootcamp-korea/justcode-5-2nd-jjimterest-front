@@ -41,7 +41,7 @@ function Setting() {
       reader.onload = e => {
         imgInput.current.src = e.target.result;
       };
-      imgUpload.append('image', URL.createObjectURL(imgInput.current.files[0]));
+      imgUpload.append('image', imgInput.current.files[0]);
     }
   };
 
@@ -199,7 +199,7 @@ function Setting() {
           </div>
         </div>
       </div>
-      <Profilefooter btn={profileEdit}></Profilefooter>
+      <Profilefooter btn={profileEdit} linkA={true}></Profilefooter>
     </div>
   );
 }

@@ -15,19 +15,39 @@ function Userpage() {
   const params = useParams();
   const { nickname } = params;
   const [userDate, setUserData] = useState();
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState();
+  console.log(following);
+
+  // useEffect(() => {
+  //   fetch(`${BASE_URL}profile/${nickname}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //     },
+  //   })
+  //     .then(res => res.json())
+  //     .then(res => {
+  //       setUserData(res);
+  //     });
+  // }, [nickname]);
 
   useEffect(() => {
-    fetch(`${BASE_URL}profile/${nickname}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-      .then(res => res.json())
-      .then(res => {
-        setUserData(res);
-      });
+    const timer = setInterval(() => {
+      fetch(`${BASE_URL}profile/${nickname}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          setUserData(data);
+        });
+    }, 500);
+    return () => {
+      clearInterval(timer);
+    };
   }, [nickname]);
 
   useEffect(() => {
@@ -47,7 +67,7 @@ function Userpage() {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  });
 
   const onFollowBtn = () => {
     fetch(`${BASE_URL}follow?followee_id=${userDate.id}`, {
