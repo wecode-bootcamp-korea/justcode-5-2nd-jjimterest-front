@@ -19,7 +19,14 @@ function Boardcard({
       >
         <div className={css.allPinImg}>
           <div className={css.firstImg}>
-            <img alt="핀이미지" src={`${BASE_URL}${firstImg}`} />
+            <img
+              alt="핀이미지"
+              src={
+                firstImg
+                  ? `${BASE_URL}${firstImg}`
+                  : `https://i.imgur.com/NBjKaML.jpg`
+              }
+            />
           </div>
         </div>
         <div className={css.allPinContents}>
