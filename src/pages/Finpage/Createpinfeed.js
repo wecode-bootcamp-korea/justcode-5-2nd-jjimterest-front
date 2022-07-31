@@ -3,6 +3,7 @@ import BoardLists from '../../components/BoardList/BoardLists';
 import css from './Createpinfeed.module.scss';
 import BASE_URL from '../../config';
 import { token } from '../../components/Nav/Nav';
+import { Alert, AlertBtn } from '../Homepage/Finfeedmodal';
 
 function Createpinfeed({ index, deletepin }) {
   const btn = useRef();
@@ -16,15 +17,16 @@ function Createpinfeed({ index, deletepin }) {
   const reader = new FileReader();
   const [onBoradList, setOnBoradList] = useState(false);
   const myImg = localStorage.getItem('myImg');
+  const [boardId, setBoardId] = useState('');
   const [boardtitle, setBoardTitle] = useState();
+  const [message, setMessage] = useState();
+  const [onmsg, setOnMsg] = useState(false);
   const [pinInfo, setPinInfo] = useState({
     title: '',
     intro: '',
     alt: '',
     category: '',
-    board_id: 2,
   });
-
   const text = () => {
     if (boadData) {
       if (boadData[0].boards.length === 0) {
@@ -70,7 +72,7 @@ function Createpinfeed({ index, deletepin }) {
     imgUpload.append('title', pinInfo.title);
     imgUpload.append('alt', pinInfo.alt);
     imgUpload.append('intro', pinInfo.intro);
-    imgUpload.append('boardId', pinInfo.board_id);
+    imgUpload.append('boardId', boardId);
     imgUpload.append('category', pinInfo.category);
 
     fetch(`${BASE_URL}pin-make`, {
@@ -88,122 +90,140 @@ function Createpinfeed({ index, deletepin }) {
         imgUpload.delete('boardId');
         imgUpload.delete('category');
         imgUpload.delete('image');
-        alert(data.message);
+        setMessage(data.message);
+        setOnMsg(true);
         setPinInfo({
           title: '',
           intro: '',
           alt: '',
           category: '',
-          board_id: 2,
+          board_id: '',
         });
         setOn(false);
       });
   };
+  const alertbtn = () => {
+    setOnMsg(false);
+  };
   return (
-    <div
-      className={css.pageOutLine}
-      onClick={e => {
-        if (e.target === btn.current) {
-          return;
-        } else {
-          setOnBoradList(false);
-        }
-      }}
-    >
-      <button className={css.delete} onClick={() => deletepin(index)}>
-        X
-      </button>
-      <div className={css.nav}>
-        <div className={css.wrapBoardBtn}>
-          <button
-            ref={btn}
-            className={css.selectBtn}
-            onClick={() => {
-              setOnBoradList(prev => !prev);
-            }}
-          >
-            {boardtitle ? boardtitle : text()}
-            {onBoradList && (
-              <BoardLists data={boadData[0].boards} title={setBoardTitle} />
-            )}
-          </button>
-          <button className={css.storeBtn} onClick={pinMake}>
-            저장
-          </button>
-        </div>
-      </div>
-      <div className={css.wrapContents}>
-        <div className={css.upload}>
-          {on && <img ref={img} className={css.previewImage} alt="이미지" />}
-          <input
-            className={css.uploadInput}
-            ref={input}
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={() => {
-              view(input);
-            }}
-          />
-          {on || <p className={css.uploadText}>드래그하거나 클릭하여 업로드</p>}
-          {on || (
-            <p className={css.uplodInfo}>
-              권장 사항: 20MB 이하 고화질 .jpg 파일
-            </p>
-          )}
-        </div>
-        <div className={css.info}>
-          <input
-            name="title"
-            className={css.title}
-            placeholder="제목 추가"
-            onChange={handleInput}
-            value={pinInfo.title}
-          />
-          <div className={css.userInfo}>
-            <img className={css.userImg} alt="이미지" src={myImg} />
-            <p className={css.userName}>
-              {boadData !== undefined && boadData[0].name}
-            </p>
-          </div>
-          <input
-            name="intro"
-            type="text"
-            className={css.pinInfo}
-            placeholder="사람들에게 회원님의 핀에 대해 설명해 보세요"
-            onChange={handleInput}
-            value={pinInfo.intro}
-          />
-          {altBtnOn && (
+    <>
+      {onmsg && (
+        <Alert message={message}>
+          <AlertBtn onClick={alertbtn}>x</AlertBtn>
+          {message && message}
+        </Alert>
+      )}
+      <div
+        className={css.pageOutLine}
+        onClick={e => {
+          if (e.target === btn.current) {
+            return;
+          } else {
+            setOnBoradList(false);
+          }
+        }}
+      >
+        <button className={css.delete} onClick={() => deletepin(index)}>
+          X
+        </button>
+        <div className={css.nav}>
+          <div className={css.wrapBoardBtn}>
             <button
-              className={css.pinAltBtn}
+              ref={btn}
+              className={css.selectBtn}
               onClick={() => {
-                setAltOn(true);
-                setAltBtnOn(false);
+                setOnBoradList(prev => !prev);
               }}
             >
-              alt 텍스트 추가
+              {boardtitle ? boardtitle : text()}
+              {onBoradList && (
+                <BoardLists
+                  data={boadData[0].boards}
+                  title={setBoardTitle}
+                  setBoardId={setBoardId}
+                />
+              )}
             </button>
-          )}
-          {altOn && (
+            <button className={css.storeBtn} onClick={pinMake}>
+              저장
+            </button>
+          </div>
+        </div>
+        <div className={css.wrapContents}>
+          <div className={css.upload}>
+            {on && <img ref={img} className={css.previewImage} alt="이미지" />}
             <input
-              name="alt"
-              className={css.pinAltInput}
-              placeholder="핀에 무엇이 표시되는지 설명합니다."
-              onChange={handleInput}
-              value={pinInfo.alt}
+              className={css.uploadInput}
+              ref={input}
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={() => {
+                view(input);
+              }}
             />
-          )}
-          <input
-            name="category"
-            type="text"
-            placeholder="카테고리를 입력해주세요"
-            className={css.category}
-            onChange={handleInput}
-            value={pinInfo.category}
-          />
+            {on || (
+              <p className={css.uploadText}>드래그하거나 클릭하여 업로드</p>
+            )}
+            {on || (
+              <p className={css.uplodInfo}>
+                권장 사항: 20MB 이하 고화질 .jpg 파일
+              </p>
+            )}
+          </div>
+          <div className={css.info}>
+            <input
+              name="title"
+              className={css.title}
+              placeholder="제목 추가"
+              onChange={handleInput}
+              value={pinInfo.title}
+            />
+            <div className={css.userInfo}>
+              <img className={css.userImg} alt="이미지" src={myImg} />
+              <p className={css.userName}>
+                {boadData !== undefined && boadData[0].name}
+              </p>
+            </div>
+            <input
+              name="intro"
+              type="text"
+              className={css.pinInfo}
+              placeholder="사람들에게 회원님의 핀에 대해 설명해 보세요"
+              onChange={handleInput}
+              value={pinInfo.intro}
+            />
+            {altBtnOn && (
+              <button
+                className={css.pinAltBtn}
+                onClick={() => {
+                  setAltOn(true);
+                  setAltBtnOn(false);
+                }}
+              >
+                alt 텍스트 추가
+              </button>
+            )}
+            {altOn && (
+              <input
+                name="alt"
+                className={css.pinAltInput}
+                placeholder="핀에 무엇이 표시되는지 설명합니다."
+                onChange={handleInput}
+                value={pinInfo.alt}
+              />
+            )}
+            <input
+              name="category"
+              type="text"
+              placeholder="카테고리를 입력해주세요"
+              className={css.category}
+              onChange={handleInput}
+              value={pinInfo.category}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

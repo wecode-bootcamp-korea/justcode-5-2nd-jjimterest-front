@@ -6,6 +6,7 @@ import BoardLists from '../../components/BoardList/BoardLists';
 import BASE_URL from '../../config';
 import { useNavigate } from 'react-router-dom';
 import { token } from '../../components/Nav/Nav';
+import styled from 'styled-components';
 
 const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const btn = useRef();
@@ -18,6 +19,10 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
   const [pinData, setPinData] = useState();
   const [comment, setComment] = useState();
   const [followState, setFollowState] = useState();
+  const [boardId, setBoardId] = useState();
+  const [message, setMessage] = useState();
+  const [onmsg, setOnMsg] = useState(false);
+
   const navigate = useNavigate();
 
   const gotprofile = () => {
@@ -160,11 +165,18 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
       },
       body: JSON.stringify({
         pin_id: pinData[0].id,
-        board_id: 3,
+        board_id: boardId,
       }),
-    });
+    })
+      .then(res => res.json())
+      .then(data => {
+        setOnMsg(true);
+        setMessage(data.message);
+      });
   };
-
+  const alertbtn = () => {
+    setOnMsg(false);
+  };
   if (pinData) {
     return (
       <div
@@ -177,6 +189,12 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
           }
         }}
       >
+        {onmsg && (
+          <Alert message={message}>
+            <AlertBtn onClick={alertbtn}>x</AlertBtn>
+            {message && message}
+          </Alert>
+        )}
         <div className={css.container}>
           <div className={css.imgWraper}>
             <img
@@ -196,7 +214,11 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
               >
                 {boardtitle ? boardtitle : text()}
                 {onBoradList && (
-                  <BoardLists data={boadData[0].boards} title={setBoardTitle} />
+                  <BoardLists
+                    data={boadData[0].boards}
+                    title={setBoardTitle}
+                    setBoardId={setBoardId}
+                  />
                 )}
               </button>
               <button className={css.storeBtn} onClick={store}>
@@ -266,3 +288,26 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
 };
 
 export default Finfeedmodal;
+
+export const Alert = styled.div`
+  position: absolute;
+  border-radius: 30px;
+  left: 41%;
+  top: 10%;
+  width: 200px;
+  height: 100px;
+  background-color: white;
+  border: 0.1px solid silver;
+  color: black;
+  z-index: 1;
+  text-align: center;
+  line-height: 95px;
+`;
+export const AlertBtn = styled.button`
+  position: absolute;
+  right: 10%;
+  top: 10%;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;

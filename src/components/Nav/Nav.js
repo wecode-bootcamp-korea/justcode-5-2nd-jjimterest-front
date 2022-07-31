@@ -19,6 +19,14 @@ function Nav({
   const location = useLocation();
   const home = useRef();
 
+  const img = data => {
+    if (data[0].profile_image.includes('http')) {
+      return data[0].profile_image;
+    } else {
+      return BASE_URL + data[0].profile_image;
+    }
+  };
+
   useEffect(() => {
     if (location.pathname === '/main') {
       home.current.style.backgroundColor = 'black';
@@ -41,7 +49,7 @@ function Nav({
         localStorage.setItem(
           'myImg',
           data[0].profile_image
-            ? data[0].profile_image
+            ? img(data)
             : 'https://www.ibossedu.co.kr/template/DESIGN_shared/program/theme/01/THUMBNAIL_60_60_icon_rep_box.gif'
         );
       });
