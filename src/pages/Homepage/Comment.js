@@ -13,6 +13,7 @@ function Comment({ data, pinId, nestedcomments }) {
   const before = be.getTime();
   const time = (now - before) / 1000 / 60;
   const [nestOn, setNestOn] = useState(true);
+  const myImg = localStorage.getItem('myImg');
 
   const NestedCommentsOn = () => {
     setOn(true);
@@ -60,10 +61,16 @@ function Comment({ data, pinId, nestedcomments }) {
   const nestedcommentstoggle = () => {
     setNestOn(prev => !prev);
   };
-
+  const img = data => {
+    if (data.profile_image.includes('http')) {
+      return data.profile_image;
+    } else {
+      return BASE_URL + data.profile_image;
+    }
+  };
   return (
     <div className={css.commentContainer}>
-      <img className={css.commentImg} src={data.profile_image} alt="이미지" />
+      <img className={css.commentImg} src={img(data)} alt="이미지" />
       <div className={css.secondWrap}>
         <div className={css.firstLine}>
           <h4 className={css.nickname}>{data.nickname}</h4>

@@ -270,6 +270,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 onChange={e => {
                   setComment(e.target.value);
                 }}
+                value={comment}
               />
             </div>
             {onInput && (
@@ -277,6 +278,7 @@ const Finfeedmodal = ({ setFeedOn, element, pinId }) => {
                 setOn={setOnInput}
                 comment={comment}
                 pinId={pinId[0]}
+                setComment={setComment}
               />
             )}
           </div>
